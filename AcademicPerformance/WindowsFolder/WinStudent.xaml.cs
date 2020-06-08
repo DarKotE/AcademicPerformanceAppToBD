@@ -22,7 +22,7 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinStudent : Window
     {
-        //SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");       
+               
         SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"));
         SqlCommand sqlCommand;
         SqlDataReader sqlDataReader;
@@ -35,7 +35,8 @@ namespace AcademicPerformance.WindowsFolder
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dgJournal.ItemsSource = CDataAccess.GetJournalTableVar().DefaultView;            
+            CDataAccess dataAccess = new CDataAccess();
+            dgJournal.ItemsSource = dataAccess.GetJournalTableVar().DefaultView;            
             MessageBox.Show(App.IdUser);
         }
 

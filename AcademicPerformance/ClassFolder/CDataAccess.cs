@@ -14,7 +14,7 @@ namespace AcademicPerformance
 {
     public class CDataAccess
     {
-        public static DataTable GetJournalTableVar()
+        public DataTable GetJournalTableVar()
         {
             DataTable dataTable = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB")))
