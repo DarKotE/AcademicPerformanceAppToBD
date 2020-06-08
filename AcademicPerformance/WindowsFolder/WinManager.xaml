@@ -1,0 +1,14 @@
+﻿<Window x:Class="AcademicPerformance.WindowsFolder.WinManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AcademicPerformance.WindowsFolder"
+        mc:Ignorable="d"
+        Title="WinManager" Height="450" Width="700"
+        WindowStartupLocation="CenterScreen"
+        Style="{DynamicResource WindowsStyle}">
+    <Grid>
+        
+    </Grid>
+</Window>
