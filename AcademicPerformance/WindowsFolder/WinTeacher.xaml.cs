@@ -46,29 +46,29 @@ namespace AcademicPerformance.WindowsFolder
 
         private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string id = classDG.SelectId();
-            try
-            {
-                sqlConnection.Open();
-                sqlCommand = new SqlCommand("Select * from dbo.ViewJournal Where IdJournal='" + id + "'", sqlConnection);
-                sqlDataReader = sqlCommand.ExecuteReader();
-                sqlDataReader.Read();
+            //string id = classDG.SelectId();
+            //try
+            //{
+            //    sqlConnection.Open();
+            //    sqlCommand = new SqlCommand("Select * from dbo.ViewJournal Where IdJournal='" + id + "'", sqlConnection);
+            //    sqlDataReader = sqlCommand.ExecuteReader();
+            //    sqlDataReader.Read();
 
-                cbFIOStuent.Text = sqlDataReader[1].ToString();
-                cbNameEvaluation.Text = sqlDataReader[2].ToString();
-                cbEvalustion.Text = sqlDataReader[3].ToString();
-                tbFIOTeacher.Text = sqlDataReader[4].ToString();
-                cbNameDiscipline.Text = sqlDataReader[5].ToString();
-            }
-            catch (Exception ex)
-            {
+            //    cbFIOStuent.Text = sqlDataReader[1].ToString();
+            //    cbNameEvaluation.Text = sqlDataReader[2].ToString();
+            //    cbEvalustion.Text = sqlDataReader[3].ToString();
+            //    tbFIOTeacher.Text = sqlDataReader[4].ToString();
+            //    cbNameDiscipline.Text = sqlDataReader[5].ToString();
+            //}
+            //catch (Exception ex)
+            //{
 
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                sqlConnection.Close();
-            }
+            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            //finally
+            //{
+            //    sqlConnection.Close();
+            //}
         }
         private void LoadFIOStudent()
         {
@@ -307,9 +307,9 @@ namespace AcademicPerformance.WindowsFolder
         {
             try
             {
-                ClassFolder.CJournal.IdJournal = classDG.SelectId();
-                WinEditIn winEditIn = new WinEditIn();
-                winEditIn.ShowDialog();
+                //ClassFolder.CJournal.IdJournal = classDG.SelectId();
+                //WinEditIn winEditIn = new WinEditIn();
+                //winEditIn.ShowDialog();
 
             }
             catch

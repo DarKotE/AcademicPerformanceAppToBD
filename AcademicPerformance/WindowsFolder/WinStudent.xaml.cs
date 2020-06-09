@@ -22,39 +22,39 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinStudent : Window
     {
-               
+        CDataAccess dataAccess = new CDataAccess();
         SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"));
         SqlCommand sqlCommand;
         SqlDataReader sqlDataReader;
         ClassFolder.CDataGrid classDG;
+
         public WinStudent()
         {
-            InitializeComponent();
-            //classDG = new ClassFolder.CDataGrid(dgJournal);
+            InitializeComponent();            
+        }
+
+        private void GridRefresh() 
+        {
+            dgJournal.ItemsSource = dataAccess.GetJournalTableVar().DefaultView;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CDataAccess dataAccess = new CDataAccess();
-            dgJournal.ItemsSource = dataAccess.GetJournalTableVar().DefaultView;            
+            GridRefresh();
             MessageBox.Show(App.IdUser);
         }
 
         private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            string id = classDG.SelectId();
             try
             {
-                sqlConnection.Open();
-                sqlCommand = new SqlCommand("Select * from dbo.[Journal] Where IdJournal='"+id+"'", sqlConnection);
-                sqlDataReader = sqlCommand.ExecuteReader();
-                sqlDataReader.Read();
-                tBNumber.Text = sqlDataReader[0].ToString();
-                tbFIOStudent.Text = sqlDataReader[1].ToString();
-                tbNameEvaluation.Text = sqlDataReader[2].ToString();
-                tbEvalustion.Text = sqlDataReader[3].ToString();
-                TbFIOTeacher.Text = sqlDataReader[4].ToString();
-                tbNameDiscipline.Text = sqlDataReader[5].ToString();
+                DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
+                tBNumber.Text = dataRowView[0].ToString();
+                tbFIOStudent.Text = dataRowView[0].ToString();
+                tbNameEvaluation.Text = dataRowView[1].ToString();
+                tbEvalustion.Text = dataRowView[2].ToString();
+                TbFIOTeacher.Text = dataRowView[3].ToString();
+                tbNameDiscipline.Text = dataRowView[4].ToString();
             }
             catch (Exception ex)
             {

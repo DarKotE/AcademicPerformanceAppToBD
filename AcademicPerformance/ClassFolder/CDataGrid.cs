@@ -51,29 +51,29 @@ namespace AcademicPerformance.ClassFolder
             }
         }
 
-        public string SelectId()
-        {
-            object[] mass = null;
-            string id = "";
-            try
-            {
-                if (dataGrid != null) 
-                {
-                    DataRowView dataRowView = dataGrid.SelectedItem as DataRowView;
+        //public string SelectId()
+        //{
+        //    object[] mass = null;
+        //    string id = "";
+        //    try
+        //    {
+        //        if (dataGrid != null) 
+        //        {
+        //            DataRowView dataRowView = dataGrid.SelectedItem as DataRowView;
                     
-                        if(dataRowView!=null)
-                        {
-                            DataRow dataRow = (DataRow)dataRowView.Row;
-                            mass = dataRow.ItemArray;
-                        }               
-                }
-                id = mass[0].ToString();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }            
-            return id;
-        }
+        //                if(dataRowView!=null)
+        //                {
+        //                    DataRow dataRow = (DataRow)dataRowView.Row;
+        //                    mass = dataRow.ItemArray;
+        //                }               
+        //        }
+        //        id = mass[0].ToString();
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }            
+        //    return id;
+        //}
     }
 }
