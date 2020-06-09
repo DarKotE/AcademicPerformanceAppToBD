@@ -78,9 +78,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
+    <Compile Include="ClassFolder\CJournalVal.cs" />
     <Compile Include="ClassFolder\CUser.cs" />
     <Compile Include="ClassFolder\CSqlHelper.cs" />
-    <Compile Include="ClassFolder\CDataGrid.cs" />
     <Compile Include="ClassFolder\CDiscipline.cs" />
     <Compile Include="ClassFolder\CEvaluation.cs" />
     <Compile Include="ClassFolder\CJournal.cs" />

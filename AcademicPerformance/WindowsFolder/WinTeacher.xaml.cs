@@ -26,22 +26,22 @@ namespace AcademicPerformance.WindowsFolder
         SqlDataReader sqlDataReader;
         SqlDataAdapter dataAdapter;
         DataSet dataSet;
-        ClassFolder.CDataGrid classDG;
+        //ClassFolder.CDataGrid classDG;
         public WinTeacher()
         {
             InitializeComponent();
-            classDG = new ClassFolder.CDataGrid(dgJournal);
+            //classDG = new ClassFolder.CDataGrid(dgJournal);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            classDG.LoadDG("select * from dbo.[ViewJournal]" +
-                $"where IdUserTeacher={App.IdUser}");
-            LoadFIOStudent();
-            LoadNameEvaluation();
-            LoadEvaluation();
-            LoadDiscipline();
-            LoadFIOTeacher();
+            //classDG.LoadDG("select * from dbo.[ViewJournal]" +
+            //    $"where IdUserTeacher={App.IdUser}");
+            //LoadFIOStudent();
+            //LoadNameEvaluation();
+            //LoadEvaluation();
+            //LoadDiscipline();
+            //LoadFIOTeacher();
         }
 
         private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -297,10 +297,10 @@ namespace AcademicPerformance.WindowsFolder
 
         private void miAdd_Click(object sender, RoutedEventArgs e)
         {
-            WinAdd winAdd = new WinAdd();
-            winAdd.ShowDialog();
-            classDG.LoadDG("Select * from dbo.ViewJournal" +
-                $"where IdUserTeahcer={App.IdUser}");
+            //WinAdd winAdd = new WinAdd();
+            //winAdd.ShowDialog();
+            //classDG.LoadDG("Select * from dbo.ViewJournal" +
+            //    $"where IdUserTeahcer={App.IdUser}");
         }
 
         private void miEditIn_Click(object sender, RoutedEventArgs e)

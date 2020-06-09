@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
 
+
+
 namespace AcademicPerformance.WindowsFolder
 {
     /// <summary>
@@ -23,24 +25,45 @@ namespace AcademicPerformance.WindowsFolder
     public partial class WinStudent : Window
     {
         CDataAccess dataAccess = new CDataAccess();
-        SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"));
-        SqlCommand sqlCommand;
-        SqlDataReader sqlDataReader;
-        ClassFolder.CDataGrid classDG;
+        DataTable dataTable = new DataTable();
+        
 
         public WinStudent()
-        {
-            InitializeComponent();            
+        {            
+            InitializeComponent(); 
+            dataTable = dataAccess.GetJournalTableVar();
         }
 
         private void GridRefresh() 
         {
-            dgJournal.ItemsSource = dataAccess.GetJournalTableVar().DefaultView;
+            dgJournal.SelectedItems.Clear();            
+            dgJournal.ItemsSource = dataTable.DefaultView;
+            if (dgJournal.Items.Count > 0)
+            {
+                dgJournal.SelectedItem = dgJournal.Items[0];
+                SelectedRowToTextBox();
+            }
+            else
+            { 
+            ////Придумать как очистить поля
+            };
+        }
+
+        private void SelectedRowToTextBox() {
+            DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
+            tBNumber.Text = dataRowView[0].ToString();
+            tbFIOStudent.Text = dataRowView[1].ToString();
+            tbNameEvaluation.Text = dataRowView[2].ToString();
+            tbEvalustion.Text = dataRowView[3].ToString();
+            TbFIOTeacher.Text = dataRowView[4].ToString();
+            tbNameDiscipline.Text = dataRowView[5].ToString();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            GridRefresh();
+            
+            dgJournal.ItemsSource = dataTable.DefaultView;
+            GridRefresh();            
             MessageBox.Show(App.IdUser);
         }
 
@@ -48,22 +71,14 @@ namespace AcademicPerformance.WindowsFolder
         {
             try
             {
-                DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
-                tBNumber.Text = dataRowView[0].ToString();
-                tbFIOStudent.Text = dataRowView[0].ToString();
-                tbNameEvaluation.Text = dataRowView[1].ToString();
-                tbEvalustion.Text = dataRowView[2].ToString();
-                TbFIOTeacher.Text = dataRowView[3].ToString();
-                tbNameDiscipline.Text = dataRowView[4].ToString();
+                SelectedRowToTextBox();
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
-            {
-                sqlConnection.Close();
+            {                
             }
         }
 
@@ -75,7 +90,6 @@ namespace AcademicPerformance.WindowsFolder
             {
                 Application.Current.Shutdown();
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-
             }
         }
 
@@ -86,16 +100,26 @@ namespace AcademicPerformance.WindowsFolder
             winProfileStudent.ShowDialog();
         }
 
-        private void tbSerach_TextChanged(object sender, TextChangedEventArgs e)
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(string.IsNullOrEmpty(tbSerach.Text))
+            if(string.IsNullOrEmpty(tbSearch.Text))
             {
-                classDG.LoadDG("Select * from dbo.[Journal] where IdUser='" + App.IdUser + "'");
+                GridRefresh();
             }
             else
             {
-                classDG.LoadDG($"Select * from dbo.[Journal] where FIOTeacher like '%{tbSerach.Text}%' and IdUser='{App.IdUser}'");
+                dataTable.DefaultView.RowFilter = string.Format(
+                    "NameEvaluation LIKE '%{0}%'" 
+                    + "OR FIOTeacher LIKE '%{0}%'"
+                    + "OR FIOStudent LIKE '%{0}%'"
+                    + "OR NameDiscipline LIKE '%{0}%'", tbSearch.Text);
+                GridRefresh();
             }
+        }
+
+        private void miExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
