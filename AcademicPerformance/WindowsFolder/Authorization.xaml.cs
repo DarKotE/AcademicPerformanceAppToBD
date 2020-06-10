@@ -23,25 +23,24 @@ namespace AcademicPerformance
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        CDataAccess dataAccess = new CDataAccess();
+        private readonly CDataAccess dataAccess = new CDataAccess();
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void bntExit_Click(object sender, RoutedEventArgs e)
+        private void BtnExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void bntRegistrtion_Click(object sender, RoutedEventArgs e)
+        private void BtnRegistartion_Click(object sender, RoutedEventArgs e)
         {
             WindowsFolder.WinRegistration winRegistration = new WindowsFolder.WinRegistration();
             winRegistration.ShowDialog();
         }
 
-        private bool isTextboxFilled()
+        private bool IsTextboxFilled()
         {
 
             if (string.IsNullOrEmpty(TbLogin.Text))
@@ -85,9 +84,9 @@ namespace AcademicPerformance
             }
         }
 
-        private void bntSigIn_Click(object sender, RoutedEventArgs e)
+        private void BntSigIn_Click(object sender, RoutedEventArgs e)
         {
-            if (isTextboxFilled())
+            if (IsTextboxFilled())
             {
                 if (!dataAccess.isAuthValid(TbLogin.Text, PbPassword.Password))
                 {
@@ -95,15 +94,13 @@ namespace AcademicPerformance
                 }
                 else
                 {
-                    
-                    CUser user = new CUser();
-                    user = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
+                    _ = new CUser();
+                    CUser user = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
                     App.LoginUser = user.LoginUser;
                     App.PasswordUser = user.PasswordUser;
                     App.IdUser = user.IdUser;
                     App.RoleUser = user.RoleUser;
                     ShowNextWindow();
-
                 }
             }
         }

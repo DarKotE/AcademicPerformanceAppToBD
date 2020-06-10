@@ -23,8 +23,8 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinStudent : Window
     {
-        CDataAccess dataAccess = new CDataAccess();
-        DataTable dataTable = new DataTable();
+        private readonly CDataAccess dataAccess = new CDataAccess();
+        private readonly DataTable dataTable = new DataTable();
 
         public WinStudent()
         {            
@@ -36,10 +36,6 @@ namespace AcademicPerformance.WindowsFolder
         {
             dgJournal.ItemsSource = dataTable.DefaultView;
             GridRefresh();
-            MessageBox.Show(App.LoginUser);
-            MessageBox.Show(App.PasswordUser);
-            MessageBox.Show(App.IdUser.ToString());
-            MessageBox.Show(App.RoleUser.ToString());
         }
 
 
@@ -92,7 +88,7 @@ namespace AcademicPerformance.WindowsFolder
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private void FilterGrid()
+        private void FilterGrid(string textSearch)
         {
             try
             {
@@ -100,7 +96,7 @@ namespace AcademicPerformance.WindowsFolder
                     "NameEvaluation LIKE '%{0}%'"
                     + "OR FIOTeacher LIKE '%{0}%'"
                     + "OR FIOStudent LIKE '%{0}%'"
-                    + "OR NameDiscipline LIKE '%{0}%'", tbSearch.Text);
+                    + "OR NameDiscipline LIKE '%{0}%'", textSearch);
             }
             catch (Exception ex)
             {
@@ -108,15 +104,14 @@ namespace AcademicPerformance.WindowsFolder
             }
         }
 
-        private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void DgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             PopulateTextBox();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", 
-                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();
@@ -124,27 +119,20 @@ namespace AcademicPerformance.WindowsFolder
             }
         }
 
-        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void TbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(string.IsNullOrEmpty(tbSearch.Text))
-            {
-                GridRefresh();
-            }
-            else
-            {
-                FilterGrid();
-                GridRefresh();
-            }
+            FilterGrid(tbSearch.Text);
+            GridRefresh();
         }
 
-        private void miPersonalProfile_Click(object sender, RoutedEventArgs e)
+        private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
         {
             WinProfileStudent winProfileStudent =
                  new WinProfileStudent();
             winProfileStudent.ShowDialog();
         }
 
-        private void miExit_Click(object sender, RoutedEventArgs e)
+        private void MiExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }

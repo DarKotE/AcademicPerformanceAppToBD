@@ -45,17 +45,17 @@
         </Grid.RowDefinitions>
         <Menu Height="30" VerticalAlignment="Top" Grid.ColumnSpan="3">
             <MenuItem Header="Файл" Height="30">
-                <MenuItem x:Name="miPersonalProfile" Header="Личный профиль" Click="miPersonalProfile_Click"/>
+                <MenuItem x:Name="miPersonalProfile" Header="Личный профиль" Click="MiPersonalProfile_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miExit" Header="Выход" Click="miExit_Click"/>
+                <MenuItem x:Name="miExit" Header="Выход" Click="MiExit_Click"/>
             </MenuItem>
         </Menu>
         <Label x:Name="lblSearch" Content="Поиск" Style="{DynamicResource LabelStyle}"
                Grid.Row="1"/>
-        <TextBox x:Name="tbSearch" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextChanged="tbSearch_TextChanged" />
+        <TextBox x:Name="tbSearch" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextChanged="TbSearch_TextChanged" />
         <DataGrid x:Name="dgJournal" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="12"
                   AutoGenerateColumns="False" ItemsSource="{Binding SourceCollection}"
-                  IsReadOnly="True" FontSize="12" MouseDoubleClick="dgJouranl_MouseDoubleClick">
+                  IsReadOnly="True" FontSize="12" MouseDoubleClick="DgJouranl_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="dgTcIdJournal"
                                     Header="№ п/п"
