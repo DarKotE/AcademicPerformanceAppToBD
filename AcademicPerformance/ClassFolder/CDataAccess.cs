@@ -15,30 +15,58 @@ namespace AcademicPerformance
     public class CDataAccess
     {
  
-        public bool isAuthValid(string login, string password)
+        public bool IsAuthValid(string userLogin, string userPassword)
         {
             
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
+                string sqlQuery = "SELECT IdUser FROM [dbo].[User] Where  LoginUser  = @LoginUser AND PasswordUser = @PasswordUser";
                 SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
-                sqlCommand = new SqlCommand("select PasswordUser, RoleUser, IdUser From dbo.[User] Where  LoginUser='" + login + "'", sqlConnection);
+                sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
+                sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
                 sqlConnection.Open();
                 sqlDataReader = sqlCommand.ExecuteReader();
-                if (!sqlDataReader.Read() || (sqlDataReader[0].ToString() != password))
+                if (sqlDataReader.Read())
                 {
                     sqlDataReader.Close();
-                    return false;
+                    return true;
                 }
                 else 
                 {
                     sqlDataReader.Close();
-                    return true;
+                    return false;
                 }
 
             }
                 
         }
+        public bool IsLoginFree(string login)
+        {
+
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                SqlCommand sqlCommand;
+                SqlDataReader sqlDataReader;
+                sqlCommand = new SqlCommand("select IdUser From dbo.[User] Where  LoginUser='" + login + "'", sqlConnection);
+                sqlConnection.Open();
+                sqlDataReader = sqlCommand.ExecuteReader();
+                if (sqlDataReader.Read())
+                {
+                    sqlDataReader.Close();
+                    return true;
+                }
+                else
+                {
+                    sqlDataReader.Close();
+                    return false;
+                }
+
+            }
+
+        }
+
         public CUser GetUser(string userLogin, string userPassword)
         {
             CUser tempUser = new CUser();
@@ -78,6 +106,33 @@ namespace AcademicPerformance
                 }
             }
             return tempUser;
+        }
+        public void InsertUser(CUser user, out bool isErr)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                isErr = false;
+                try
+                {
+                    string sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser,RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("LoginUser", user.LoginUser);
+                    sqlCommand.Parameters.AddWithValue("PasswordUser", user.PasswordUser);
+                    sqlCommand.Parameters.AddWithValue("RoleUser", user.RoleUser);
+                    sqlConnection.Open();
+                    sqlCommand.ExecuteNonQuery();
+
+                }
+                catch (Exception ex)
+                {
+                    isErr = true;
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
         }
 
         public DataTable GetJournalTableVar()

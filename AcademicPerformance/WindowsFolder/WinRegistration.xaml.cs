@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
+using AcademicPerformance.ClassFolder;
 
 namespace AcademicPerformance.WindowsFolder
 {
@@ -22,9 +23,10 @@ namespace AcademicPerformance.WindowsFolder
     public partial class WinRegistration : Window
     {
         //SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");
-        SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
-        SqlCommand sqlCommand;
-        
+        //SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
+        //SqlCommand sqlCommand;
+        private readonly CDataAccess dataAccess = new CDataAccess();
+
         public WinRegistration()
         {
             InitializeComponent();
@@ -36,56 +38,68 @@ namespace AcademicPerformance.WindowsFolder
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
         }
 
-        private void BtnRegistration_Click(object sender, RoutedEventArgs e)
+        private bool IsRegistrationRight()
         {
-            if(string.IsNullOrEmpty(TbLogin.Text))
+            if (string.IsNullOrEmpty(TbLogin.Text))
             {
-                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK,
-                   MessageBoxImage.Error);
+                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
                 TbLogin.Focus();
+                return false;
             }
-            else if(string.IsNullOrEmpty(PbPassword.Password))
+            else if (string.IsNullOrEmpty(PbPassword.Password))
             {
-                MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
                 PbPassword.Focus();
+                return false;
             }
-            else if(string.IsNullOrEmpty(PbPasswordRepeat.Password))
+            else if (string.IsNullOrEmpty(PbPasswordRepeat.Password))
             {
-                MessageBox.Show("Повторите пароль", "Ошибка", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("Повторите пароль", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
                 PbPasswordRepeat.Focus();
+                return false;
             }
-            else if(PbPasswordRepeat.Password!=PbPassword.Password)
+            else if (PbPasswordRepeat.Password != PbPassword.Password)
             {
-                MessageBox.Show("Пароли должны совпадать", "Ошибка", MessageBoxButton.OK,
-                    MessageBoxImage.Error);
+                MessageBox.Show("Пароли должны совпадать", "Ошибка", MessageBoxButton.OK,MessageBoxImage.Error);
                 PbPasswordRepeat.Focus();
+                return false;
             }
             else
+                return true;
+
+
+        }
+
+        private void BtnRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            if (IsRegistrationRight()) 
             {
-                try
+                if (!dataAccess.IsLoginFree(TbLogin.Text))
                 {
-                    sqlConnection.Open();
-                    sqlCommand = new SqlCommand("Insert into dbo.[User] (LoginUser,PasswordUser,RoleUser)" +
-                        "Values (@LoginUser,@PasswordUser,@RoleUser)", sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("LoginUser", TbLogin.Text);
-                    sqlCommand.Parameters.AddWithValue("PasswordUser", PbPassword.Password);
-                    sqlCommand.Parameters.AddWithValue("RoleUser", "5");
-                    sqlCommand.ExecuteNonQuery();
-                    MessageBox.Show("Вы успешно зарегестрировались", "Информация", 
-                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Данный логин уже занят", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, "Ошибка",
-                       MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                finally
-                {
-                    sqlConnection.Close();
+                    CUser user = new CUser();
+                    user.LoginUser = TbLogin.Text;
+                    user.PasswordUser = PbPassword.Password;
+                    user.RoleUser = 5;
+
+                    dataAccess.InsertUser(user, out bool isErr);
+                    if (!isErr)
+                    {
+                        MessageBox.Show("Вы успешно зарегестрировались", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("В ходе регистрации произошла ошибка", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    
                 }
             }
+            
+            
         }
     }
 }

@@ -88,9 +88,9 @@ namespace AcademicPerformance
         {
             if (IsTextboxFilled())
             {
-                if (!dataAccess.isAuthValid(TbLogin.Text, PbPassword.Password))
+                if (!dataAccess.IsAuthValid(TbLogin.Text, PbPassword.Password))
                 {
-                    MessageBox.Show("Логин или пароль не верны, проверьте введённые данные");
+                    MessageBox.Show("Логин или пароль не верны, проверьте введённые данные", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {

@@ -127,8 +127,7 @@ namespace AcademicPerformance.WindowsFolder
 
         private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
         {
-            WinProfileStudent winProfileStudent =
-                 new WinProfileStudent();
+            WinProfileStudent winProfileStudent = new WinProfileStudent();
             winProfileStudent.ShowDialog();
         }
 

@@ -21,248 +21,120 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinTeacher : Window
     {
-        SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");
-        SqlCommand sqlCommand;
-        SqlDataReader sqlDataReader;
-        SqlDataAdapter dataAdapter;
-        DataSet dataSet;
-        //ClassFolder.CDataGrid classDG;
+        private readonly CDataAccess dataAccess = new CDataAccess();
+        private readonly DataTable dataTable = new DataTable();
+
         public WinTeacher()
         {
             InitializeComponent();
-            //classDG = new ClassFolder.CDataGrid(dgJournal);
+            dataTable = dataAccess.GetJournalTableVar();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //classDG.LoadDG("select * from dbo.[ViewJournal]" +
-            //    $"where IdUserTeacher={App.IdUser}");
-            //LoadFIOStudent();
-            //LoadNameEvaluation();
-            //LoadEvaluation();
-            //LoadDiscipline();
-            //LoadFIOTeacher();
+            dgJournal.ItemsSource = dataTable.DefaultView;
+            GridRefresh();
         }
 
-        private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+
+        private void GridRefresh()
         {
-            //string id = classDG.SelectId();
-            //try
-            //{
-            //    sqlConnection.Open();
-            //    sqlCommand = new SqlCommand("Select * from dbo.ViewJournal Where IdJournal='" + id + "'", sqlConnection);
-            //    sqlDataReader = sqlCommand.ExecuteReader();
-            //    sqlDataReader.Read();
-
-            //    cbFIOStuent.Text = sqlDataReader[1].ToString();
-            //    cbNameEvaluation.Text = sqlDataReader[2].ToString();
-            //    cbEvalustion.Text = sqlDataReader[3].ToString();
-            //    tbFIOTeacher.Text = sqlDataReader[4].ToString();
-            //    cbNameDiscipline.Text = sqlDataReader[5].ToString();
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //finally
-            //{
-            //    sqlConnection.Close();
-            //}
+            dgJournal.SelectedItems.Clear();
+            dgJournal.ItemsSource = dataTable.DefaultView;
+            if (dgJournal.Items.Count > 0)
+            {
+                dgJournal.SelectedItem = dgJournal.Items[0];
+                PopulateTextBox();
+            }
+            else
+            {
+                ClearTextBox();
+            };
         }
-        private void LoadFIOStudent()
+
+        private void PopulateTextBox()
         {
             try
             {
-                sqlConnection.Open();
-                sqlCommand = new SqlCommand("select * from dbo.Student order by IdStudent ASC", sqlConnection);
-                sqlDataReader = sqlCommand.ExecuteReader();
-                while (sqlDataReader.Read())
-                {
-                    cbFIOStuent.Items.Add(sqlDataReader[2].ToString() + " " + sqlDataReader[3].ToString() + " " + sqlDataReader[4].ToString());
-                }
+                DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
+                //cbNumber.Text = dataRowView[0].ToString();
+                cbFIOStudent.Text = dataRowView[1].ToString();
+                cbNameEvaluation.Text = dataRowView[2].ToString();
+                cbEvaluation.Text = dataRowView[3].ToString();
+                tbFIOTeacher.Text = dataRowView[4].ToString();
+                cbNameDiscipline.Text = dataRowView[5].ToString();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
-        private void LoadNameEvaluation()
+
+        private void ClearTextBox()
         {
             try
             {
-                sqlConnection.Open();
-                dataAdapter = new SqlDataAdapter("Select IdEvaluation,NameEvaluation from dbo.Evaluation order by IdEvaluation",
-                    sqlConnection);
-                dataSet = new DataSet();
-                dataAdapter.Fill(dataSet, "Evaluation");
-                cbNameEvaluation.ItemsSource = dataSet.Tables["Evaluation"].DefaultView;
-                cbNameEvaluation.DisplayMemberPath = dataSet.Tables["Evaluation"].Columns["NameEvaluation"].ToString();
-                cbNameEvaluation.SelectedValuePath = dataSet.Tables["Evaluation"].Columns["IdEvaluation"].ToString();
+                //tBNumber.Text = "";
+                cbFIOStudent.Text = "";
+                cbNameEvaluation.Text = "";
+                cbEvaluation.Text = "";
+                tbFIOTeacher.Text = "";
+                cbNameDiscipline.Text = "";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
-
         }
-        private void LoadEvaluation()
+
+        private void FilterGrid(string textSearch)
         {
             try
             {
-                sqlConnection.Open();
-                dataAdapter = new SqlDataAdapter("select IdEvaluation,NumberEvaluation from dbo.Evaluation order by IdEvaluation",
-                    sqlConnection);
-                dataSet = new DataSet();
-                dataAdapter.Fill(dataSet, "Evaluation");
-                cbEvalustion.ItemsSource = dataSet.Tables["Evaluation"].DefaultView;
-                cbEvalustion.DisplayMemberPath = dataSet.Tables["Evaluation"].Columns["NumberEvaluation"].ToString();
-                cbEvalustion.SelectedValuePath = dataSet.Tables["Evaluation"].Columns["IdEvaluation"].ToString();
+                dataTable.DefaultView.RowFilter = string.Format(
+                    "NameEvaluation LIKE '%{0}%'"
+                    + "OR FIOTeacher LIKE '%{0}%'"
+                    + "OR FIOStudent LIKE '%{0}%'"
+                    + "OR NameDiscipline LIKE '%{0}%'", textSearch);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            finally
-            {
-                sqlConnection.Close();
-            }
         }
-        private void LoadFIOTeacher()
-        {
-            try
-            {
-                sqlConnection.Open();
-                dataAdapter = new SqlDataAdapter("select * from dbo.Teacher order by IdTeacher ASC", sqlConnection);
-                sqlDataReader = sqlCommand.ExecuteReader();
 
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                sqlConnection.Close();
-            }
-        }
-        private void LoadDiscipline()
+        private void DgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            try
+            PopulateTextBox();
+        }
+
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
             {
-                sqlConnection.Open();
-                dataAdapter = new SqlDataAdapter("select IdDiscipline,NameDiscipline from dbo.Discipline order by IdDiscipline",
-                    sqlConnection);
-                dataSet = new DataSet();
-                dataAdapter.Fill(dataSet, "Discipline");
-                cbNameDiscipline.ItemsSource = dataSet.Tables["Discipline"].DefaultView;
-                cbNameDiscipline.DisplayMemberPath = dataSet.Tables["Discipline"].Columns["NameDiscipline"].ToString();
-                cbNameDiscipline.SelectedValuePath = dataSet.Tables["Discipline"].Columns["IdDiscipline"].ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                sqlConnection.Close();
+                Application.Current.Shutdown();
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             }
         }
 
-        //private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    if (string.IsNullOrEmpty(tbSearch.Text))
-        //    {
-        //        classDG.LoadDG("Select * from dbo.ViewJournal where IdUser'" + App.IdUser + "'");
-        //    }
-        //    else
-        //    {
-        //        classDG.LoadDG($"select * from dbo.Viewjournal where FIOStudent like '%{tbSearch.Text}%' and IdUser='{App.IdUser}'");
-        //    }
-        //}
-        private void IdTeacher()
+        private void TbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
-            {
-                string[] fioteacher = tbFIOTeacher.Text.Split(new char[] { ' ' });
-                string lName = fioteacher[0];
-                string fName = fioteacher[1];
-                string mName = fioteacher[2];
-
-                sqlCommand = new SqlCommand(@"Select IdTeacher from dbo.Teacher where LastNameTeacher='" + lName + "'" +
-                    "and FirstNameTeacher='" + fName + "' and MiddleNameTeacher='" + mName + "'", sqlConnection);
-                sqlConnection.Open();
-                sqlDataReader = sqlCommand.ExecuteReader();
-                sqlDataReader.Read();
-                ClassFolder.CTeacher.IdTeacher = Convert.ToInt32(sqlDataReader[0].ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                sqlConnection.Close();
-            }
-
-        }
-        private void IdStunet()
-        {
-            try
-            {
-                string[] fiostudent = cbFIOStuent.Text.Split(new char[] { ' ' });
-                string lName = fiostudent[0];
-                string fName = fiostudent[1];
-                string mName = fiostudent[2];
-                sqlCommand = new SqlCommand(@"Select IdStudent from dbo.Student where LastNameStudent='" + lName + "'" +
-                    "and FirstNameStudent='" + fName + "' and MiddleNameStudent='" + mName + "'", sqlConnection);
-                sqlConnection.Open();
-                sqlDataReader = sqlCommand.ExecuteReader();
-                sqlDataReader.Read();
-                ClassFolder.CStudent.IdStudent = Convert.ToInt32(sqlDataReader[0].ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                sqlConnection.Close();
-            }
+            FilterGrid(tbSearch.Text);
+            GridRefresh();
         }
 
-        private void cbNameEvaluation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
         {
-            //ClassFolder.ClassEvaluation.IdEvaluation = Convert.ToInt32(cbNameEvaluation.SelectedValue.ToString());
+            WinProfileStudent winProfileStudent =
+                 new WinProfileStudent();
+            winProfileStudent.ShowDialog();
+        }
 
-            //try
-            //{
-            //    sqlConnection.Open();
-            //    sqlCommand = new SqlCommand("Select NumberEvaluation from dbo.Evaluation" +
-            //        "where IdEvaluation='" + ClassFolder.ClassEvaluation.IdEvaluation + "'", sqlConnection);
-
-            //    sqlDataReader = sqlCommand.ExecuteReader();
-            //    sqlDataReader.Read();
-
-            //    cbEvalustion.Text = sqlDataReader[0].ToString();
-            //    sqlDataReader.Close();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //finally
-            //{
-            //    sqlConnection.Close();
-            //}
+        private void MiExit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         //private void miSaveChanges_Click(object sender, RoutedEventArgs e)
@@ -301,12 +173,16 @@ namespace AcademicPerformance.WindowsFolder
             //winAdd.ShowDialog();
             //classDG.LoadDG("Select * from dbo.ViewJournal" +
             //    $"where IdUserTeahcer={App.IdUser}");
+            throw new NotImplementedException();
+
         }
 
         private void miEditIn_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                throw new NotImplementedException();
+
                 //ClassFolder.CJournal.IdJournal = classDG.SelectId();
                 //WinEditIn winEditIn = new WinEditIn();
                 //winEditIn.ShowDialog();
@@ -314,15 +190,38 @@ namespace AcademicPerformance.WindowsFolder
             }
             catch
             {
-                MessageBox.Show("ВВыбирите строку в таблице", "Ошибка",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("ВВыбирите строку в таблице", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
-
         }
+
+        private void cbNameEvaluation_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+            //ClassFolder.ClassEvaluation.IdEvaluation = Convert.ToInt32(cbNameEvaluation.SelectedValue.ToString());
+
+            //try
+            //{
+            //    sqlConnection.Open();
+            //    sqlCommand = new SqlCommand("Select NumberEvaluation from dbo.Evaluation" +
+            //        "where IdEvaluation='" + ClassFolder.ClassEvaluation.IdEvaluation + "'", sqlConnection);
+
+            //    sqlDataReader = sqlCommand.ExecuteReader();
+            //    sqlDataReader.Read();
+
+            //    cbEvalustion.Text = sqlDataReader[0].ToString();
+            //    sqlDataReader.Close();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            //finally
+            //{
+            //    sqlConnection.Close();
+        }
+
+
     }
 }
-
 
 
