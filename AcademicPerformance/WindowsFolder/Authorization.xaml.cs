@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
+using AcademicPerformance.ClassFolder;
 
 namespace AcademicPerformance
 {
@@ -22,12 +23,8 @@ namespace AcademicPerformance
     /// </summary>
     public partial class MainWindow : Window
     {
-        //SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");
-        
-        
-        SqlCommand sqlCommand;
-        SqlDataReader sqlDataReader;
 
+        CDataAccess dataAccess = new CDataAccess();
         public MainWindow()
         {
             InitializeComponent();
@@ -35,101 +32,84 @@ namespace AcademicPerformance
 
         private void bntExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();           
+            Application.Current.Shutdown();
         }
 
         private void bntRegistrtion_Click(object sender, RoutedEventArgs e)
         {
-            WindowsFolder.WinRegistration winRegistration = 
-                new WindowsFolder.WinRegistration();
+            WindowsFolder.WinRegistration winRegistration = new WindowsFolder.WinRegistration();
             winRegistration.ShowDialog();
+        }
+
+        private bool isTextboxFilled()
+        {
+
+            if (string.IsNullOrEmpty(TbLogin.Text))
+            {
+                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                TbLogin.Focus();
+                return false;
+            }
+            else if (string.IsNullOrEmpty(PbPassword.Password))
+            {
+                MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                TbLogin.Focus();
+                return false;
+            }
+            return true;
+        }
+        private void ShowNextWindow()
+        {
+            switch (App.RoleUser)
+            {
+                case 1:
+                    WindowsFolder.WinAdmin winAdmin = new WindowsFolder.WinAdmin();
+                    winAdmin.ShowDialog();
+                    break;
+                case 2:
+                    WindowsFolder.WinDirector winDirector = new WindowsFolder.WinDirector();
+                    winDirector.ShowDialog();
+                    break;
+                case 3:
+                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
+                    winManager.ShowDialog();
+                    break;
+                case 4:
+                    WindowsFolder.WinTeacher winTeacher = new WindowsFolder.WinTeacher();
+                    winTeacher.ShowDialog();
+                    break;
+                case 5:
+                    WindowsFolder.WinStudent winStudent = new WindowsFolder.WinStudent();
+                    winStudent.ShowDialog();
+                    break;
+            }
         }
 
         private void bntSigIn_Click(object sender, RoutedEventArgs e)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"))) {
-                if (string.IsNullOrEmpty(TbLogin.Text))
+            if (isTextboxFilled())
+            {
+                if (!dataAccess.isAuthValid(TbLogin.Text, PbPassword.Password))
                 {
-                    MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                    TbLogin.Focus();
-                }
-                else if (string.IsNullOrEmpty(PbPassword.Password))
-                {
-                    MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                    TbLogin.Focus();
+                    MessageBox.Show("Логин или пароль не верны, проверьте введённые данные");
                 }
                 else
                 {
-                    try
-                    {
-                        sqlConnection.Open();
-                        sqlCommand = new SqlCommand("select PasswordUser, RoleUser,IdUser From dbo.[User] Where  LoginUser='" + TbLogin.Text + "'", sqlConnection);
+                    
+                    CUser user = new CUser();
+                    user = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
+                    App.LoginUser = user.LoginUser;
+                    App.PasswordUser = user.PasswordUser;
+                    App.IdUser = user.IdUser;
+                    App.RoleUser = user.RoleUser;
+                    ShowNextWindow();
 
-                        // sqlCommand = new SqlCommand("Select PasswordUser,RoleUser from dbo.[User] Where LoginUser='" + TbLogin.Text + "'", sqlConnection);
-                        sqlDataReader = sqlCommand.ExecuteReader();
-
-                        if (!sqlDataReader.Read())
-                        {
-                            MessageBox.Show("Пользователь не найден", "Ошибка", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                            TbLogin.Focus();
-                        }
-                        else if (sqlDataReader[0].ToString() != PbPassword.Password)
-                        {
-                            MessageBox.Show("Неверный пароль", "Ошибка", MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                            PbPassword.Focus();
-                        }
-                        else
-                        {
-                            App.Login = TbLogin.Text;
-                            App.Password = PbPassword.Password;
-                            App.Role = sqlDataReader[1].ToString();
-                            App.IdUser = sqlDataReader[2].ToString();
-                            switch (App.Role)
-                            {
-                                case "1":
-                                    WindowsFolder.WinAdmin winAdmin =
-                                        new WindowsFolder.WinAdmin();
-                                    winAdmin.ShowDialog();
-                                    break;
-                                case "2":
-                                    WindowsFolder.WinDirector winDirector =
-                                        new WindowsFolder.WinDirector();
-                                    winDirector.ShowDialog();
-                                    break;
-                                case "3":
-                                    WindowsFolder.WinManager winManager =
-                                        new WindowsFolder.WinManager();
-                                    winManager.ShowDialog();
-                                    break;
-                                case "4":
-                                    WindowsFolder.WinTeacher winTeacher =
-                                        new WindowsFolder.WinTeacher();
-                                    winTeacher.ShowDialog();
-                                    break;
-                                case "5":
-                                    WindowsFolder.WinStudent winStudent =
-                                        new WindowsFolder.WinStudent();
-                                    winStudent.ShowDialog();
-
-                                    break;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                    }
-                    finally
-                    {
-
-                    }
                 }
             }
         }
     }
 }
+    
+
+
+

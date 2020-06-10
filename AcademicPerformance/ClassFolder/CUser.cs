@@ -8,10 +8,13 @@ namespace AcademicPerformance.ClassFolder
 {
     public class CUser
     {
-        public int IDUser { get; set; }
+        public int IdUser { get; set; }
         public string LoginUser{ get; set; }
         public string PasswordUser { get; set; }
         public int RoleUser { get; set; }
+
+
+
 
     }
 }

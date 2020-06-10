@@ -14,8 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
-
-
+using AcademicPerformance.ClassFolder;
 
 namespace AcademicPerformance.WindowsFolder
 {
@@ -26,13 +25,23 @@ namespace AcademicPerformance.WindowsFolder
     {
         CDataAccess dataAccess = new CDataAccess();
         DataTable dataTable = new DataTable();
-        
 
         public WinStudent()
         {            
             InitializeComponent(); 
             dataTable = dataAccess.GetJournalTableVar();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            dgJournal.ItemsSource = dataTable.DefaultView;
+            GridRefresh();
+            MessageBox.Show(App.LoginUser);
+            MessageBox.Show(App.PasswordUser);
+            MessageBox.Show(App.IdUser.ToString());
+            MessageBox.Show(App.RoleUser.ToString());
+        }
+
 
         private void GridRefresh() 
         {
@@ -41,45 +50,67 @@ namespace AcademicPerformance.WindowsFolder
             if (dgJournal.Items.Count > 0)
             {
                 dgJournal.SelectedItem = dgJournal.Items[0];
-                SelectedRowToTextBox();
+                PopulateTextBox();
             }
             else
-            { 
-            ////Придумать как очистить поля
+            {
+                ClearTextBox();
             };
         }
 
-        private void SelectedRowToTextBox() {
-            DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
-            tBNumber.Text = dataRowView[0].ToString();
-            tbFIOStudent.Text = dataRowView[1].ToString();
-            tbNameEvaluation.Text = dataRowView[2].ToString();
-            tbEvalustion.Text = dataRowView[3].ToString();
-            TbFIOTeacher.Text = dataRowView[4].ToString();
-            tbNameDiscipline.Text = dataRowView[5].ToString();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-            dgJournal.ItemsSource = dataTable.DefaultView;
-            GridRefresh();            
-            MessageBox.Show(App.IdUser);
-        }
-
-        private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void PopulateTextBox() 
         {
             try
             {
-                SelectedRowToTextBox();
+                DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
+                tBNumber.Text = dataRowView[0].ToString();
+                tbFIOStudent.Text = dataRowView[1].ToString();
+                tbNameEvaluation.Text = dataRowView[2].ToString();
+                tbEvalustion.Text = dataRowView[3].ToString();
+                TbFIOTeacher.Text = dataRowView[4].ToString();
+                tbNameDiscipline.Text = dataRowView[5].ToString();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            finally
-            {                
+        }
+
+        private void ClearTextBox()
+        {
+            try
+            {
+                tBNumber.Text = "";
+                tbFIOStudent.Text = "";
+                tbNameEvaluation.Text = "";
+                tbEvalustion.Text = "";
+                TbFIOTeacher.Text = "";
+                tbNameDiscipline.Text = "";
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void FilterGrid()
+        {
+            try
+            {
+                dataTable.DefaultView.RowFilter = string.Format(
+                    "NameEvaluation LIKE '%{0}%'"
+                    + "OR FIOTeacher LIKE '%{0}%'"
+                    + "OR FIOStudent LIKE '%{0}%'"
+                    + "OR NameDiscipline LIKE '%{0}%'", tbSearch.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void dgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            PopulateTextBox();
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -93,13 +124,6 @@ namespace AcademicPerformance.WindowsFolder
             }
         }
 
-        private void miPersonalProfile_Click(object sender, RoutedEventArgs e)
-        {
-           WinProfileStudent winProfileStudent =
-                new WinProfileStudent();
-            winProfileStudent.ShowDialog();
-        }
-
         private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(string.IsNullOrEmpty(tbSearch.Text))
@@ -108,13 +132,16 @@ namespace AcademicPerformance.WindowsFolder
             }
             else
             {
-                dataTable.DefaultView.RowFilter = string.Format(
-                    "NameEvaluation LIKE '%{0}%'" 
-                    + "OR FIOTeacher LIKE '%{0}%'"
-                    + "OR FIOStudent LIKE '%{0}%'"
-                    + "OR NameDiscipline LIKE '%{0}%'", tbSearch.Text);
+                FilterGrid();
                 GridRefresh();
             }
+        }
+
+        private void miPersonalProfile_Click(object sender, RoutedEventArgs e)
+        {
+            WinProfileStudent winProfileStudent =
+                 new WinProfileStudent();
+            winProfileStudent.ShowDialog();
         }
 
         private void miExit_Click(object sender, RoutedEventArgs e)

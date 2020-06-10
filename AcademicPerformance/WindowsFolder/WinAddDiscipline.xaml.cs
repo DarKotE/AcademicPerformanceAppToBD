@@ -21,7 +21,7 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinAddDiscipline : Window
     {
-        SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"));
+        SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
         SqlCommand sqlCommand;
         SqlDataReader sqlDataReader;
 

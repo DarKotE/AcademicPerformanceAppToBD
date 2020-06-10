@@ -22,7 +22,7 @@ namespace AcademicPerformance.WindowsFolder
     public partial class WinAddStudent : Window
     {
         //SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");
-        SqlConnection sqlConnection = new SqlConnection(CSqlHelper.CnnVal("AcademicPerformanceDB"));
+        SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
         SqlCommand sqlCommand;
         SqlDataAdapter dataAdapter;
         SqlDataReader sqlDataReader;

@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.Configuration;
 namespace AcademicPerformance.ClassFolder
 {
-    class CJournal
+    public class CJournal
     {
-        public static string IdJournal { get; set; }
-        public static string IdStudent { get; set; }
-        public static string IdTeacher { get; set; }
-        public static string IdEvaluation { get; set; }
+        public  int IdJournal { get; set; }
+        public  int IdStudent { get; set; }
+        public  int IdTeacher { get; set; }
+        public  int IdEvaluation { get; set; }
 
     }
 }
