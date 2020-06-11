@@ -89,7 +89,7 @@ namespace AcademicPerformance.WindowsFolder
 
             MessageBox.Show("Данные успешно отредактированны!", "Информация",
                 MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
@@ -97,7 +97,7 @@ namespace AcademicPerformance.WindowsFolder
             }
             finally
             {
-            sqlConnection.Close();
+                sqlConnection.Close();
             }
         }
     }

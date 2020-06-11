@@ -11,17 +11,9 @@ namespace AcademicPerformance
 {
     public static class CSqlConfig
     {
-        public static string DefaultCnnVal()
-        {
-            return ConfigurationManager.ConnectionStrings["AcademicPerformanceDB"].ConnectionString;
-        }
-        public static string CnnVal(string name)
+        public static string DefaultCnnVal(string name = "AcademicPerformanceDB")
         {
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
-        //public static SqlConnection SqlConn()
-        //{
-        //    return SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal("AcademicPerformanceDB"));
-        //}
     }
 }

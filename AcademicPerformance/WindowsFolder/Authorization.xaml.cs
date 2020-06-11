@@ -57,9 +57,9 @@ namespace AcademicPerformance
             }
             return true;
         }
-        private void ShowNextWindow()
+        private void ShowNextWindow(int i)
         {
-            switch (App.RoleUser)
+            switch (i)
             {
                 case 1:
                     WindowsFolder.WinAdmin winAdmin = new WindowsFolder.WinAdmin();
@@ -100,7 +100,7 @@ namespace AcademicPerformance
                     App.PasswordUser = user.PasswordUser;
                     App.IdUser = user.IdUser;
                     App.RoleUser = user.RoleUser;
-                    ShowNextWindow();
+                    ShowNextWindow(App.RoleUser);
                 }
             }
         }
