@@ -79,13 +79,17 @@
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
     <Compile Include="ClassFolder\CJournalVal.cs" />
-    <Compile Include="ClassFolder\CUser.cs" />
+    <Compile Include="ClassFolder\UserController.cs" />
+    <Compile Include="ClassFolder\UserModel.cs" />
     <Compile Include="ClassFolder\CSqlConfig.cs" />
     <Compile Include="ClassFolder\CDiscipline.cs" />
     <Compile Include="ClassFolder\CEvaluation.cs" />
     <Compile Include="ClassFolder\CJournal.cs" />
     <Compile Include="ClassFolder\CStudent.cs" />
     <Compile Include="ClassFolder\CTeacher.cs" />
+    <Compile Include="CommandsFolder\RelayCommand.cs" />
+    <Compile Include="ViewModelFolder\VMRegistration.cs" />
+    <Compile Include="ViewModelFolder\VMAuthorization.cs" />
     <Compile Include="WindowsFolder\WinAdd.xaml.cs">
       <DependentUpon>WinAdd.xaml</DependentUpon>
     </Compile>
@@ -237,5 +241,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

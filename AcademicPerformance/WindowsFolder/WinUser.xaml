@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademicPerformance.WindowsFolder"
         mc:Ignorable="d"
-        Title="WinUser" Height="600" Width="700">
+        Title="WinUserModel" Height="600" Width="700">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -33,7 +33,7 @@
         </Grid.RowDefinitions>
         <Label Content="Добавить пользователя " Grid.Row="1"  Grid.ColumnSpan="2" 
                Style="{DynamicResource LabelLogo}" Foreground="White"/>
-        <Label Content="ID User" Grid.Row="3" 
+        <Label Content="ID UserModel" Grid.Row="3" 
                Style="{DynamicResource LabelStyle}"  Background="#ffd800" Margin="20,9.8,400.6,9.4" Grid.ColumnSpan="2"/>
         <TextBox x:Name="tbIdUser" Grid.Column="1"
                  Grid.Row="3" Margin="12.2,9.8,7.6,9.4" Background="#ffd800"/>

@@ -49,17 +49,18 @@
         <Label x:Name="LblPasswordRepeat" Content="Повторите Пароль"
                Style="{DynamicResource LabelStyle}"
                Grid.Column="1" Grid.Row="6" Background="#ffd800"/>
-        <TextBox x:Name="TbLogin" Style="{DynamicResource TbStyle}"
+        <TextBox x:Name="TbLogin" Style="{DynamicResource TbStyle}" Text="{Binding Path=CurrentUser.LoginUser}"
                  Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Background="#ffd800"/>
-        <PasswordBox x:Name="PbPassword" Style="{DynamicResource PswbStyle}"
+        <PasswordBox x:Name="PbPassword" Style="{DynamicResource PswbStyle}" 
                      Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="2" Background="#ffd800"/>
         <PasswordBox x:Name="PbPasswordRepeat" Style="{DynamicResource PswbStyle}"
-                     Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" Background="#ffd800"/>
+                                                                                                                                                                                                                                           Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="2" Background="#ffd800"/>
         <Button x:Name="BtnRegistration" Style="{DynamicResource BtnStyle}"
-                Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3"
+                Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="3" Command="{Binding Path=SaveCommand}" CommandParameter="{Binding ElementName=PbPassword}"
                 Content="Зарегестрироваться" Click="BtnRegistration_Click" Background="#ffd800"/>
         <Button x:Name="BtnExit" Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="3"
                 Content="Выход" Click="BtnExit_Click" Background="#ffd800"/>
+        <TextBox Grid.ColumnSpan="3" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,2,0,0" Grid.Row="7" Grid.RowSpan="2" TextWrapping="Wrap" Text="{Binding Path=Message}" VerticalAlignment="Top" Width="745"/>
     </Grid>
 </Window>

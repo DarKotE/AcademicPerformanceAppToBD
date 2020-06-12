@@ -34,11 +34,6 @@ namespace AcademicPerformance
             Application.Current.Shutdown();
         }
 
-        private void BtnRegistartion_Click(object sender, RoutedEventArgs e)
-        {
-            WindowsFolder.WinRegistration winRegistration = new WindowsFolder.WinRegistration();
-            winRegistration.ShowDialog();
-        }
 
         private bool IsTextboxFilled()
         {
@@ -94,15 +89,21 @@ namespace AcademicPerformance
                 }
                 else
                 {
-                    _ = new CUser();
-                    CUser user = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
-                    App.LoginUser = user.LoginUser;
-                    App.PasswordUser = user.PasswordUser;
-                    App.IdUser = user.IdUser;
-                    App.RoleUser = user.RoleUser;
+                    
+                    UserModel userModel = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
+                    App.LoginUser = userModel.LoginUser;
+                    App.PasswordUser = userModel.PasswordUser;
+                    App.IdUser = userModel.IdUser;
+                    App.RoleUser = userModel.RoleUser;
                     ShowNextWindow(App.RoleUser);
                 }
             }
+        }
+
+        private void BtnRegistration_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsFolder.WinRegistration winRegistration = new WindowsFolder.WinRegistration();
+            winRegistration.ShowDialog();
         }
     }
 }

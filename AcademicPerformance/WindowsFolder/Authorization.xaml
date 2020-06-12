@@ -52,10 +52,10 @@
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="6"
                 Grid.ColumnSpan="3" Click="BntSigIn_Click" Foreground="Black" Background="#ffd800"/>
-        <Button x:Name="bntRegistrtion" Content="Регистрация" 
+        <Button x:Name="bntRegistration" Content="Регистрация" 
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="8"
-                Grid.ColumnSpan="3" Click="BtnRegistartion_Click" Foreground="Black"  Background="#ffd800"/>
+                Grid.ColumnSpan="3" Click="BtnRegistration_Click" Foreground="Black"  Background="#ffd800"/>
         <Button x:Name="bntExit" Content="Выход" 
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="10"

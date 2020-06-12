@@ -52,24 +52,67 @@ namespace AcademicPerformance
                 sqlCommand = new SqlCommand("select IdUser From dbo.[User] Where  LoginUser='" + login + "'", sqlConnection);
                 sqlConnection.Open();
                 sqlDataReader = sqlCommand.ExecuteReader();
-                if (sqlDataReader.Read())
+                if (sqlDataReader.HasRows)
                 {
                     sqlDataReader.Close();
-                    return true;
+                    return false;
                 }
                 else
                 {
                     sqlDataReader.Close();
-                    return false;
+                    return true;
                 }
 
             }
 
         }
 
-        public CUser GetUser(string userLogin, string userPassword)
+
+        public List<UserModel> GetUserList()
         {
-            CUser tempUser = new CUser();
+            List<UserModel> tempUserList = new List<UserModel>();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    sqlQuery += " FROM [dbo].[User]";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        List<UserModel> users = new List<UserModel>();
+                        while (reader.Read())
+                        {
+                            UserModel u = new UserModel();
+                            u.IdUser = reader.GetInt32(0);
+                            u.LoginUser = reader.GetString(1);
+                            u.PasswordUser = reader.GetString(2);
+                            u.RoleUser = reader.GetInt32(3);
+                            users.Add(u);
+                        }
+                        tempUserList = users;
+                    }
+                    
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempUserList;
+        }
+
+        public UserModel GetUser(string userLogin, string userPassword)
+        {
+            UserModel tempUserModel = new UserModel();
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
@@ -82,17 +125,17 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
                     sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
                     SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<CUser> users = new List<CUser>();
+                    List<UserModel> users = new List<UserModel>();
                     while (reader.Read())
                     {
-                        CUser u = new CUser();
+                        UserModel u = new UserModel();
                         u.IdUser = (int)reader["IdUser"];
                         u.LoginUser = (string)reader["LoginUser"];
                         u.PasswordUser = (string)reader["PasswordUser"];
                         u.RoleUser = (int)reader["RoleUser"];
                         users.Add(u);
                     }
-                    tempUser = users[0];
+                    tempUserModel = users[0];
 
                 }
                 catch (Exception ex)
@@ -105,27 +148,28 @@ namespace AcademicPerformance
                                         
                 }
             }
-            return tempUser;
+            return tempUserModel;
         }
-        public void InsertUser(CUser user, out bool isErr)
+        public bool InsertUser(UserModel userModel)
         {
+            bool isInserted = false;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
-                isErr = false;
+               
                 try
                 {
                     string sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser,RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("LoginUser", user.LoginUser);
-                    sqlCommand.Parameters.AddWithValue("PasswordUser", user.PasswordUser);
-                    sqlCommand.Parameters.AddWithValue("RoleUser", user.RoleUser);
+                    sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
+                    sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
+                    sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
                     sqlConnection.Open();
-                    sqlCommand.ExecuteNonQuery();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = NoOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    isErr = true;
                     MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 finally
@@ -133,6 +177,106 @@ namespace AcademicPerformance
                     sqlConnection.Close();
                 }
             }
+
+            return isInserted;
+        }
+
+
+        public bool UpdateUser(UserModel userModel)
+        {
+            bool isUpdated = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+
+                try
+                {
+                    string sqlQuery = "UPDATE dbo.[User] set LoginUser=@LoginUser, PasswordUser=@PasswordUser, RoleUser=@RoleUser WHERE IdUser=@IdUser";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
+                    sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
+                    sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
+                    sqlCommand.Parameters.AddWithValue("IdUser", userModel.IdUser);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isUpdated;
+        }
+
+        public bool DeleteUser(int idUser)
+        {
+            bool isDeleted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+
+                try
+                {
+                    string sqlQuery = "DELETE FROM  dbo.[User] WHERE IdUser=@IdUser";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isDeleted;
+        }
+
+        public UserModel FindUser(int idUser)
+        {
+            UserModel tempUser = null;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    sqlQuery += " FROM [dbo].[User] WHERE IdUser=@IdUser";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                    sqlConnection.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows) 
+                    {
+                        reader.Read();
+                        tempUser= new UserModel();
+                        tempUser.IdUser = reader.GetInt32(0);
+                        tempUser.LoginUser = reader.GetString(1);
+                        tempUser.PasswordUser = reader.GetString(2);
+                        tempUser.RoleUser = reader.GetInt32(3);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempUser;
         }
 
         public DataTable GetJournalTableVar()
