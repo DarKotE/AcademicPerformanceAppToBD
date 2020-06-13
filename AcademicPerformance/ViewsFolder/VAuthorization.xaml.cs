@@ -83,7 +83,6 @@ namespace AcademicPerformance
         {
             await Task.Delay(100);
             ShowNextWindow(App.RoleUser);
-            if (App.RoleUser==0) MessageBox.Show("Сервер авторизации недоступен", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
 
         }
 

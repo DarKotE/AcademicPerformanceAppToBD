@@ -23,27 +23,26 @@ namespace AcademicPerformance.ViewModelFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private StudentJournalController studentJournalController;
+        private JournalController studentJournalController;
 
         public VMStudentJournal()
         {
-            studentJournalController = new StudentJournalController();
+            studentJournalController = new JournalController();
             LoadData();
-            //saveCommand = new RelayCommand(Save);
         }
         
 
-        private ObservableCollection<StudentJournalModel> filteredJournalList;
+        private ObservableCollection<JournalModel> filteredJournalList;
 
-        public ObservableCollection<StudentJournalModel> FilteredJournalList
+        public ObservableCollection<JournalModel> FilteredJournalList
         {
             get { return filteredJournalList; }
             set { filteredJournalList = value; OnPropertyChanged("FilteredJournalList"); }
 
         }
-        private ObservableCollection<StudentJournalModel> journalList;
+        private ObservableCollection<JournalModel> journalList;
 
-        public ObservableCollection<StudentJournalModel> JournalList
+        public ObservableCollection<JournalModel> JournalList
         {
             get { return journalList; }
             set { journalList = value; OnPropertyChanged("JournalList"); }
@@ -54,7 +53,8 @@ namespace AcademicPerformance.ViewModelFolder
         public string SearchText
         {
             get { return searchText; }
-            set { searchText = value; 
+            set { 
+                searchText = value; 
                 OnPropertyChanged("SearchText");
                 Filter();
             }
@@ -63,9 +63,9 @@ namespace AcademicPerformance.ViewModelFolder
 
         private void Filter()
         {
-                JournalList = new ObservableCollection<StudentJournalModel>(studentJournalController.GetAll());
+                JournalList = new ObservableCollection<JournalModel>(studentJournalController.GetAll());
                 FilteredJournalList = 
-                    new ObservableCollection<StudentJournalModel>(
+                    new ObservableCollection<JournalModel>(
                         from item
                         in JournalList
                         where item.NameEvaluation.ToUpper().Contains(SearchText.ToUpper())
@@ -75,11 +75,12 @@ namespace AcademicPerformance.ViewModelFolder
                           || item.NumberEvaluation.ToString().ToUpper().Contains(SearchText.ToUpper())
                           || item.IdJournal.ToString().ToUpper().Contains(SearchText.ToUpper())
                         select item);
+                if (FilteredJournalList.Any()) SelectedRow = FilteredJournalList[0];
         }
 
 
-        private StudentJournalModel selectedRow;
-        public StudentJournalModel SelectedRow
+        private JournalModel selectedRow;
+        public JournalModel SelectedRow
         {
             get { return selectedRow; }
             set { selectedRow = value; OnPropertyChanged("SelectedRow"); }

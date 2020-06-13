@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace AcademicPerformance.ClassFolder
 {
-    class StudentJournalController
+    class JournalController
     {
         CDataAccess dataAccess = new CDataAccess();
 
-        public StudentJournalController()
+        public JournalController()
         {
 
         }
 
-        public List<StudentJournalModel> GetAll()
+        public List<JournalModel> GetAll()
         {
-            List<StudentJournalModel> journalList = new List<StudentJournalModel>();
+            List<JournalModel> journalList = new List<JournalModel>();
             journalList = dataAccess.GetJournalList();
             return journalList;
         }

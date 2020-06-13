@@ -55,7 +55,7 @@
         <TextBox x:Name="tbSearch" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/> 
         <DataGrid x:Name="dgJournal" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="12"
                   AutoGenerateColumns="False" ItemsSource="{Binding Path=FilteredJournalList}" SelectedItem="{Binding Path=SelectedRow, Mode=TwoWay}"
-                  IsReadOnly="True" FontSize="12" MouseDoubleClick="DgJouranl_MouseDoubleClick">
+                  IsReadOnly="True" FontSize="12" >
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="dgTcIdJournal"
                                     Header="№ п/п"

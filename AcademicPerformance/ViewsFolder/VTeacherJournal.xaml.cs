@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AcademicPerformance.ViewModelFolder;
 
 namespace AcademicPerformance.WindowsFolder
 {
@@ -21,108 +22,110 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinTeacher : Window
     {
-        private readonly CDataAccess dataAccess = new CDataAccess();
-        private readonly DataTable dataTable = new DataTable();
+        
 
         public WinTeacher()
         {
             InitializeComponent();
-            dataTable = dataAccess.GetJournalTableVar();
+            var teacherJournal = new VMTeacherJournal();
+            this.DataContext = teacherJournal;
+            //dataTable = dataAccess.GetJournalTableVar();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            dgJournal.ItemsSource = dataTable.DefaultView;
-            GridRefresh();
+            tbSearch.Focus();
+            //dgJournal.ItemsSource = dataTable.DefaultView;
+            //GridRefresh();
         }
 
 
         private void GridRefresh()
         {
-            dgJournal.SelectedItems.Clear();
-            dgJournal.ItemsSource = dataTable.DefaultView;
-            if (dgJournal.Items.Count > 0)
-            {
-                dgJournal.SelectedItem = dgJournal.Items[0];
-                PopulateTextBox();
-            }
-            else
-            {
-                ClearTextBox();
-            };
+            //dgJournal.SelectedItems.Clear();
+            //dgJournal.ItemsSource = dataTable.DefaultView;
+            //if (dgJournal.Items.Count > 0)
+            //{
+            //    dgJournal.SelectedItem = dgJournal.Items[0];
+            //    PopulateTextBox();
+            //}
+            //else
+            //{
+            //    ClearTextBox();
+            //};
         }
 
         private void PopulateTextBox()
         {
-            try
-            {
-                DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
-                //cbNumber.Text = dataRowView[0].ToString();
-                cbFIOStudent.Text = dataRowView[1].ToString();
-                cbNameEvaluation.Text = dataRowView[2].ToString();
-                cbEvaluation.Text = dataRowView[3].ToString();
-                tbFIOTeacher.Text = dataRowView[4].ToString();
-                cbNameDiscipline.Text = dataRowView[5].ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //try
+            //{
+            //    DataRowView dataRowView = (DataRowView)dgJournal.SelectedItem;
+            //    //cbNumber.Text = dataRowView[0].ToString();
+            //    cbFIOStudent.Text = dataRowView[1].ToString();
+            //    cbNameEvaluation.Text = dataRowView[2].ToString();
+            //    cbEvaluation.Text = dataRowView[3].ToString();
+            //    tbFIOTeacher.Text = dataRowView[4].ToString();
+            //    cbNameDiscipline.Text = dataRowView[5].ToString();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void ClearTextBox()
         {
-            try
-            {
-                //tBNumber.Text = "";
-                cbFIOStudent.Text = "";
-                cbNameEvaluation.Text = "";
-                cbEvaluation.Text = "";
-                tbFIOTeacher.Text = "";
-                cbNameDiscipline.Text = "";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //try
+            //{
+            //    //tBNumber.Text = "";
+            //    cbFIOStudent.Text = "";
+            //    cbNameEvaluation.Text = "";
+            //    cbEvaluation.Text = "";
+            //    tbFIOTeacher.Text = "";
+            //    cbNameDiscipline.Text = "";
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void FilterGrid(string textSearch)
         {
-            try
-            {
-                dataTable.DefaultView.RowFilter = string.Format(
-                    "NameEvaluation LIKE '%{0}%'"
-                    + "OR FIOTeacher LIKE '%{0}%'"
-                    + "OR FIOStudent LIKE '%{0}%'"
-                    + "OR NameDiscipline LIKE '%{0}%'", textSearch);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //try
+            //{
+            //    dataTable.DefaultView.RowFilter = string.Format(
+            //        "NameEvaluation LIKE '%{0}%'"
+            //        + "OR FIOTeacher LIKE '%{0}%'"
+            //        + "OR FIOStudent LIKE '%{0}%'"
+            //        + "OR NameDiscipline LIKE '%{0}%'", textSearch);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void DgJouranl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            PopulateTextBox();
+            //PopulateTextBox();
         }
 
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Yes)
-            {
-                Application.Current.Shutdown();
-                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-            }
+            //MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            //if (result == MessageBoxResult.Yes)
+            //{
+            //    Application.Current.Shutdown();
+            //    System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            //}
         }
 
         private void TbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            FilterGrid(tbSearch.Text);
-            GridRefresh();
+            //FilterGrid(tbSearch.Text);
+            //GridRefresh();
         }
 
         private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
@@ -173,25 +176,25 @@ namespace AcademicPerformance.WindowsFolder
             //winAdd.ShowDialog();
             //classDG.LoadDG("Select * from dbo.ViewJournal" +
             //    $"where IdUserTeahcer={App.IdUser}");
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
 
         }
 
         private void miEditIn_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                throw new NotImplementedException();
+            //try
+            //{
+            //    throw new NotImplementedException();
 
-                //ClassFolder.CJournal.IdJournal = classDG.SelectId();
-                //WinEditIn winEditIn = new WinEditIn();
-                //winEditIn.ShowDialog();
+            //    //ClassFolder.CJournal.IdJournal = classDG.SelectId();
+            //    //WinEditIn winEditIn = new WinEditIn();
+            //    //winEditIn.ShowDialog();
 
-            }
-            catch
-            {
-                MessageBox.Show("ВВыбирите строку в таблице", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("ВВыбирите строку в таблице", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void cbNameEvaluation_SelectionChanged(object sender, SelectionChangedEventArgs e)

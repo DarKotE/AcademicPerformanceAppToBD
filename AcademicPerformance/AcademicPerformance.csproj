@@ -78,8 +78,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
-    <Compile Include="ClassFolder\StudentJournalController.cs" />
-    <Compile Include="ClassFolder\StudentJournalModel.cs" />
+    <Compile Include="ClassFolder\JournalController.cs" />
+    <Compile Include="ClassFolder\JournalModel.cs" />
     <Compile Include="ClassFolder\UserController.cs" />
     <Compile Include="ClassFolder\UserModel.cs" />
     <Compile Include="ClassFolder\CSqlConfig.cs" />
@@ -89,53 +89,54 @@
     <Compile Include="ClassFolder\CStudent.cs" />
     <Compile Include="ClassFolder\CTeacher.cs" />
     <Compile Include="CommandsFolder\RelayCommand.cs" />
-    <Compile Include="ViewModelFolder\VMStudentJournal.cs" />
-    <Compile Include="ViewModelFolder\VMRegistration.cs" />
-    <Compile Include="ViewModelFolder\VMAuthorization.cs" />
-    <Compile Include="WindowsFolder\WinAdd.xaml.cs">
-      <DependentUpon>WinAdd.xaml</DependentUpon>
+    <Compile Include="ViewModelsFolder\VMTeacherJournal.cs" />
+    <Compile Include="ViewModelsFolder\VMStudentJournal.cs" />
+    <Compile Include="ViewModelsFolder\VMRegistration.cs" />
+    <Compile Include="ViewModelsFolder\VMAuthorization.cs" />
+    <Compile Include="ViewsFolder\VAdd.xaml.cs">
+      <DependentUpon>VAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinAddDiscipline.xaml.cs">
-      <DependentUpon>WinAddDiscipline.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VAddDiscipline.xaml.cs">
+      <DependentUpon>VAddDiscipline.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinAddStudent.xaml.cs">
-      <DependentUpon>WinAddStudent.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VAddStudent.xaml.cs">
+      <DependentUpon>VAddStudent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinAddTeacher.xaml.cs">
-      <DependentUpon>WinAddTeacher.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VAddTeacher.xaml.cs">
+      <DependentUpon>VAddTeacher.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinAdmin.xaml.cs">
-      <DependentUpon>WinAdmin.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VAdmin.xaml.cs">
+      <DependentUpon>VAdmin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinDirector.xaml.cs">
-      <DependentUpon>WinDirector.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VDirector.xaml.cs">
+      <DependentUpon>VDirector.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinEditIn.xaml.cs">
-      <DependentUpon>WinEditIn.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VEditIn.xaml.cs">
+      <DependentUpon>VEditIn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinManager.xaml.cs">
-      <DependentUpon>WinManager.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VManager.xaml.cs">
+      <DependentUpon>VManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinProfileStudent.xaml.cs">
-      <DependentUpon>WinProfileStudent.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VProfileStudent.xaml.cs">
+      <DependentUpon>VProfileStudent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinRegistration.xaml.cs">
-      <DependentUpon>WinRegistration.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VRegistration.xaml.cs">
+      <DependentUpon>VRegistration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinStudentJournal.xaml.cs">
-      <DependentUpon>WinStudentJournal.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VStudentJournal.xaml.cs">
+      <DependentUpon>VStudentJournal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinTeacherJournal.xaml.cs">
-      <DependentUpon>WinTeacherJournal.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VTeacherJournal.xaml.cs">
+      <DependentUpon>VTeacherJournal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinUser.xaml.cs">
-      <DependentUpon>WinUser.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VUser.xaml.cs">
+      <DependentUpon>VUser.xaml</DependentUpon>
     </Compile>
     <Page Include="ResourcesFolder\ResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\Authorization.xaml">
+    <Page Include="ViewsFolder\VAuthorization.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -143,59 +144,59 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="WindowsFolder\Authorization.xaml.cs">
-      <DependentUpon>Authorization.xaml</DependentUpon>
+    <Compile Include="ViewsFolder\VAuthorization.xaml.cs">
+      <DependentUpon>VAuthorization.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="WindowsFolder\WinAdd.xaml">
+    <Page Include="ViewsFolder\VAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinAddDiscipline.xaml">
+    <Page Include="ViewsFolder\VAddDiscipline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinAddStudent.xaml">
+    <Page Include="ViewsFolder\VAddStudent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinAddTeacher.xaml">
+    <Page Include="ViewsFolder\VAddTeacher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinAdmin.xaml">
+    <Page Include="ViewsFolder\VAdmin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinDirector.xaml">
+    <Page Include="ViewsFolder\VDirector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinEditIn.xaml">
+    <Page Include="ViewsFolder\VEditIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinManager.xaml">
+    <Page Include="ViewsFolder\VManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinProfileStudent.xaml">
+    <Page Include="ViewsFolder\VProfileStudent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinRegistration.xaml">
+    <Page Include="ViewsFolder\VRegistration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinStudentJournal.xaml">
+    <Page Include="ViewsFolder\VStudentJournal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinTeacherJournal.xaml">
+    <Page Include="ViewsFolder\VTeacherJournal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinUser.xaml">
+    <Page Include="ViewsFolder\VUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

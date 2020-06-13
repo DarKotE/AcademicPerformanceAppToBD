@@ -351,7 +351,7 @@ namespace AcademicPerformance
             return dataTable;
         }
 
-        public List<StudentJournalModel> GetJournalList()
+        public List<JournalModel> GetJournalList()
         {
             DataTable dataTable = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
@@ -368,16 +368,16 @@ namespace AcademicPerformance
                 sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
                 sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
                 sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
-                sqlQuery += " WHERE Student.IdUser = @IdUser";
+                sqlQuery += " WHERE Student.IdUser = @IdUser or Teacher.IdUser=@IdUser";
 
                 SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
                 dataAdapter.Fill(dataTable);
 
-                List<StudentJournalModel> studentList = new List<StudentJournalModel>();
+                List<JournalModel> studentList = new List<JournalModel>();
                 studentList = (from DataRow dataRow in dataTable.Rows
-                    select new StudentJournalModel()
+                    select new JournalModel()
                     {
                         IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
                         FIOStudent = dataRow["FIOStudent"].ToString(),

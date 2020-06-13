@@ -48,7 +48,9 @@
         <PasswordBox x:Name="PbPassword" Grid.Row="4" Grid.Column="2"
                  Style="{DynamicResource  PswbStyle}"
                      Grid.ColumnSpan="2" Background="#ffd800"/>
-        <Button x:Name="bntSigIn" Content="Вход"  Command="{Binding Path=AuthCommand}" CommandParameter="{Binding ElementName=PbPassword}"
+        <Button x:Name="bntSignIn" Content="Вход"  
+                Command="{Binding Path=AuthCommand}" 
+                CommandParameter="{Binding ElementName=PbPassword}"
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="6"
                 Grid.ColumnSpan="3" Click="BntSignIn_Click" Foreground="Black" Background="#ffd800"/>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AcademicPerformance.ClassFolder
 {
-    public class StudentJournalModel : INotifyPropertyChanged
+    public class JournalModel : INotifyPropertyChanged
     {
         private int idJournal;
         public int IdJournal
