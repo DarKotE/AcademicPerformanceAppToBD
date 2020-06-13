@@ -18,29 +18,30 @@ namespace AcademicPerformance.ClassFolder
 
         public List<EvaluationModel> GetAll()
         {
-            List<EvaluationModel> disciplineList = new List<EvaluationModel>();
-            disciplineList = dataAccess.GetDisciplineList();
-            return disciplineList;
+            List<EvaluationModel> evaluationList = new List<EvaluationModel>();
+            evaluationList = dataAccess.GetEvaluationList();
+            return evaluationList;
         }
 
         public bool Add(EvaluationModel newEvaluation)
         {
-            return dataAccess.InsertDiscipline(newEvaluation);
+            return dataAccess.InsertEvaluation(newEvaluation);
         }
 
         public bool Update(EvaluationModel evaluationToUpdate)
         {
-            return dataAccess.UpdateDiscipline(evaluationToUpdate);
+            return dataAccess.UpdateEvaluation(evaluationToUpdate);
         }
 
         public bool Delete(int idEvaluation)
         {
-            return dataAccess.DeleteDiscipline(idEvaluation);
+            return dataAccess.DeleteEvaluation(idEvaluation);
         }
 
         public EvaluationModel SelectId(int idEvaluation)
         {
-            return dataAccess.GetDiscipline(idEvaluation);
+            return dataAccess.GetEvaluation(idEvaluation);
         }
 
     }
+}

@@ -679,17 +679,19 @@ namespace AcademicPerformance
         }
 
 
-        public bool UpdateDiscipline(EvaluationModel disciplineModel)
+        public bool UpdateEvaluation(EvaluationModel evaluationModel)
         {
             bool isUpdated = false;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline WHERE IdDiscipline=@IdDiscipline";
+                    string sqlQuery = "UPDATE dbo.[Evaluation] set NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation" +
+                                      " WHERE IdEvaluation=@IdEvaluation";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
+                    sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
+                    sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", evaluationModel.IdEvaluation);
                     sqlConnection.Open();
                     int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                     isUpdated = NoOfRowsAffected > 0;
@@ -708,7 +710,7 @@ namespace AcademicPerformance
             return isUpdated;
         }
 
-        public bool DeleteDiscipline(int idDiscipline)
+        public bool DeleteEvaluation(int IdEvaluation)
         {
             bool isDeleted = false;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
@@ -716,9 +718,9 @@ namespace AcademicPerformance
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
+                    string sqlQuery = "DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", IdEvaluation);
                     sqlConnection.Open();
                     int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                     isDeleted = NoOfRowsAffected > 0;
@@ -738,6 +740,7 @@ namespace AcademicPerformance
         }
 
         #endregion
+
         //public List<CJournal> GetJournal(int idJournal, int idTeacher, int idDiscipline, int idEvaluation)
         //{
         //    using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
