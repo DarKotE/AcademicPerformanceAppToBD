@@ -31,7 +31,7 @@ namespace AcademicPerformance.ClassFolder
             return dataAccess.IsAuthValid(login,password);
         }
 
-        public bool AddUser(UserModel newUser)
+        public bool Add(UserModel newUser)
         {
             return dataAccess.InsertUser(newUser);
         }
@@ -46,11 +46,11 @@ namespace AcademicPerformance.ClassFolder
             return dataAccess.DeleteUser(idUser);
         }
 
-        public UserModel SelectUserId(int idUser)
+        public UserModel SelectId(int idUser)
         {
             return dataAccess.SelectUserId(idUser);
         }
-        public UserModel SelectUserLogin(string loginUser)
+        public UserModel SelectName(string loginUser)
         {
             return dataAccess.SelectUserLogin(loginUser);
         }

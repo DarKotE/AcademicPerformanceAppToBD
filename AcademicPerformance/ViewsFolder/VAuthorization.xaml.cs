@@ -69,12 +69,12 @@ namespace AcademicPerformance
                     winManager.ShowDialog();
                     break;
                 case 4:
-                    WindowsFolder.WinTeacher winTeacher = new WindowsFolder.WinTeacher();
-                    winTeacher.ShowDialog();
-                    break;
-                case 5:
                     WindowsFolder.WinStudent winStudent = new WindowsFolder.WinStudent();
                     winStudent.ShowDialog();
+                    break;
+                case 5:
+                    WindowsFolder.WinTeacher winTeacher = new WindowsFolder.WinTeacher();
+                    winTeacher.ShowDialog();
                     break;
             }
         }

@@ -78,13 +78,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
+    <Compile Include="ClassFolder\EvaluationController.cs" />
+    <Compile Include="ClassFolder\DisciplineController.cs" />
     <Compile Include="ClassFolder\JournalController.cs" />
     <Compile Include="ClassFolder\JournalModel.cs" />
     <Compile Include="ClassFolder\UserController.cs" />
     <Compile Include="ClassFolder\UserModel.cs" />
     <Compile Include="ClassFolder\CSqlConfig.cs" />
-    <Compile Include="ClassFolder\CDiscipline.cs" />
-    <Compile Include="ClassFolder\CEvaluation.cs" />
+    <Compile Include="ClassFolder\DisciplineModel.cs" />
+    <Compile Include="ClassFolder\EvaluationModel.cs" />
     <Compile Include="ClassFolder\CJournal.cs" />
     <Compile Include="ClassFolder\CStudent.cs" />
     <Compile Include="ClassFolder\CTeacher.cs" />

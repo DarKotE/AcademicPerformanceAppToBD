@@ -24,10 +24,12 @@ namespace AcademicPerformance.ViewModelFolder
         }
 
         private JournalController teacherJournalController;
+        private DisciplineController disciplineController;
 
         public VMTeacherJournal()
         {
             teacherJournalController = new JournalController();
+            disciplineController = new DisciplineController();
             LoadData();
         }
 
@@ -46,6 +48,15 @@ namespace AcademicPerformance.ViewModelFolder
         {
             get { return journalList; }
             set { journalList = value; OnPropertyChanged("JournalList"); }
+
+        }
+
+        private ObservableCollection<DisciplineModel> disciplineList;
+
+        public ObservableCollection<DisciplineModel> DisciplineList
+        {
+            get { return disciplineList; }
+            set { disciplineList = value; OnPropertyChanged("DisciplineList"); }
 
         }
 
@@ -94,11 +105,8 @@ namespace AcademicPerformance.ViewModelFolder
             SearchText = "";
             Filter();
             FilteredJournalList.Count();
-            var i = App.IdUser;
-            var s = App.LoginUser;
-            var v = App.PasswordUser;
-            var t = App.RoleUser;
-
+            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
+            SelectedRow = SelectedRow;
 
         }
 

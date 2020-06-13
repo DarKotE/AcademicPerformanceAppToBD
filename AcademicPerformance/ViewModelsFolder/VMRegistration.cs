@@ -97,7 +97,7 @@ namespace AcademicPerformance.ViewModelFolder
             {
                 try
                 {
-                    var isSaved = userController.AddUser(CurrentUser);
+                    var isSaved = userController.Add(CurrentUser);
                     if (isSaved)
                     {
                         Message = "Регистрация прошла успешна, вы можете использовать свой логин и пароль для входа";

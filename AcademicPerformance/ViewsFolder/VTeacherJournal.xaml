@@ -107,10 +107,10 @@
         <Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="9"/>
         <TextBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246.2,0,35.6,0" TextWrapping="Wrap"/>
-        <Label x:Name="lblNAmeDiscipline" Content="Названеи дисциплины"
+        <Label x:Name="lblNAmeDiscipline" Content="Название дисциплины"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11"/>
-        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" 
-                  ItemsSource="{Binding Path=SelectedRow.NameDiscipline}" Grid.ColumnSpan="2" Margin="246.2,0.6,35.6,28.8" Grid.RowSpan="2" IsEditable="True">
+        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
+                  Text="{Binding SelectedRow.NameDiscipline}" Grid.ColumnSpan="2" Margin="246.2,0.6,35.6,28.8" Grid.RowSpan="2" IsEditable="True">
         </ComboBox>
     </Grid>
 </Window>

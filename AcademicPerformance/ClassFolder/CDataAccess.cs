@@ -14,7 +14,7 @@ namespace AcademicPerformance
 {
     public class CDataAccess
     {
- 
+        #region AuthLoginValidation
         public bool IsAuthValid(string userLogin, string userPassword)
         {
             
@@ -78,8 +78,9 @@ namespace AcademicPerformance
             }
 
         }
+        #endregion  
 
-
+        #region UserAccess
         public List<UserModel> GetUserList()
         {
             List<UserModel> tempUserList = new List<UserModel>();
@@ -326,6 +327,9 @@ namespace AcademicPerformance
             return tempUser;
         }
 
+        #endregion
+
+        #region JournalAccess
         public DataTable GetJournalTableVar()
         {
             DataTable dataTable = new DataTable();
@@ -391,7 +395,349 @@ namespace AcademicPerformance
                 return output;
             }
         }
+        #endregion  
 
+        #region DisciplineAccess
+        public List<DisciplineModel> GetDisciplineList()
+        {
+            List<DisciplineModel> tempDisciplineList = new List<DisciplineModel>();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdDiscipline, NameDiscipline";
+                    sqlQuery += " FROM [dbo].[Discipline]";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        List<DisciplineModel> disciplines = new List<DisciplineModel>();
+                        while (reader.Read())
+                        {
+                            DisciplineModel u = new DisciplineModel();
+                            u.IdDiscipline = reader.GetInt32(0);
+                            u.NameDiscipline = reader.GetString(1);
+                            disciplines.Add(u);
+                        }
+                        tempDisciplineList = disciplines;
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempDisciplineList;
+        }
+
+        public DisciplineModel GetDiscipline(int idDiscipline)
+        {
+            DisciplineModel tempDiscipline = new DisciplineModel();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdDiscipline, NameDiscipline";
+                    sqlQuery += " FROM [dbo].[Discipline]";
+                    sqlQuery += " WHERE [Discipline].IdDiscipline = @IdDiscipline";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                    
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    List<DisciplineModel> items = new List<DisciplineModel>();
+                    while (reader.Read())
+                    {
+                        DisciplineModel u = new DisciplineModel();
+                        u.IdDiscipline = (int)reader["IdDiscipline"];
+                        u.NameDiscipline = (string)reader["NameDiscipline"];
+                        items.Add(u);
+                    }
+                    tempDiscipline = items[0];
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempDiscipline;
+        }
+        public bool InsertDiscipline(DisciplineModel disciplineModel)
+        {
+            bool isInserted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "INSERT INTO dbo.[Discipline] (IdDiscipline,NameDiscipline) VALUES (@IdDiscipline, @NameDiscipline)";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
+                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isInserted;
+        }
+
+
+        public bool UpdateDiscipline(DisciplineModel disciplineModel)
+        {
+            bool isUpdated = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline WHERE IdDiscipline=@IdDiscipline";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isUpdated;
+        }
+
+        public bool DeleteDiscipline(int idDiscipline)
+        {
+            bool isDeleted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+
+                try
+                {
+                    string sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isDeleted;
+        }
+
+        #endregion  
+
+        #region EvaluationAccess
+        public List<EvaluationModel> GetEvaluationList()
+        {
+            List<EvaluationModel> tempEvaluationList = new List<EvaluationModel>();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
+                    sqlQuery += " FROM [dbo].[Evaluation]";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        List<EvaluationModel> items = new List<EvaluationModel>();
+                        while (reader.Read())
+                        {
+                            EvaluationModel u = new EvaluationModel();
+                            u.IdEvaluation = reader.GetInt32(0);
+                            u.NameEvaluation = reader.GetString(1);
+                            u.NumberEvaluation = reader.GetInt32(2);
+                            items.Add(u);
+                        }
+                        tempEvaluationList = items;
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempEvaluationList;
+        }
+
+        public EvaluationModel GetEvaluation(int idEvaluation)
+        {
+            EvaluationModel tempEvaluation = new EvaluationModel();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
+                    sqlQuery += " FROM [dbo].[Evaluation]";
+                    sqlQuery += " WHERE [Evaluation].IdEvaluation = @IdEvaluation";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
+
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    List<EvaluationModel> items = new List<EvaluationModel>();
+                    while (reader.Read())
+                    {
+                        EvaluationModel u = new EvaluationModel();
+                        u.IdEvaluation = (int)reader["IdEvaluation"];
+                        u.NameEvaluation = (string)reader["NameEvaluation"];
+                        u.NumberEvaluation = (int)reader["NumberEvaluation"];
+
+                        items.Add(u);
+                    }
+                    tempEvaluation = items[0];
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempEvaluation;
+        }
+        public bool InsertEvaluation(EvaluationModel evaluationModel)
+        {
+            bool isInserted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "INSERT INTO dbo.[Evaluation] (IdEvaluation, NameEvaluation, NumberEvaluation) VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", evaluationModel.IdEvaluation);
+                    sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
+                    sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isInserted;
+        }
+
+
+        public bool UpdateDiscipline(EvaluationModel disciplineModel)
+        {
+            bool isUpdated = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline WHERE IdDiscipline=@IdDiscipline";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isUpdated;
+        }
+
+        public bool DeleteDiscipline(int idDiscipline)
+        {
+            bool isDeleted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+
+                try
+                {
+                    string sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isDeleted;
+        }
+
+        #endregion
         //public List<CJournal> GetJournal(int idJournal, int idTeacher, int idDiscipline, int idEvaluation)
         //{
         //    using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
