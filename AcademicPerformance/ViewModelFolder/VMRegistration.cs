@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using  System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 namespace AcademicPerformance.ViewModelFolder
 
 {
-    public class VMRegistration:INotifyPropertyChanged
+    public class VMRegistration : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,17 +28,16 @@ namespace AcademicPerformance.ViewModelFolder
         public VMRegistration()
         {
             userController = new UserController();
-            LoadData();
+            //LoadData();
             CurrentUser = new UserModel();
             saveCommand = new RelayCommand(Save);
-            
         }
 
         private ObservableCollection<UserModel> userList;
 
         public ObservableCollection<UserModel> UserList
         {
-            get { return userList;}
+            get { return userList; }
             set { userList = value; OnPropertyChanged("UserList"); }
 
         }
@@ -52,7 +51,7 @@ namespace AcademicPerformance.ViewModelFolder
 
         public UserModel CurrentUser
         {
-            get { return currentUser;}
+            get { return currentUser; }
             set
             {
                 currentUser = value;
@@ -67,6 +66,14 @@ namespace AcademicPerformance.ViewModelFolder
             get { return saveCommand; }
         }
 
+        private string message;
+
+        public string Message
+        {
+            get { return message; }
+            set { message = value; OnPropertyChanged(Message); }
+        }
+
 
         public void Save(object param)
         {
@@ -76,13 +83,13 @@ namespace AcademicPerformance.ViewModelFolder
 
             if (string.IsNullOrEmpty(currentUser.LoginUser))
             {
-                Message="Введите логин";
+                Message = "Введите логин";
             }
             else if (string.IsNullOrEmpty(currentUser.PasswordUser))
             {
                 Message = "Введите пароль";
             }
-            else if(password != App.PasswordUser)
+            else if (password != App.PasswordUser)
             {
                 Message = "Пароли не совпадают";
             }
@@ -110,15 +117,7 @@ namespace AcademicPerformance.ViewModelFolder
             {
                 Message = "Данный логин занят, попробуйте другой";
             }
-            MessageBox.Show(Message);
-    }
-
-        private string message;
-
-        public string Message
-        {
-            get { return message; }
-            set { message = value; OnPropertyChanged(Message); }
+            if (Message.Length > 0) MessageBox.Show(Message);
         }
 
     }

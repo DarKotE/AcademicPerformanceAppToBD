@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Авторизация" Height="650" Width="750"
         WindowStartupLocation="CenterScreen" Background="Gray"
-       Style="{DynamicResource WindowsStyle}">
+       Style="{DynamicResource WindowsStyle}" Loaded="Window_Loaded">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -42,23 +42,23 @@
                Grid.Column="1" Grid.Row="2" Foreground="White"/>
         <Label x:Name="LblPassword" Content="Пароль" Style="{DynamicResource LabelStyle}"
                Grid.Column="1" Grid.Row="4" Foreground="White"/>
-        <TextBox x:Name="TbLogin" Grid.Row="2" Grid.Column="2"
+        <TextBox x:Name="TbLogin" Grid.Row="2" Grid.Column="2" Text="{Binding Path=CurrentUser.LoginUser}"
                  Style="{DynamicResource TbStyle}"
                  Grid.ColumnSpan="2"  Background="#ffd800"/>
         <PasswordBox x:Name="PbPassword" Grid.Row="4" Grid.Column="2"
                  Style="{DynamicResource  PswbStyle}"
                      Grid.ColumnSpan="2" Background="#ffd800"/>
-        <Button x:Name="bntSigIn" Content="Вход" 
+        <Button x:Name="bntSigIn" Content="Вход"  Command="{Binding Path=AuthCommand}" CommandParameter="{Binding ElementName=PbPassword}"
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="6"
-                Grid.ColumnSpan="3" Click="BntSigIn_Click" Foreground="Black" Background="#ffd800"/>
-        <Button x:Name="bntRegistration" Content="Регистрация" 
-                Style="{DynamicResource BtnStyle}"
-                Grid.Column="1" Grid.Row="8"
-                Grid.ColumnSpan="3" Click="BtnRegistration_Click" Foreground="Black"  Background="#ffd800"/>
+                Grid.ColumnSpan="3" Click="BntSignIn_Click" Foreground="Black" Background="#ffd800"/>
+        <Button x:Name="btnRegistration" Content="Регистрация" 
+        Style="{DynamicResource BtnStyle}"
+        Grid.Column="1" Grid.Row="8"
+        Grid.ColumnSpan="3"  Foreground="Black"  Background="#ffd800" Click="BtnRegistration_Click"/>
         <Button x:Name="bntExit" Content="Выход" 
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="10"
-                Grid.ColumnSpan="3" Click="BtnExit_Click"  Background="#ffd800" AutomationProperties.IsColumnHeader="True" BorderBrush="White" Foreground="Black"/>        
-    </Grid>    
+                Grid.ColumnSpan="3" Click="BtnExit_Click"  Background="#ffd800" AutomationProperties.IsColumnHeader="True" BorderBrush="White" Foreground="Black"/>
+    </Grid>
 </Window>

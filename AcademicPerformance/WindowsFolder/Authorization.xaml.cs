@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Configuration;
 using AcademicPerformance.ClassFolder;
+using AcademicPerformance.ViewModelFolder;
 
 namespace AcademicPerformance
 {
@@ -23,10 +24,12 @@ namespace AcademicPerformance
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CDataAccess dataAccess = new CDataAccess();
+        //private readonly CDataAccess dataAccess = new CDataAccess();
         public MainWindow()
         {
             InitializeComponent();
+            var authorization = new VMAuthorization();
+            this.DataContext = authorization;
         }
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
@@ -37,17 +40,14 @@ namespace AcademicPerformance
 
         private bool IsTextboxFilled()
         {
-
             if (string.IsNullOrEmpty(TbLogin.Text))
             {
-                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 TbLogin.Focus();
                 return false;
             }
             else if (string.IsNullOrEmpty(PbPassword.Password))
             {
-                MessageBox.Show("Введите пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                TbLogin.Focus();
+               TbLogin.Focus();
                 return false;
             }
             return true;
@@ -79,25 +79,12 @@ namespace AcademicPerformance
             }
         }
 
-        private void BntSigIn_Click(object sender, RoutedEventArgs e)
+        private async void BntSignIn_Click(object sender, RoutedEventArgs e)
         {
-            if (IsTextboxFilled())
-            {
-                if (!dataAccess.IsAuthValid(TbLogin.Text, PbPassword.Password))
-                {
-                    MessageBox.Show("Логин или пароль не верны, проверьте введённые данные", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    
-                    UserModel userModel = dataAccess.GetUser(TbLogin.Text, PbPassword.Password);
-                    App.LoginUser = userModel.LoginUser;
-                    App.PasswordUser = userModel.PasswordUser;
-                    App.IdUser = userModel.IdUser;
-                    App.RoleUser = userModel.RoleUser;
-                    ShowNextWindow(App.RoleUser);
-                }
-            }
+            await Task.Delay(100);
+            ShowNextWindow(App.RoleUser);
+            if (App.RoleUser==0) MessageBox.Show("Сервер авторизации недоступен", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
         }
 
         private void BtnRegistration_Click(object sender, RoutedEventArgs e)
@@ -105,6 +92,14 @@ namespace AcademicPerformance
             WindowsFolder.WinRegistration winRegistration = new WindowsFolder.WinRegistration();
             winRegistration.ShowDialog();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TbLogin.Focus();
+            TbLogin.SelectAll();
+        }
+
+
     }
 }
     

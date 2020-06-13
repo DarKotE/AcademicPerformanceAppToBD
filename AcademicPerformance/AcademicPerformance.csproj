@@ -78,7 +78,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
-    <Compile Include="ClassFolder\CJournalVal.cs" />
+    <Compile Include="ClassFolder\StudentJournalController.cs" />
+    <Compile Include="ClassFolder\StudentJournalModel.cs" />
     <Compile Include="ClassFolder\UserController.cs" />
     <Compile Include="ClassFolder\UserModel.cs" />
     <Compile Include="ClassFolder\CSqlConfig.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ClassFolder\CStudent.cs" />
     <Compile Include="ClassFolder\CTeacher.cs" />
     <Compile Include="CommandsFolder\RelayCommand.cs" />
+    <Compile Include="ViewModelFolder\VMStudentJournal.cs" />
     <Compile Include="ViewModelFolder\VMRegistration.cs" />
     <Compile Include="ViewModelFolder\VMAuthorization.cs" />
     <Compile Include="WindowsFolder\WinAdd.xaml.cs">
@@ -120,11 +122,11 @@
     <Compile Include="WindowsFolder\WinRegistration.xaml.cs">
       <DependentUpon>WinRegistration.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinStudent.xaml.cs">
-      <DependentUpon>WinStudent.xaml</DependentUpon>
+    <Compile Include="WindowsFolder\WinStudentJournal.xaml.cs">
+      <DependentUpon>WinStudentJournal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinTeacher.xaml.cs">
-      <DependentUpon>WinTeacher.xaml</DependentUpon>
+    <Compile Include="WindowsFolder\WinTeacherJournal.xaml.cs">
+      <DependentUpon>WinTeacherJournal.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsFolder\WinUser.xaml.cs">
       <DependentUpon>WinUser.xaml</DependentUpon>
@@ -185,11 +187,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinStudent.xaml">
+    <Page Include="WindowsFolder\WinStudentJournal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinTeacher.xaml">
+    <Page Include="WindowsFolder\WinTeacherJournal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

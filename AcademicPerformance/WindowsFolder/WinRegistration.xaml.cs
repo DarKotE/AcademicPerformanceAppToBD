@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.ViewModelFolder;
 using Application = System.Windows.Application;
-using MessageBox = System.Windows.MessageBox;
+
 
 namespace AcademicPerformance.WindowsFolder
 {
@@ -39,11 +39,18 @@ namespace AcademicPerformance.WindowsFolder
             System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
         }
 
+
+
         private void BtnRegistration_Click(object sender, RoutedEventArgs e)
         {
-            
+            //bad
             App.PasswordUser = PbPasswordRepeat.Password;
+        }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            TbLogin.Focus();
+            TbLogin.SelectAll();
         }
     }
 }

@@ -8,7 +8,7 @@
         Title="Регистрация" Height="800" Width="950"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource WindowsStyle}"
-        Background="Gray">
+        Background="Gray" Loaded="Window_Loaded">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

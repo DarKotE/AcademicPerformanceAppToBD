@@ -11,7 +11,7 @@ namespace AcademicPerformance.CommandsFolder
     {
         public event EventHandler CanExecuteChanged;
         private Action<object> doAction;
-        private Action<object> save;
+        
 
         public RelayCommand(Action<object> action)
         {

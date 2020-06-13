@@ -26,18 +26,30 @@ namespace AcademicPerformance
                 sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
                 sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
-                sqlConnection.Open();
-                sqlDataReader = sqlCommand.ExecuteReader();
-                if (sqlDataReader.Read())
+                try
                 {
-                    sqlDataReader.Close();
-                    return true;
+                    sqlConnection.Open();
+                    sqlDataReader = sqlCommand.ExecuteReader();
+                    if (sqlDataReader.Read())
+                    {
+                        sqlDataReader.Close();
+                        return true;
+                    }
+                    else
+                    {
+                        sqlDataReader.Close();
+                        return false;
+                    }
                 }
-                else 
+                catch (Exception ex)
                 {
-                    sqlDataReader.Close();
-                    return false;
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+                return false;
 
             }
                 
@@ -243,7 +255,7 @@ namespace AcademicPerformance
             return isDeleted;
         }
 
-        public UserModel FindUser(int idUser)
+        public UserModel SelectUserId(int idUser)
         {
             UserModel tempUser = null;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
@@ -260,6 +272,41 @@ namespace AcademicPerformance
                     {
                         reader.Read();
                         tempUser= new UserModel();
+                        tempUser.IdUser = reader.GetInt32(0);
+                        tempUser.LoginUser = reader.GetString(1);
+                        tempUser.PasswordUser = reader.GetString(2);
+                        tempUser.RoleUser = reader.GetInt32(3);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempUser;
+        }
+        public UserModel SelectUserLogin(string loginUser)
+        {
+            UserModel tempUser = null;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    sqlQuery += " FROM [dbo].[User] WHERE LoginUser=@LoginUser";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("LoginUser", loginUser);
+                    sqlConnection.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        tempUser = new UserModel();
                         tempUser.IdUser = reader.GetInt32(0);
                         tempUser.LoginUser = reader.GetString(1);
                         tempUser.PasswordUser = reader.GetString(2);
@@ -304,22 +351,45 @@ namespace AcademicPerformance
             return dataTable;
         }
 
-        public List<CJournalVal> GetJournalList(DataTable dataTable)
+        public List<StudentJournalModel> GetJournalList()
         {
-            List<CJournalVal> studentList = new List<CJournalVal>();
-            studentList = (from DataRow dataRow in dataTable.Rows
-                           select new CJournalVal()
-                           {
-                               IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
-                               FIOStudent = dataRow["FIOStudent"].ToString(),
-                               FIOTeacher = dataRow["FIOTeacher"].ToString(),
-                               NameDiscipline = dataRow["NameDiscipline"].ToString(),
-                               NameEvaluation = dataRow["NameEvaluation"].ToString(),
-                               NumberEvaluation = dataRow["NumberEvaluation"].ToString(),
-                           }).ToList();
+            DataTable dataTable = new DataTable();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                string sqlQuery = "select [IdJournal],";
+                sqlQuery +=
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', ''), COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
+                sqlQuery += " [NameEvaluation],[NumberEvaluation],";
+                sqlQuery +=
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher], '')))) AS FIOTeacher,";
+                sqlQuery += " [NameDiscipline] ";
+                sqlQuery += " FROM [dbo].[Journal]";
+                sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
+                sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
+                sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
+                sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
+                sqlQuery += " WHERE Student.IdUser = @IdUser";
 
-            var output = studentList;
-            return output;
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
+                dataAdapter.Fill(dataTable);
+
+                List<StudentJournalModel> studentList = new List<StudentJournalModel>();
+                studentList = (from DataRow dataRow in dataTable.Rows
+                    select new StudentJournalModel()
+                    {
+                        IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
+                        FIOStudent = dataRow["FIOStudent"].ToString(),
+                        FIOTeacher = dataRow["FIOTeacher"].ToString(),
+                        NameDiscipline = dataRow["NameDiscipline"].ToString(),
+                        NameEvaluation = dataRow["NameEvaluation"].ToString(),
+                        NumberEvaluation = Convert.ToInt32(dataRow["NumberEvaluation"]),
+                    }).ToList();
+
+                var output = studentList;
+                return output;
+            }
         }
 
         //public List<CJournal> GetJournal(int idJournal, int idTeacher, int idDiscipline, int idEvaluation)
