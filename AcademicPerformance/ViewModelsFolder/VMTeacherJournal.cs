@@ -16,6 +16,21 @@ namespace AcademicPerformance.ViewModelFolder
 {
     public class VMTeacherJournal : INotifyPropertyChanged
     {
+        
+        public VMTeacherJournal()
+        {
+            saveCommand = new RelayCommand(Save);
+            teacherJournalController = new JournalController();
+            disciplineController = new DisciplineController();
+            evaluationController = new EvaluationController();
+            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
+            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
+            SelectedRow = new JournalModel();
+            SearchText = "";
+            Filter();
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
@@ -27,21 +42,6 @@ namespace AcademicPerformance.ViewModelFolder
         private DisciplineController disciplineController;
         private EvaluationController evaluationController;
 
-        public VMTeacherJournal()
-        {
-
-            teacherJournalController = new JournalController();
-            disciplineController = new DisciplineController();
-            evaluationController = new EvaluationController();
-            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
-            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
-            SelectedRow = new JournalModel();
-            SearchText = "";
-            Filter();
-
-            var r = SelectedRow;
-
-        }
 
 
         private ObservableCollection<JournalModel> filteredJournalList;
@@ -67,7 +67,7 @@ namespace AcademicPerformance.ViewModelFolder
         public ObservableCollection<EvaluationModel> EvaluationList
         {
             get { return evaluationList; }
-            set { evaluationList = value; OnPropertyChanged("EvaluationList"); }
+            set { evaluationList = value;}
 
         }
 
@@ -75,7 +75,7 @@ namespace AcademicPerformance.ViewModelFolder
         public ObservableCollection<DisciplineModel> DisciplineList
         {
             get { return disciplineList; }
-            set { disciplineList = value; OnPropertyChanged("DisciplineList"); }
+            set { disciplineList = value; }
 
         }
 
@@ -83,14 +83,33 @@ namespace AcademicPerformance.ViewModelFolder
         public string SearchText
         {
             get { return searchText; }
+            set { searchText = value; Filter(); OnPropertyChanged("SearchText"); }
+
+        }
+        private EvaluationModel selectedNumber;
+        public EvaluationModel SelectedNumber
+        {
             set
             {
-                searchText = value;
-                Filter();
-                OnPropertyChanged("SearchText");
+                selectedNumber = value;
+                if (EvaluationList != null && selectedNumber != null && SelectedRow != null
+                    && SelectedRow.NumberEvaluation != selectedNumber.NumberEvaluation)
+                {
+                    SelectedRow.NameEvaluation = EvaluationList[EvaluationList.Count -selectedNumber.NumberEvaluation].NameEvaluation;
+                    SelectedRow.IdEvaluation = selectedNumber.IdEvaluation;
+                }
             }
 
         }
+
+        private JournalModel selectedRow;
+        public JournalModel SelectedRow
+        {
+            get { return selectedRow; }
+            set { selectedRow = value; OnPropertyChanged("SelectedRow"); }
+
+        }
+
 
         private void Filter()
         {
@@ -112,37 +131,6 @@ namespace AcademicPerformance.ViewModelFolder
             }
         }
 
-        private EvaluationModel selectedNumber;
-        public EvaluationModel SelectedNumber
-        {
-            
-            set
-            {
-                selectedNumber = value;
-
-                if ((EvaluationList != null) && (selectedNumber != null) && (SelectedRow != null))
-                    if (SelectedRow.NumberEvaluation != selectedNumber.NumberEvaluation)
-                        SelectedRow.NameEvaluation = EvaluationList[5 - selectedNumber.NumberEvaluation].NameEvaluation;
-                OnPropertyChanged("SelectedNumber");
-            }
-
-        }
-
-        private JournalModel selectedRow;
-        public JournalModel SelectedRow
-        {
-            get
-            {
-                return selectedRow;
-            }
-            set 
-            {
-                selectedRow = value;
-                OnPropertyChanged("SelectedRow");
-
-            }
-
-        }
 
         
         private RelayCommand saveCommand;
@@ -157,14 +145,20 @@ namespace AcademicPerformance.ViewModelFolder
         public string Message
         {
             get { return message; }
-            set { message = value; OnPropertyChanged(Message); }
+            set { message = value; /*OnPropertyChanged(Message);*/ }
         }
 
 
         public void Save(object param)
         {
+            foreach (var item in filteredJournalList)
+            {
+                teacherJournalController.Update(item);
+            }
+            
             MessageBox.Show(Message);
         }
+
 
     }
 }

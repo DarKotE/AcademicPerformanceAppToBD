@@ -330,31 +330,7 @@ namespace AcademicPerformance
         #endregion
 
         #region JournalAccess
-        public DataTable GetJournalTableVar()
-        {
-            DataTable dataTable = new DataTable();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
-            {   
-                string sqlQuery = "select [IdJournal],";
-                       sqlQuery += " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', ''), COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
-                       sqlQuery += " [NameEvaluation],[NumberEvaluation],";
-                       sqlQuery += " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher], '')))) AS FIOTeacher,";
-                       sqlQuery += " [NameDiscipline] ";
-                       sqlQuery += " FROM [dbo].[Journal]";
-                       sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
-                       sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
-                       sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
-                       sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
-                       sqlQuery += " WHERE Student.IdUser = @IdUser";                   
-
-                SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
-                dataAdapter.Fill(dataTable); 
-            }
-            return dataTable;
-        }
-
+        
         public List<JournalModel> GetJournalList()
         {
             DataTable dataTable = new DataTable();
@@ -366,7 +342,7 @@ namespace AcademicPerformance
                 sqlQuery += " [NameEvaluation],[NumberEvaluation],";
                 sqlQuery +=
                     " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher], '')))) AS FIOTeacher,";
-                sqlQuery += " [NameDiscipline] ";
+                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher], [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
                 sqlQuery += " FROM [dbo].[Journal]";
                 sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
                 sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
@@ -379,8 +355,8 @@ namespace AcademicPerformance
                 SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
                 dataAdapter.Fill(dataTable);
 
-                List<JournalModel> studentList = new List<JournalModel>();
-                studentList = (from DataRow dataRow in dataTable.Rows
+                List<JournalModel> journalList = new List<JournalModel>();
+                journalList = (from DataRow dataRow in dataTable.Rows
                     select new JournalModel()
                     {
                         IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
@@ -389,12 +365,156 @@ namespace AcademicPerformance
                         NameDiscipline = dataRow["NameDiscipline"].ToString(),
                         NameEvaluation = dataRow["NameEvaluation"].ToString(),
                         NumberEvaluation = Convert.ToInt32(dataRow["NumberEvaluation"]),
+                        IdStudent = Convert.ToInt32(dataRow["IdStudent"]),
+                        IdTeacher = Convert.ToInt32(dataRow["IdTeacher"]),
+                        IdDiscipline = Convert.ToInt32(dataRow["IdDiscipline"]),
+                        IdEvaluation = Convert.ToInt32(dataRow["IdEvaluation"]),
                     }).ToList();
 
-                var output = studentList;
+                var output = journalList;
                 return output;
             }
         }
+
+
+        public JournalModel GetJournal(int idJournal)
+        {
+            JournalModel tempJournal = new JournalModel();
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation";
+                    sqlQuery += " FROM [dbo].[Journal]";
+                    sqlQuery += " WHERE [Journal].IdJournal = @IdJournal";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlConnection.Open();
+                    sqlCommand.Parameters.AddWithValue("IdJournal", idJournal);
+
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    List<JournalModel> items = new List<JournalModel>();
+                    while (reader.Read())
+                    {
+                        JournalModel u = new JournalModel();
+                        u.IdJournal = (int)reader["IdEvaluation"];
+                        u.IdStudent = (int)reader["IdStudent"];
+                        u.IdTeacher = (int)reader["IdTeacher"];
+                        u.IdDiscipline = (int)reader["IdDiscipline"];
+                        u.IdEvaluation= (int)reader["IdEvaluation"];
+
+                        items.Add(u);
+                    }
+                    tempJournal = items[0];
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+
+                }
+            }
+            return tempJournal;
+        }
+        public bool InsertJournal(JournalModel journalModel)
+        {
+            bool isInserted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "INSERT INTO dbo.[Journal] (IdStudent, IdTeacher, IdDiscipline, IdEvaluation) VALUES (@IdStudent, @IdTeacher, @IdDiscipline, @IdEvaluation)";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
+                    sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isInserted;
+        }
+
+
+        public bool UpdateJournal(JournalModel journalModel)
+        {
+            bool isUpdated = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                try
+                {
+                    string sqlQuery = "UPDATE dbo.[Journal] set IdTeacher=@IdTeacher,IdStudent=@IdStudent,IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation" +
+                                      " WHERE IdJournal=@IdJournal";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdJournal", journalModel.IdJournal);
+                    sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
+                    sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
+                    sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isUpdated;
+        }
+
+        public bool DeleteJournal(int idJournal)
+        {
+            bool isDeleted = false;
+            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+
+                try
+                {
+                    string sqlQuery = "DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
+                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("idJournal", idJournal);
+                    sqlConnection.Open();
+                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = NoOfRowsAffected > 0;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    sqlConnection.Close();
+                }
+            }
+
+            return isDeleted;
+        }
+
+
+
         #endregion  
 
         #region DisciplineAccess

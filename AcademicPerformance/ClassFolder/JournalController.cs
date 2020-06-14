@@ -22,29 +22,25 @@ namespace AcademicPerformance.ClassFolder
             return journalList;
         }
 
-        //public bool Add(UserModel newUser)
-        //{
-        //    return dataAccess.InsertUser(newUser);
-        //}
+        public bool Add(JournalModel journal)
+        {
+            return dataAccess.InsertJournal(journal);
+        }
 
-        //public bool Update(UserModel userToUpdate)
-        //{
-        //    return dataAccess.UpdateUser(userToUpdate);
-        //}
+        public bool Update(JournalModel journalToUpdate)
+        {
+            return dataAccess.UpdateJournal(journalToUpdate);
+        }
 
-        //public bool Delete(int idUser)
-        //{
-        //    return dataAccess.DeleteUser(idUser);
-        //}
+        public bool Delete(int idJournal)
+        {
+            return dataAccess.DeleteJournal(idJournal);
+        }
 
-        //public UserModel SelectId(int idUser)
-        //{
-        //    return dataAccess.SelectId(idUser);
-        //}
-        //public UserModel SelectName(string loginUser)
-        //{
-        //    return dataAccess.SelectName(loginUser);
-        //}
+        public JournalModel SelectId(int idJournal)
+        {
+            return dataAccess.GetJournal(idJournal);
+        }
 
     }
 }
