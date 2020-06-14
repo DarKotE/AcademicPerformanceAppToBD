@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademicPerformance.WindowsFolder"
         mc:Ignorable="d"
-        Title="Окно преподователя" Height="700" Width="1600"
+        Title="Окно преподователя" Height="717.5" Width="1600"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource WindowsStyle}" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="950"/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="880"/>
+            <ColumnDefinition Width="317*"/>
+            <ColumnDefinition Width="247*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -58,10 +58,10 @@
         </Menu>
         <Label x:Name="lblSearch" Content="Поиск" Style="{DynamicResource LabelStyle}"
                Grid.Row="1"/>
-        <TextBox x:Name="tbSearch" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextChanged="TbSearch_TextChanged" Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox x:Name="tbSearch" Grid.Row="1" Grid.Column="1"  Text="{Binding Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <DataGrid x:Name="dgJournal" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="11"
-                  AutoGenerateColumns="False" ItemsSource="{Binding Path=FilteredJournalList}"
-                  IsReadOnly="True" FontSize="12" MouseDoubleClick="DgJouranl_MouseDoubleClick">
+                  AutoGenerateColumns="False" ItemsSource="{Binding Path=FilteredJournalList}" SelectedItem="{Binding Path=SelectedRow, Mode=TwoWay}"
+                  IsReadOnly="True" FontSize="12"  Margin="0,0,0,29">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="dgTcIdJournal"
                                     Header="№ п/п"
@@ -78,39 +78,48 @@
                 <DataGridTextColumn x:Name="dgTcNumberEvaluation"
                                     Header="Оценка"
                                     Binding="{Binding NumberEvaluation}"
-                                    Width="*"/>
+                                    Width="50"/>
                 <DataGridTextColumn x:Name="dgTcFIOTeacher"
                                     Header="ФИО преподователя"
                                     Binding="{Binding FIOTeacher}"
                                     Width="*"/>
                 <DataGridTextColumn x:Name="dgTcNameDiscipline"
-                                    Header="Название ддисциплины"
+                                    Header="Название дисциплины"
                                     Binding="{Binding NameDiscipline}"
                                     Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
+
         <Label x:Name="lblFIOStudent" Content="ФИО студента" Style="{DynamicResource LabelStyle}"
-               Grid.Column="2" Grid.Row="3"/>
-        <ComboBox x:Name="cbFIOStudent" Grid.Column="2" Grid.Row="3" 
-                   ItemsSource="{Binding}" Grid.ColumnSpan="2" Margin="246.2,0.2,35.6,28.2" Grid.RowSpan="2" IsEditable="True">
-        </ComboBox>
+               Grid.Column="2" Grid.Row="3" FontSize="20" Margin="10,10,76,10"/>
+        <TextBox x:Name="tbFIOStudent" Grid.Column="2" Grid.Row="3" 
+                 Text="{Binding Path=SelectedRow.FIOStudent}"
+                   Grid.ColumnSpan="2" Margin="246,0,36,28" Grid.RowSpan="2" IsReadOnly="True" TextWrapping="Wrap">
+        </TextBox>
         <Label x:Name="lblNameEvaluation" Content="Название оценки" Style="{DynamicResource LabelStyle}"
-               Grid.Column="2" Grid.Row="5"/>
-        <ComboBox x:Name="cbNameEvaluation" Grid.Column="2" Grid.Row="4" 
-                  ItemsSource="{Binding}" SelectionChanged="cbNameEvaluation_SelectionChanged" Grid.ColumnSpan="2" Margin="246.2,30.2,35.6,29.6" Grid.RowSpan="3" IsEditable="True">
-        </ComboBox>
+               Grid.Column="2" Grid.Row="5" FontSize="20" Margin="10,10,76,10"/>
+        <TextBox x:Name="cbNameEvaluation" Grid.Column="2" Grid.Row="5" 
+                  Text="{Binding Path=SelectedRow.NameEvaluation, Mode=TwoWay}"
+                  Grid.ColumnSpan="2" Margin="246,0,36,0"/>
         <Label x:Name="lblEvaluation" Content="Оценка"
-               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="7"/>
-        <ComboBox x:Name="cbEvaluation" Grid.Column="2" Grid.Row="6" 
-                  ItemsSource="{Binding}" Grid.ColumnSpan="2" Margin="246.2,29.8,35.6,29" Grid.RowSpan="3" IsEditable="True">
-        </ComboBox>
-        <Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
-               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="9"/>
-        <TextBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246.2,0,35.6,0" TextWrapping="Wrap"/>
-        <Label x:Name="lblNAmeDiscipline" Content="Название дисциплины"
-               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11"/>
+               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="7" FontSize="20" Margin="10,10,76,10"/>
+        <ComboBox x:Name="cbEvaluation" Grid.Column="2" Grid.Row="7" 
+                 ItemsSource="{Binding EvaluationList}" DisplayMemberPath="NumberEvaluation" 
+                 Text="{Binding SelectedRow.NumberEvaluation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 SelectedItem="{Binding SelectedNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                 Grid.ColumnSpan="2" Margin="246,0,36,29" Grid.RowSpan="2"/>
+<Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
+               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="9" FontSize="20" Margin="10,10,76,10"/>
+        <TextBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246,0,36,0" TextWrapping="Wrap"
+                 Text="{Binding Path=SelectedRow.FIOTeacher, Mode=TwoWay}"
+                 />
+        <Label x:Name="lblNAmeDiscipline" Content="Дисциплина"
+               Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11" FontSize="20" Margin="10,10,76,10"/>
         <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
-                  Text="{Binding SelectedRow.NameDiscipline}" Grid.ColumnSpan="2" Margin="246.2,0.6,35.6,28.8" Grid.RowSpan="2" IsEditable="True">
-        </ComboBox>
+                  Text="{Binding Path=SelectedRow.NameDiscipline, Mode=TwoWay}" Grid.ColumnSpan="2" Margin="246,1,36,29" Grid.RowSpan="2"/>
+        <Button x:Name="Exit" Content="Выход" Style="{DynamicResource BtnStyle}"
+            Grid.Column="1" Grid.Row="12" Background="{x:Null}" Click="Exit_Click" Margin="10,10,10,11" Grid.RowSpan="2"/>
+        <Button x:Name="Save" Content="Сохранить изменения" Style="{DynamicResource BtnStyle}"
+            Grid.Column="2" Grid.Row="12" Background="{x:Null}"  Margin="100,10,100,11" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>

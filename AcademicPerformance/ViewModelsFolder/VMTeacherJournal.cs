@@ -25,12 +25,22 @@ namespace AcademicPerformance.ViewModelFolder
 
         private JournalController teacherJournalController;
         private DisciplineController disciplineController;
+        private EvaluationController evaluationController;
 
         public VMTeacherJournal()
         {
+
             teacherJournalController = new JournalController();
             disciplineController = new DisciplineController();
-            LoadData();
+            evaluationController = new EvaluationController();
+            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
+            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
+            SelectedRow = new JournalModel();
+            SearchText = "";
+            Filter();
+
+            var r = SelectedRow;
+
         }
 
 
@@ -42,8 +52,9 @@ namespace AcademicPerformance.ViewModelFolder
             set { filteredJournalList = value; OnPropertyChanged("FilteredJournalList"); }
 
         }
-        private ObservableCollection<JournalModel> journalList;
 
+
+        private ObservableCollection<JournalModel> journalList;
         public ObservableCollection<JournalModel> JournalList
         {
             get { return journalList; }
@@ -51,8 +62,16 @@ namespace AcademicPerformance.ViewModelFolder
 
         }
 
-        private ObservableCollection<DisciplineModel> disciplineList;
 
+        private ObservableCollection<EvaluationModel> evaluationList;
+        public ObservableCollection<EvaluationModel> EvaluationList
+        {
+            get { return evaluationList; }
+            set { evaluationList = value; OnPropertyChanged("EvaluationList"); }
+
+        }
+
+        private ObservableCollection<DisciplineModel> disciplineList;
         public ObservableCollection<DisciplineModel> DisciplineList
         {
             get { return disciplineList; }
@@ -67,8 +86,8 @@ namespace AcademicPerformance.ViewModelFolder
             set
             {
                 searchText = value;
-                OnPropertyChanged("SearchText");
                 Filter();
+                OnPropertyChanged("SearchText");
             }
 
         }
@@ -87,29 +106,45 @@ namespace AcademicPerformance.ViewModelFolder
                       || item.NumberEvaluation.ToString().ToUpper().Contains(SearchText.ToUpper())
                       || item.IdJournal.ToString().ToUpper().Contains(SearchText.ToUpper())
                     select item);
-            if (FilteredJournalList.Any()) SelectedRow = FilteredJournalList[0];
+            if (FilteredJournalList.Any())
+            {
+                SelectedRow = FilteredJournalList[0];
+            }
         }
 
+        private EvaluationModel selectedNumber;
+        public EvaluationModel SelectedNumber
+        {
+            
+            set
+            {
+                selectedNumber = value;
+
+                if ((EvaluationList != null) && (selectedNumber != null) && (SelectedRow != null))
+                    if (SelectedRow.NumberEvaluation != selectedNumber.NumberEvaluation)
+                        SelectedRow.NameEvaluation = EvaluationList[5 - selectedNumber.NumberEvaluation].NameEvaluation;
+                OnPropertyChanged("SelectedNumber");
+            }
+
+        }
 
         private JournalModel selectedRow;
         public JournalModel SelectedRow
         {
-            get { return selectedRow; }
-            set { selectedRow = value; OnPropertyChanged("SelectedRow"); }
+            get
+            {
+                return selectedRow;
+            }
+            set 
+            {
+                selectedRow = value;
+                OnPropertyChanged("SelectedRow");
+
+            }
 
         }
 
-
-        private void LoadData()
-        {
-            SearchText = "";
-            Filter();
-            FilteredJournalList.Count();
-            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
-            SelectedRow = SelectedRow;
-
-        }
-
+        
         private RelayCommand saveCommand;
 
         public RelayCommand SaveCommand

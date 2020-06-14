@@ -82,6 +82,7 @@ namespace AcademicPerformance
         private async void BntSignIn_Click(object sender, RoutedEventArgs e)
         {
             await Task.Delay(100);
+            
             ShowNextWindow(App.RoleUser);
 
         }
