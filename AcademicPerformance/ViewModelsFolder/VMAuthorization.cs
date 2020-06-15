@@ -110,6 +110,5 @@ namespace AcademicPerformance.ViewModelFolder
             if (Message.Length>0) MessageBox.Show(Message);
         }
 
-
     }
 }

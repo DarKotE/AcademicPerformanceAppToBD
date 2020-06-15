@@ -43,7 +43,6 @@ namespace AcademicPerformance.WindowsFolder
 
         private void BtnRegistration_Click(object sender, RoutedEventArgs e)
         {
-            //bad
             App.PasswordUser = PbPasswordRepeat.Password;
         }
 

@@ -66,8 +66,10 @@ namespace AcademicPerformance.WindowsFolder
 
         private void miProfile_Click(object sender, RoutedEventArgs e)
         {
+            RefreshEvent += new Refresh(RefreshView);
             WinProfileTeacher winProfileTeacher = new WinProfileTeacher();
-            winProfileTeacher.ShowDialog();
+            winProfileTeacher.UpdateActor = RefreshEvent;
+            winProfileTeacher.Show();
         }
 
         private void miExit_Click(object sender, RoutedEventArgs e)
