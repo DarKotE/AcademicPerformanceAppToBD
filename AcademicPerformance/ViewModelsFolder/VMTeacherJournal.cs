@@ -20,14 +20,20 @@ namespace AcademicPerformance.ViewModelFolder
         public VMTeacherJournal()
         {
             saveCommand = new RelayCommand(Save);
+            deleteCommand = new RelayCommand(Delete);
             teacherJournalController = new JournalController();
             disciplineController = new DisciplineController();
             evaluationController = new EvaluationController();
+            LoadData();
+            Filter();
+        }
+
+        void LoadData()
+        {
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
             EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
             SelectedRow = new JournalModel();
             SearchText = "";
-            Filter();
         }
 
 
@@ -95,12 +101,29 @@ namespace AcademicPerformance.ViewModelFolder
                 if (EvaluationList != null && selectedNumber != null && SelectedRow != null
                     && SelectedRow.NumberEvaluation != selectedNumber.NumberEvaluation)
                 {
-                    SelectedRow.NameEvaluation = EvaluationList[EvaluationList.Count -selectedNumber.NumberEvaluation].NameEvaluation;
+                    SelectedRow.NameEvaluation = selectedNumber.NameEvaluation;
                     SelectedRow.IdEvaluation = selectedNumber.IdEvaluation;
                 }
             }
 
         }
+        private DisciplineModel selectedDiscipline;
+        public DisciplineModel SelectedDiscipline
+        {
+            set
+            {
+                selectedDiscipline = value;
+                if (DisciplineList != null && selectedDiscipline != null && SelectedRow != null
+                    && SelectedRow.NameDiscipline != selectedDiscipline.NameDiscipline)
+                {
+                    SelectedRow.NameDiscipline = selectedDiscipline.NameDiscipline;
+                    SelectedRow.IdDiscipline = selectedDiscipline.IdDiscipline;
+                }
+            }
+
+        }
+
+
 
         private JournalModel selectedRow;
         public JournalModel SelectedRow
@@ -132,12 +155,19 @@ namespace AcademicPerformance.ViewModelFolder
         }
 
 
+
         
         private RelayCommand saveCommand;
-
         public RelayCommand SaveCommand
         {
             get { return saveCommand; }
+        }
+
+
+        private RelayCommand deleteCommand;
+        public RelayCommand DeleteCommand
+        {
+            get { return deleteCommand; }
         }
 
         private string message;
@@ -145,20 +175,35 @@ namespace AcademicPerformance.ViewModelFolder
         public string Message
         {
             get { return message; }
-            set { message = value; /*OnPropertyChanged(Message);*/ }
+            set { message = value;}
         }
 
 
         public void Save(object param)
         {
+            bool isAllSaved = true;
             foreach (var item in filteredJournalList)
             {
-                teacherJournalController.Update(item);
+                if (!teacherJournalController.Update(item))
+                {
+                    isAllSaved = false;
+                }
             }
-            
+
+            Message = isAllSaved ? "Изменения сохранены" : "При сохранении произошла ошибка";
             MessageBox.Show(Message);
+            LoadData();
+        }
+        public void Delete(object param)
+        {
+            bool isDeleted = teacherJournalController.Delete(SelectedRow.IdJournal);
+            Message = isDeleted ? "Удалено" : "При удалении произошла ошибка";
+            MessageBox.Show(Message);
+            LoadData();
+
         }
 
-
     }
+
 }
+

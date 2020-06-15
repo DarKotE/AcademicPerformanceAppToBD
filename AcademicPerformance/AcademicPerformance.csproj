@@ -119,6 +119,9 @@
     <Compile Include="WindowsFolder\VManager.xaml.cs">
       <DependentUpon>VManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowsFolder\VProfileTeacher.xaml.cs">
+      <DependentUpon>VProfileTeacher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowsFolder\VProfileStudent.xaml.cs">
       <DependentUpon>VProfileStudent.xaml</DependentUpon>
     </Compile>
@@ -181,6 +184,10 @@
     <Page Include="WindowsFolder\VManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsFolder\VProfileTeacher.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WindowsFolder\VProfileStudent.xaml">
       <SubType>Designer</SubType>

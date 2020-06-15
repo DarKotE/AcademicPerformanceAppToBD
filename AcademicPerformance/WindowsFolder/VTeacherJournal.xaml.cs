@@ -22,8 +22,6 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinTeacher : Window
     {
-        
-
         public WinTeacher()
         {
             InitializeComponent();
@@ -49,14 +47,19 @@ namespace AcademicPerformance.WindowsFolder
         }
         
 
-        private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
+        private void Add_OnClick(object sender, RoutedEventArgs e)
         {
-            WinProfileStudent winProfileStudent =
-                 new WinProfileStudent();
-            winProfileStudent.ShowDialog();
+            WinAdd winAdd = new WinAdd();
+            winAdd.ShowDialog();
         }
 
-        private void MiExit_Click(object sender, RoutedEventArgs e)
+        private void miProfile_Click(object sender, RoutedEventArgs e)
+        {
+            WinProfileTeacher winProfileTeacher = new WinProfileTeacher();
+            winProfileTeacher.ShowDialog();
+        }
+
+        private void miExit_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
@@ -65,64 +68,6 @@ namespace AcademicPerformance.WindowsFolder
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             }
         }
-
-        //private void miSaveChanges_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //    try
-        //    {
-        //        ClassFolder.ClassDiscipline.IdDiscipline = Convert.ToInt32(cbNameDiscipline.SelectedValue.ToString());
-        //        ClassFolder.ClassEvaluation.IdEvaluation = Convert.ToInt32(cbEvalustion.SelectedValue.ToString());
-        //        IdStunet();
-        //        IdTeacher();
-        //        sqlConnection.Open();
-        //        sqlCommand = new SqlCommand($"update [Journal]" +
-        //            $"set IdStudent='{ClassFolder.ClassStudent.IdStudent}'," +
-        //            $"IdTeacher='{ClassFolder.ClassTeacher.IdTeacher}'," +
-        //            $"IdDiscipline='{ClassFolder.ClassDiscipline.IdDiscipline}'," +
-        //            $"IdEvaluation='{ClassFolder.ClassEvaluation.IdEvaluation}',", sqlConnection);
-        //        sqlCommand.ExecuteNonQuery();
-
-        //        MessageBox.Show("Изменения успешно сохранены", "Информация", MessageBoxButton.OK,
-        //            MessageBoxImage.Information);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //    finally
-        //    {
-        //        sqlConnection.Close();
-        //    }
-        //}
-
-        private void miAdd_Click(object sender, RoutedEventArgs e)
-        {
-            //WinAdd winAdd = new WinAdd();
-            //winAdd.ShowDialog();
-            //classDG.LoadDG("Select * from dbo.ViewJournal" +
-            //    $"where IdUserTeahcer={App.IdUser}");
-            //throw new NotImplementedException();
-
-        }
-
-        private void miEditIn_Click(object sender, RoutedEventArgs e)
-        {
-            //try
-            //{
-            //    throw new NotImplementedException();
-
-            //    //ClassFolder.CJournal.IdJournal = classDG.SelectId();
-            //    //WinEditIn winEditIn = new WinEditIn();
-            //    //winEditIn.ShowDialog();
-
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("ВВыбирите строку в таблице", "Ошибка",MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-        }
-        
     }
 }
 

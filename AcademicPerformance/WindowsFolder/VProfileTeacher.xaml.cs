@@ -19,13 +19,13 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinProfileStudent.xaml
     /// </summary>
-    public partial class WinProfileStudent : Window
+    public partial class WinProfileTeacher : Window
     {
         //SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-N9GUSG16;Initial Catalog=AcademicPerformance;Integrated Security=True");
         SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
         SqlCommand sqlCommand;
         SqlDataReader sqlDataReader;
-        public WinProfileStudent()
+        public WinProfileTeacher()
         {
             InitializeComponent();
         }       
@@ -57,7 +57,7 @@ namespace AcademicPerformance.WindowsFolder
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Ошика", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {

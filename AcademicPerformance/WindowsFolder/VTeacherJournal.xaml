@@ -39,22 +39,11 @@
         </Grid.RowDefinitions>
         <Menu Height="30" VerticalAlignment="Top" Grid.ColumnSpan="3">
             <MenuItem x:Name="miFile" Header="Файл">
-                <MenuItem x:Name="miAdd" Header="Добавить" Click="miAdd_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miEditIn" Header="Редактировать в" Click="miEditIn_Click"/>
+                <MenuItem x:Name="miExit" Header="Выход" Click="miExit_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miDelete" Header="Удалить"/>
-                <Separator/>
-                <MenuItem x:Name="miBack" Header="Назад"/>
-                <Separator/>
-                <MenuItem x:Name="miExit" Header="Выход"/>
             </MenuItem>
-            <MenuItem x:Name="miGuide" Header="Справочник">
-                <MenuItem x:Name="miListStudent" Header="Список студентов"/>
-                <Separator/>
-                <MenuItem x:Name="miListDiscipline" Header="Список дисциплин"/>
-            </MenuItem>
-            <MenuItem x:Name="miProfile" Header="Личный профиль"/>
+            <MenuItem x:Name="miProfile" Header="Личный профиль" Click="miProfile_Click"/>
         </Menu>
         <Label x:Name="lblSearch" Content="Поиск" Style="{DynamicResource LabelStyle}"
                Grid.Row="1"/>
@@ -108,7 +97,7 @@
                  Text="{Binding SelectedRow.NumberEvaluation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  SelectedItem="{Binding SelectedNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                  Grid.ColumnSpan="2" Margin="246,0,36,29" Grid.RowSpan="2"/>
-<Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
+        <Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="9" FontSize="20" Margin="10,10,76,10"/>
         <TextBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246,0,36,0" TextWrapping="Wrap"
                  Text="{Binding Path=SelectedRow.FIOTeacher, Mode=TwoWay}"
@@ -116,10 +105,16 @@
         <Label x:Name="lblNAmeDiscipline" Content="Дисциплина"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11" FontSize="20" Margin="10,10,76,10"/>
         <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
-                  Text="{Binding Path=SelectedRow.NameDiscipline, Mode=TwoWay}" Grid.ColumnSpan="2" Margin="246,1,36,29" Grid.RowSpan="2"/>
+                  Text="{Binding Path=SelectedRow.NameDiscipline, Mode=TwoWay}" 
+                  SelectedItem="{Binding SelectedDiscipline, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.ColumnSpan="2" Margin="246,1,36,29" Grid.RowSpan="2"/>
         <Button x:Name="Exit" Content="Выход" Style="{DynamicResource BtnStyle}"
             Grid.Column="1" Grid.Row="12" Background="{x:Null}" Click="Exit_Click" Margin="10,10,10,11" Grid.RowSpan="2"/>
         <Button x:Name="Save" Content="Сохранить изменения" Style="{DynamicResource BtnStyle}" Command="{Binding Path=SaveCommand}" 
-            Grid.Column="2" Grid.Row="12" Background="{x:Null}"  Margin="100,10,100,11" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+            Grid.Column="2" Grid.Row="12" Background="{x:Null}"  Margin="100,11,100,10" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+        <Button x:Name="Add" Content="Создать запись" Style="{DynamicResource BtnStyle}" 
+            Grid.Column="2" Background="{x:Null}"  Margin="35.6,30,76.4,0" Grid.RowSpan="2" Click="Add_OnClick" Height="70" VerticalAlignment="Top"/>
+        <Button x:Name="Delete" Content="Удалить запись" Style="{DynamicResource BtnStyle}"  Command="{Binding Path=DeleteCommand}" 
+            Grid.Column="2" Grid.Row="1" Background="{x:Null}"  Margin="315.6,1.6,35.6,0.4" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
