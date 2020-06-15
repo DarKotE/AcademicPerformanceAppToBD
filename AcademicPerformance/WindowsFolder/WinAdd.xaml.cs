@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
-using AcademicPerformance.ViewModelFolder;
+using AcademicPerformance.ViewModelsFolder;
 using AcademicPerformance.ViewModelsFolder;
 
 namespace AcademicPerformance.WindowsFolder

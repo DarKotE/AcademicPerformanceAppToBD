@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,7 +23,7 @@ namespace AcademicPerformance.ViewModelsFolder
             TeacherController = new TeacherController();
             CurrentUser = new UserModel();
             CurrentTeacher = TeacherController.Select(App.IdUser);
-            if (CurrentTeacher.DateOfBirthTeacher == default(DateTime))
+            if (CurrentTeacher.DateOfBirthTeacher == default)
             {
                 CurrentTeacher.DateOfBirthTeacher = DateTime.Now;
             }

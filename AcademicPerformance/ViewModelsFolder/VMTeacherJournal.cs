@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
 using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 
-namespace AcademicPerformance.ViewModelFolder
+namespace AcademicPerformance.ViewModelsFolder
 
 {
     public class VMTeacherJournal : INotifyPropertyChanged
@@ -28,7 +22,7 @@ namespace AcademicPerformance.ViewModelFolder
             Filter();
         }
 
-        void LoadData()
+        private void LoadData()
         {
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
             EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
@@ -44,9 +38,9 @@ namespace AcademicPerformance.ViewModelFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private JournalController teacherJournalController;
-        private DisciplineController disciplineController;
-        private EvaluationController evaluationController;
+        private readonly JournalController teacherJournalController;
+        private readonly DisciplineController disciplineController;
+        private readonly EvaluationController evaluationController;
 
 
 

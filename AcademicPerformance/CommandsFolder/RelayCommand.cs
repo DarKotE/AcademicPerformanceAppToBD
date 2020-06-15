@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AcademicPerformance.CommandsFolder
@@ -10,12 +6,12 @@ namespace AcademicPerformance.CommandsFolder
     public class RelayCommand:ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private Action<object> doAction;
-        
+        public Action<object> DoAction { get; }
+
 
         public RelayCommand(Action<object> action)
         {
-            doAction = action;
+            DoAction = action;
         }
 
    
@@ -27,7 +23,7 @@ namespace AcademicPerformance.CommandsFolder
 
         public void Execute(object parameter)
         {
-            doAction(parameter);
+            DoAction(parameter);
         }
 
         

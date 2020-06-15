@@ -1,21 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Configuration;
-using AcademicPerformance.ClassFolder;
-using AcademicPerformance.ViewModelFolder;
+using AcademicPerformance.ViewModelsFolder;
 
 namespace AcademicPerformance
 {
@@ -47,11 +32,12 @@ namespace AcademicPerformance
             }
             else if (string.IsNullOrEmpty(PbPassword.Password))
             {
-               TbLogin.Focus();
+                PbPassword.Focus();
                 return false;
             }
             return true;
         }
+
         private void ShowNextWindow(int i)
         {
             switch (i)
@@ -81,6 +67,7 @@ namespace AcademicPerformance
 
         private async void BntSignIn_Click(object sender, RoutedEventArgs e)
         {
+            IsTextboxFilled();
             await Task.Delay(100);
             
             ShowNextWindow(App.RoleUser);

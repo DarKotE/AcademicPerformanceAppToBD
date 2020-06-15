@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Configuration;
 using System.Windows.Forms;
 using AcademicPerformance.ClassFolder;
-using AcademicPerformance.ViewModelFolder;
+using AcademicPerformance.ViewModelsFolder;
 using Application = System.Windows.Application;
 
 

@@ -1,45 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AcademicPerformance.ClassFolder
 {
    public class TeacherController
     {
-        CDataAccess dataAccess = new CDataAccess();
+        public CDataAccess DataAccess { get; }
 
         public TeacherController()
         {
-
+            DataAccess = new CDataAccess();
         }
 
         public List<TeacherModel> GetAll()
         {
-            List<TeacherModel> teacherList = new List<TeacherModel>();
-            teacherList = dataAccess.GetTeacherList();
-            return teacherList;
+            var teacherList = DataAccess.GetTeacherList();
+            return teacherList ?? new List<TeacherModel>();
         }
         
         public bool Add(TeacherModel newTeacher)
         {
-            return dataAccess.InsertTeacher(newTeacher);
+            return DataAccess != null && DataAccess.InsertTeacher(newTeacher);
         }
 
         public bool Update(TeacherModel teacherToUpdate)
         {
-            return dataAccess.UpdateTeacher(teacherToUpdate);
+            return DataAccess != null && DataAccess.UpdateTeacher(teacherToUpdate);
         }
 
         public bool Delete(int idUser)
         {
-            return dataAccess.DeleteTeacher(idUser);
+            return DataAccess != null && DataAccess.DeleteTeacher(idUser);
         }
 
         public TeacherModel Select(int idUser)
         {
-            return dataAccess.GetTeacher(idUser);
+            if (DataAccess != null) return DataAccess.GetTeacher(idUser);else return new TeacherModel();
         }
 
     }

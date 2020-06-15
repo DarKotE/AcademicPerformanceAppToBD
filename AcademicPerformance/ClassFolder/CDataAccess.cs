@@ -3,14 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Configuration;
-using AcademicPerformance.ClassFolder;
 
-namespace AcademicPerformance
+namespace AcademicPerformance.ClassFolder
 {
     public class CDataAccess
     {
@@ -18,18 +13,17 @@ namespace AcademicPerformance
         public bool IsAuthValid(string userLogin, string userPassword)
         {
             
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
-                string sqlQuery = "SELECT IdUser FROM [dbo].[User] Where  LoginUser  = @LoginUser AND PasswordUser = @PasswordUser";
-                SqlCommand sqlCommand;
-                SqlDataReader sqlDataReader;
-                sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                const string sqlQuery = "SELECT IdUser FROM [dbo].[User] " + 
+                                        "Where  LoginUser  = @LoginUser AND PasswordUser = @PasswordUser";
+                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
                 sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
                 try
                 {
                     sqlConnection.Open();
-                    sqlDataReader = sqlCommand.ExecuteReader();
+                    var sqlDataReader = sqlCommand.ExecuteReader();
                     if (sqlDataReader.Read())
                     {
                         sqlDataReader.Close();
@@ -43,7 +37,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -57,11 +52,12 @@ namespace AcademicPerformance
         public bool IsLoginFree(string login)
         {
 
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
-                sqlCommand = new SqlCommand("select IdUser From dbo.[User] Where  LoginUser='" + login + "'", sqlConnection);
+                sqlCommand = new SqlCommand("select IdUser From dbo.[User]" 
+                                            + " Where  LoginUser='" + login + "'", sqlConnection);
                 sqlConnection.Open();
                 sqlDataReader = sqlCommand.ExecuteReader();
                 if (sqlDataReader.HasRows)
@@ -84,22 +80,22 @@ namespace AcademicPerformance
         #region UserAccess
         public List<UserModel> GetUserList()
         {
-            List<UserModel> tempUserList = new List<UserModel>();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempUserList = new List<UserModel>();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User]";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        List<UserModel> users = new List<UserModel>();
+                        var users = new List<UserModel>();
                         while (reader.Read())
                         {
-                            UserModel u = new UserModel();
+                            var u = new UserModel();
                             u.IdUser = reader.GetInt32(0);
                             u.LoginUser = reader.GetString(1);
                             u.PasswordUser = reader.GetString(2);
@@ -113,7 +109,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -126,23 +123,24 @@ namespace AcademicPerformance
 
         public UserModel GetUser(string userLogin, string userPassword)
         {
-            UserModel tempUserModel = new UserModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempUserModel = new UserModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User]";
-                    sqlQuery += " WHERE [User].LoginUser = @LoginUser AND [User].PasswordUser = @PasswordUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlQuery += " WHERE [User].LoginUser = @LoginUser " + 
+                                "AND [User].PasswordUser = @PasswordUser";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
                     sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<UserModel> items = new List<UserModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<UserModel>();
                     while (reader.Read())
                     {
-                        UserModel u = new UserModel();
+                        var u = new UserModel();
                         u.IdUser = (int)reader["IdUser"];
                         u.LoginUser = (string)reader["LoginUser"];
                         u.PasswordUser = (string)reader["PasswordUser"];
@@ -154,7 +152,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -166,25 +165,28 @@ namespace AcademicPerformance
         }
         public bool InsertUser(UserModel userModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = 
+                new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser,RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser," 
+                                   + "RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
                     sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
                     sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -198,26 +200,28 @@ namespace AcademicPerformance
 
         public bool UpdateUser(UserModel userModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[User] set LoginUser=@LoginUser, PasswordUser=@PasswordUser, RoleUser=@RoleUser WHERE IdUser=@IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "UPDATE dbo.[User] set LoginUser=@LoginUser, " 
+                                   + "PasswordUser=@PasswordUser, RoleUser=@RoleUser WHERE IdUser=@IdUser";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
                     sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
                     sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
                     sqlCommand.Parameters.AddWithValue("IdUser", userModel.IdUser);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -230,23 +234,24 @@ namespace AcademicPerformance
 
         public bool DeleteUser(int idUser)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[User] WHERE IdUser=@IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "DELETE FROM  dbo.[User] WHERE IdUser=@IdUser";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -260,29 +265,32 @@ namespace AcademicPerformance
         public UserModel SelectUserId(int idUser)
         {
             UserModel tempUser = null;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User] WHERE IdUser=@IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows) 
                     {
                         reader.Read();
-                        tempUser= new UserModel();
-                        tempUser.IdUser = reader.GetInt32(0);
-                        tempUser.LoginUser = reader.GetString(1);
-                        tempUser.PasswordUser = reader.GetString(2);
-                        tempUser.RoleUser = reader.GetInt32(3);
+                        tempUser = new UserModel
+                        {
+                            IdUser = reader.GetInt32(0),
+                            LoginUser = reader.GetString(1),
+                            PasswordUser = reader.GetString(2),
+                            RoleUser = reader.GetInt32(3)
+                        };
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -295,16 +303,16 @@ namespace AcademicPerformance
         public UserModel SelectUserLogin(string loginUser)
         {
             UserModel tempUser = null;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
+                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User] WHERE LoginUser=@LoginUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("LoginUser", loginUser);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
                         reader.Read();
@@ -317,7 +325,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -335,16 +344,20 @@ namespace AcademicPerformance
         
         public List<JournalModel> GetJournalList()
         {
-            DataTable dataTable = new DataTable();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var dataTable = new DataTable();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
-                string sqlQuery = "select [IdJournal],";
+                var sqlQuery = "select [IdJournal],";
                 sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', ''), COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', '')," + 
+                    " COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
                 sqlQuery += " [NameEvaluation],[NumberEvaluation],";
                 sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher], '')))) AS FIOTeacher,";
-                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher], [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), " + 
+                    "COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher]," +
+                    " '')))) AS FIOTeacher,";
+                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher]," 
+                            + " [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
                 sqlQuery += " FROM [dbo].[Journal]";
                 sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
                 sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
@@ -352,13 +365,12 @@ namespace AcademicPerformance
                 sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
                 sqlQuery += " WHERE Student.IdUser = @IdUser or Teacher.IdUser=@IdUser";
 
-                SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand);
+                var dataAdapter = new SqlDataAdapter(sqlCommand);
                 dataAdapter.Fill(dataTable);
 
-                List<JournalModel> journalList = new List<JournalModel>();
-                journalList = (from DataRow dataRow in dataTable.Rows
+                var journalList = (from DataRow dataRow in dataTable.Rows
                     select new JournalModel()
                     {
                         IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
@@ -381,28 +393,30 @@ namespace AcademicPerformance
 
         public JournalModel GetJournal(int idJournal)
         {
-            JournalModel tempJournal = new JournalModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempJournal = new JournalModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation";
+                    var sqlQuery = "SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation";
                     sqlQuery += " FROM [dbo].[Journal]";
                     sqlQuery += " WHERE [Journal].IdJournal = @IdJournal";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("IdJournal", idJournal);
 
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<JournalModel> items = new List<JournalModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<JournalModel>();
                     while (reader.Read())
                     {
-                        JournalModel u = new JournalModel();
-                        u.IdJournal = (int)reader["IdEvaluation"];
-                        u.IdStudent = (int)reader["IdStudent"];
-                        u.IdTeacher = (int)reader["IdTeacher"];
-                        u.IdDiscipline = (int)reader["IdDiscipline"];
-                        u.IdEvaluation= (int)reader["IdEvaluation"];
+                        var u = new JournalModel
+                        {
+                            IdJournal = (int) reader["IdEvaluation"],
+                            IdStudent = (int) reader["IdStudent"],
+                            IdTeacher = (int) reader["IdTeacher"],
+                            IdDiscipline = (int) reader["IdDiscipline"],
+                            IdEvaluation = (int) reader["IdEvaluation"]
+                        };
 
                         items.Add(u);
                     }
@@ -411,7 +425,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -423,25 +438,28 @@ namespace AcademicPerformance
         }
         public bool InsertJournal(JournalModel journalModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Journal] (IdStudent, IdTeacher, IdDiscipline, IdEvaluation) VALUES (@IdStudent, @IdTeacher, @IdDiscipline, @IdEvaluation)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "INSERT INTO dbo.[Journal] (IdStudent, IdTeacher, " 
+                                   + "IdDiscipline, IdEvaluation) VALUES (@IdStudent, " 
+                                   + "@IdTeacher, @IdDiscipline, @IdEvaluation)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
                     sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
                     sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -455,27 +473,29 @@ namespace AcademicPerformance
 
         public bool UpdateJournal(JournalModel journalModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Journal] set IdTeacher=@IdTeacher,IdStudent=@IdStudent,IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation" +
-                                      " WHERE IdJournal=@IdJournal";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "UPDATE dbo.[Journal] set IdTeacher=@IdTeacher," 
+                                   + "IdStudent=@IdStudent,IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation" 
+                                   + " WHERE IdJournal=@IdJournal";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdJournal", journalModel.IdJournal);
                     sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
                     sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
                     sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -488,23 +508,24 @@ namespace AcademicPerformance
 
         public bool DeleteJournal(int idJournal)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("idJournal", idJournal);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -523,22 +544,22 @@ namespace AcademicPerformance
         #region DisciplineAccess
         public List<DisciplineModel> GetDisciplineList()
         {
-            List<DisciplineModel> tempDisciplineList = new List<DisciplineModel>();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempDisciplineList = new List<DisciplineModel>();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdDiscipline, NameDiscipline";
+                    var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
                     sqlQuery += " FROM [dbo].[Discipline]";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        List<DisciplineModel> disciplines = new List<DisciplineModel>();
+                        var disciplines = new List<DisciplineModel>();
                         while (reader.Read())
                         {
-                            DisciplineModel u = new DisciplineModel();
+                            var u = new DisciplineModel();
                             u.IdDiscipline = reader.GetInt32(0);
                             u.NameDiscipline = reader.GetString(1);
                             disciplines.Add(u);
@@ -550,7 +571,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -563,23 +585,23 @@ namespace AcademicPerformance
 
         public DisciplineModel GetDiscipline(int idDiscipline)
         {
-            DisciplineModel tempDiscipline = new DisciplineModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempDiscipline = new DisciplineModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdDiscipline, NameDiscipline";
+                    var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
                     sqlQuery += " FROM [dbo].[Discipline]";
                     sqlQuery += " WHERE [Discipline].IdDiscipline = @IdDiscipline";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
                     
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<DisciplineModel> items = new List<DisciplineModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<DisciplineModel>();
                     while (reader.Read())
                     {
-                        DisciplineModel u = new DisciplineModel();
+                        var u = new DisciplineModel();
                         u.IdDiscipline = (int)reader["IdDiscipline"];
                         u.NameDiscipline = (string)reader["NameDiscipline"];
                         items.Add(u);
@@ -589,7 +611,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -601,23 +624,25 @@ namespace AcademicPerformance
         }
         public bool InsertDiscipline(DisciplineModel disciplineModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Discipline] (IdDiscipline,NameDiscipline) VALUES (@IdDiscipline, @NameDiscipline)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "INSERT INTO dbo.[Discipline] (IdDiscipline,NameDiscipline)"
+                                   + " VALUES (@IdDiscipline, @NameDiscipline)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
                     sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -631,23 +656,25 @@ namespace AcademicPerformance
 
         public bool UpdateDiscipline(DisciplineModel disciplineModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline WHERE IdDiscipline=@IdDiscipline";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline "
+                                   + "WHERE IdDiscipline=@IdDiscipline";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -660,23 +687,24 @@ namespace AcademicPerformance
 
         public bool DeleteDiscipline(int idDiscipline)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -693,25 +721,27 @@ namespace AcademicPerformance
         #region EvaluationAccess
         public List<EvaluationModel> GetEvaluationList()
         {
-            List<EvaluationModel> tempEvaluationList = new List<EvaluationModel>();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempEvaluationList = new List<EvaluationModel>();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
+                    var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
                     sqlQuery += " FROM [dbo].[Evaluation]";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        List<EvaluationModel> items = new List<EvaluationModel>();
+                        var items = new List<EvaluationModel>();
                         while (reader.Read())
                         {
-                            EvaluationModel u = new EvaluationModel();
-                            u.IdEvaluation = reader.GetInt32(0);
-                            u.NameEvaluation = reader.GetString(1);
-                            u.NumberEvaluation = reader.GetInt32(2);
+                            var u = new EvaluationModel
+                            {
+                                IdEvaluation = reader.GetInt32(0),
+                                NameEvaluation = reader.GetString(1),
+                                NumberEvaluation = reader.GetInt32(2)
+                            };
                             items.Add(u);
                         }
                         tempEvaluationList = items;
@@ -721,7 +751,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -734,26 +765,28 @@ namespace AcademicPerformance
 
         public EvaluationModel GetEvaluation(int idEvaluation)
         {
-            EvaluationModel tempEvaluation = new EvaluationModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempEvaluation = new EvaluationModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
+                    var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
                     sqlQuery += " FROM [dbo].[Evaluation]";
                     sqlQuery += " WHERE [Evaluation].IdEvaluation = @IdEvaluation";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
 
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<EvaluationModel> items = new List<EvaluationModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<EvaluationModel>();
                     while (reader.Read())
                     {
-                        EvaluationModel u = new EvaluationModel();
-                        u.IdEvaluation = (int)reader["IdEvaluation"];
-                        u.NameEvaluation = (string)reader["NameEvaluation"];
-                        u.NumberEvaluation = (int)reader["NumberEvaluation"];
+                        var u = new EvaluationModel
+                        {
+                            IdEvaluation = (int) reader["IdEvaluation"],
+                            NameEvaluation = (string) reader["NameEvaluation"],
+                            NumberEvaluation = (int) reader["NumberEvaluation"]
+                        };
 
                         items.Add(u);
                     }
@@ -762,7 +795,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -774,24 +808,27 @@ namespace AcademicPerformance
         }
         public bool InsertEvaluation(EvaluationModel evaluationModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Evaluation] (IdEvaluation, NameEvaluation, NumberEvaluation) VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "INSERT INTO dbo.[Evaluation] " 
+                                   + "(IdEvaluation, NameEvaluation, NumberEvaluation) "
+                                   + "VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdDiscipline", evaluationModel.IdEvaluation);
                     sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
                     sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -805,25 +842,26 @@ namespace AcademicPerformance
 
         public bool UpdateEvaluation(EvaluationModel evaluationModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Evaluation] set NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation" +
-                                      " WHERE IdEvaluation=@IdEvaluation";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "UPDATE dbo.[Evaluation] set NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation" +
+                                            " WHERE IdEvaluation=@IdEvaluation";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
                     sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
                     sqlCommand.Parameters.AddWithValue("IdEvaluation", evaluationModel.IdEvaluation);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -834,25 +872,26 @@ namespace AcademicPerformance
             return isUpdated;
         }
 
-        public bool DeleteEvaluation(int IdEvaluation)
+        public bool DeleteEvaluation(int idEvaluation)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", IdEvaluation);
+                    var sqlQuery = "DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -869,29 +908,32 @@ namespace AcademicPerformance
         #region TeacherAccess
         public List<TeacherModel> GetTeacherList()
         {
-            List<TeacherModel> tempTeacherList = new List<TeacherModel>();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempTeacherList = new List<TeacherModel>();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, FirstNameTeacher,MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher";
+                    var sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, " 
+                                   + "FirstNameTeacher,MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher";
                     sqlQuery += " FROM [dbo].[Teacher]";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        List<TeacherModel> items = new List<TeacherModel>();
+                        var items = new List<TeacherModel>();
                         while (reader.Read())
                         {
-                            TeacherModel u = new TeacherModel();
-                            u.IdTeacher = reader.GetInt32(0);
-                            u.LastNameTeacher = reader.GetString(1);
-                            u.FirstNameTeacher = reader.GetString(2);
-                            u.MiddleNameTeacher = reader.GetString(3);
-                            u.DateOfBirthTeacher = reader.GetDateTime(4);
-                            u.NumberPhoneTeacher = reader.GetString(5);
-                            u.IdUser = reader.GetInt32(6);
+                            var u = new TeacherModel
+                            {
+                                IdTeacher = reader.GetInt32(0),
+                                LastNameTeacher = reader.GetString(1),
+                                FirstNameTeacher = reader.GetString(2),
+                                MiddleNameTeacher = reader.GetString(3),
+                                DateOfBirthTeacher = reader.GetDateTime(4),
+                                NumberPhoneTeacher = reader.GetString(5),
+                                IdUser = reader.GetInt32(6)
+                            };
                             items.Add(u);
                         }
                         tempTeacherList = items;
@@ -901,7 +943,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -914,29 +957,32 @@ namespace AcademicPerformance
 
         public TeacherModel GetTeacher(int idUser)
         {
-            TeacherModel tempTeacherModel = new TeacherModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempTeacherModel = new TeacherModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher";
+                    var sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, " 
+                                   + "FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher";
                     sqlQuery += " FROM [dbo].[Teacher]";
                     sqlQuery += " WHERE [Teacher].IdUser = @IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<TeacherModel> items = new List<TeacherModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<TeacherModel>();
                     while (reader.Read())
                     {
-                        TeacherModel u = new TeacherModel();
-                        u.IdTeacher= (int)reader["IdTeacher"];
-                        u.IdUser = (int)reader["IdUser"];
-                        u.LastNameTeacher = (string)reader["LastNameTeacher"];
-                        u.FirstNameTeacher = (string)reader["FirstNameTeacher"];
-                        u.MiddleNameTeacher = (string)reader["MiddleNameTeacher"];
-                        u.DateOfBirthTeacher = (DateTime)reader["DateOfBirthTeacher"];
-                        u.NumberPhoneTeacher = (string)reader["NumberPhoneTeacher"];
+                        var u = new TeacherModel
+                        {
+                            IdTeacher = (int) reader["IdTeacher"],
+                            IdUser = (int) reader["IdUser"],
+                            LastNameTeacher = (string) reader["LastNameTeacher"],
+                            FirstNameTeacher = (string) reader["FirstNameTeacher"],
+                            MiddleNameTeacher = (string) reader["MiddleNameTeacher"],
+                            DateOfBirthTeacher = (DateTime) reader["DateOfBirthTeacher"],
+                            NumberPhoneTeacher = (string) reader["NumberPhoneTeacher"]
+                        };
                         items.Add(u);
                     }
                     if (items.Count > 0) tempTeacherModel = items[0];
@@ -944,7 +990,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -956,13 +1003,14 @@ namespace AcademicPerformance
         }
         public bool InsertTeacher(TeacherModel teacherModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Teacher] (IdUser,LastNameTeacher, FirstNameTeacher, MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher) VALUES (@IdUser, @LastNameTeacher, @FirstNameTeacher,@MiddleNameTeacher,@DateOfBirthTeacher,@NumberPhoneTeacher)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlQuery = "INSERT INTO dbo.[Teacher] (IdUser,LastNameTeacher,"
+                                   + " FirstNameTeacher, MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher) VALUES (@IdUser, @LastNameTeacher, @FirstNameTeacher,@MiddleNameTeacher,@DateOfBirthTeacher,@NumberPhoneTeacher)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
                     sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
                     sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
@@ -970,13 +1018,14 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("DateOfBirthTeacher", teacherModel.DateOfBirthTeacher);
                     sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -990,13 +1039,13 @@ namespace AcademicPerformance
 
         public bool UpdateTeacher(TeacherModel teacherModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Teacher] set IdUser=@IdUser, LastNameTeacher=@PasswordUser, FirstNameTeacher=@FirstNameTeacher, DateOfBirthTeacher=@DateOfBirthTeacher, NumberPhoneTeacher=@NumberPhoneTeacher WHERE IdTeacher=@IdTeacher";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "UPDATE dbo.[Teacher] set IdUser=@IdUser, LastNameTeacher=@PasswordUser, FirstNameTeacher=@FirstNameTeacher, DateOfBirthTeacher=@DateOfBirthTeacher, NumberPhoneTeacher=@NumberPhoneTeacher WHERE IdTeacher=@IdTeacher";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
                     sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
                     sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
@@ -1005,13 +1054,14 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
                     sqlCommand.Parameters.AddWithValue("IdTeacher", teacherModel.IdTeacher);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -1023,23 +1073,24 @@ namespace AcademicPerformance
 
         public bool DeleteTeacher(int idUser)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Teacher] WHERE IdUser=@IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "DELETE FROM  dbo.[Teacher] WHERE IdUser=@IdUser";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -1056,29 +1107,32 @@ namespace AcademicPerformance
         #region StudentAccess
         public List<StudentModel> GetStudentList()
         {
-            List<StudentModel> tempStudentList = new List<StudentModel>();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempStudentList = new List<StudentModel>();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent";
+                    var sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, "
+                                   + "FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent";
                     sqlQuery += " FROM [dbo].[Student]";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    var reader = sqlCommand.ExecuteReader();
                     if (reader.HasRows)
                     {
-                        List<StudentModel> items = new List<StudentModel>();
+                        var items = new List<StudentModel>();
                         while (reader.Read())
                         {
-                            StudentModel u = new StudentModel();
-                            u.IdStudent = reader.GetInt32(0);
-                            u.LastNameStudent = reader.GetString(1);
-                            u.FirstNameStudent = reader.GetString(2);
-                            u.MiddleNameStudent = reader.GetString(3);
-                            u.DateOfBirthStudent = reader.GetDateTime(4);
-                            u.NumberPhoneStudent = reader.GetString(5);
-                            u.IdUser = reader.GetInt32(6);
+                            var u = new StudentModel
+                            {
+                                IdStudent = reader.GetInt32(0),
+                                LastNameStudent = reader.GetString(1),
+                                FirstNameStudent = reader.GetString(2),
+                                MiddleNameStudent = reader.GetString(3),
+                                DateOfBirthStudent = reader.GetDateTime(4),
+                                NumberPhoneStudent = reader.GetString(5),
+                                IdUser = reader.GetInt32(6)
+                            };
                             items.Add(u);
                         }
                         tempStudentList = items;
@@ -1088,7 +1142,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -1101,29 +1156,32 @@ namespace AcademicPerformance
 
         public StudentModel GetStudent(int idUser)
         {
-            StudentModel tempStudentModel = new StudentModel();
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var tempStudentModel = new StudentModel();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent";
+                    var sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, "
+                                   + "FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent";
                     sqlQuery += " FROM [dbo].[Student]";
                     sqlQuery += " WHERE [Student].IdUser = @IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<StudentModel> items = new List<StudentModel>();
+                    var reader = sqlCommand.ExecuteReader();
+                    var items = new List<StudentModel>();
                     while (reader.Read())
                     {
-                        StudentModel u = new StudentModel();
-                        u.IdStudent = (int)reader["IdStudent"];
-                        u.IdUser = (int)reader["IdUser"];
-                        u.LastNameStudent = (string)reader["LastNameStudent"];
-                        u.FirstNameStudent = (string)reader["FirstNameStudent"];
-                        u.MiddleNameStudent = (string)reader["MiddleNameStudent"];
-                        u.DateOfBirthStudent = (DateTime)reader["DateOfBirthStudent"];
-                        u.NumberPhoneStudent = (string)reader["NumberPhoneStudent"];
+                        var u = new StudentModel
+                        {
+                            IdStudent = (int) reader["IdStudent"],
+                            IdUser = (int) reader["IdUser"],
+                            LastNameStudent = (string) reader["LastNameStudent"],
+                            FirstNameStudent = (string) reader["FirstNameStudent"],
+                            MiddleNameStudent = (string) reader["MiddleNameStudent"],
+                            DateOfBirthStudent = (DateTime) reader["DateOfBirthStudent"],
+                            NumberPhoneStudent = (string) reader["NumberPhoneStudent"]
+                        };
                         items.Add(u);
                     }
                     if (items.Count>0) tempStudentModel = items[0];
@@ -1131,7 +1189,8 @@ namespace AcademicPerformance
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -1143,13 +1202,15 @@ namespace AcademicPerformance
         }
         public bool InsertStudent(StudentModel studentModel)
         {
-            bool isInserted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isInserted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent) VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent, @DateOfBirthStudent, @NumberPhoneStudent)";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, " 
+                                            + "FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent)"
+                                            + " VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent, @DateOfBirthStudent, @NumberPhoneStudent)";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
                     sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
                     sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
@@ -1157,13 +1218,14 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
                     sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isInserted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isInserted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
                 }
                 finally
                 {
@@ -1177,13 +1239,14 @@ namespace AcademicPerformance
 
         public bool UpdateStudent(StudentModel studentModel)
         {
-            bool isUpdated = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isUpdated = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, LastNameStudent=@LastNameStudent, FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, "
+                                            + "LastNameStudent=@LastNameStudent, FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
                     sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
                     sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
@@ -1192,8 +1255,8 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
                     sqlCommand.Parameters.AddWithValue("IdStudent", studentModel.IdStudent);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isUpdated = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isUpdated = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
@@ -1210,23 +1273,24 @@ namespace AcademicPerformance
 
         public bool DeleteStudent(int idUser)
         {
-            bool isDeleted = false;
-            using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            var isDeleted = false;
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
 
                 try
                 {
-                    string sqlQuery = "DELETE FROM  dbo.[Student] WHERE IdUser=@IdUser";
-                    SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                    const string sqlQuery = "DELETE FROM  dbo.[Student] WHERE IdUser=@IdUser";
+                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlCommand.Parameters.AddWithValue("IdUser", idUser);
                     sqlConnection.Open();
-                    int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
-                    isDeleted = NoOfRowsAffected > 0;
+                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    isDeleted = noOfRowsAffected > 0;
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, 
+                        MessageBoxImage.Error);
                 }
                 finally
                 {

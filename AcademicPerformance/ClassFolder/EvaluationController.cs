@@ -1,46 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AcademicPerformance.ClassFolder
 {
 
     public class EvaluationController
     {
-        CDataAccess dataAccess = new CDataAccess();
+        public CDataAccess DataAccess { get; }
 
         public EvaluationController()
         {
-
+            DataAccess = new CDataAccess();
         }
 
         public List<EvaluationModel> GetAll()
         {
-            List<EvaluationModel> evaluationList = new List<EvaluationModel>();
-            evaluationList = dataAccess.GetEvaluationList();
-            return evaluationList;
+            var evaluationList = DataAccess.GetEvaluationList();
+            return evaluationList ?? new List<EvaluationModel>();
         }
 
         public bool Add(EvaluationModel newEvaluation)
         {
-            return dataAccess.InsertEvaluation(newEvaluation);
+            return DataAccess != null && DataAccess.InsertEvaluation(newEvaluation);
         }
 
         public bool Update(EvaluationModel evaluationToUpdate)
         {
-            return dataAccess.UpdateEvaluation(evaluationToUpdate);
+            return DataAccess != null && DataAccess.UpdateEvaluation(evaluationToUpdate);
         }
 
         public bool Delete(int idEvaluation)
         {
-            return dataAccess.DeleteEvaluation(idEvaluation);
+            return DataAccess != null && DataAccess.DeleteEvaluation(idEvaluation);
         }
 
         public EvaluationModel SelectId(int idEvaluation)
         {
-            return dataAccess.GetEvaluation(idEvaluation);
+            return DataAccess != null ? DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
         }
 
     }

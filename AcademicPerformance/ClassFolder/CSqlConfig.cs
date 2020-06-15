@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Configuration;
 
-namespace AcademicPerformance
+namespace AcademicPerformance.ClassFolder
 {
     public static class CSqlConfig
     {

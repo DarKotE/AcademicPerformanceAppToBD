@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
 
-namespace AcademicPerformance.ViewModelFolder
+namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMAuthorization : INotifyPropertyChanged
     {
@@ -27,24 +22,10 @@ namespace AcademicPerformance.ViewModelFolder
         {
             
             userController = new UserController();
-            // LoadData();
             CurrentUser = new UserModel();
             authCommand = new RelayCommand(Auth);
         }
-        private ObservableCollection<UserModel> userList;
-        public ObservableCollection<UserModel> UserList
-        {
-            get { return userList; }
-            set { userList = value; OnPropertyChanged("UserList"); }
-
-        }
-
-
-        private void LoadData()
-        {
-            userList = new ObservableCollection<UserModel>(userController.GetAll());
-        }
-
+        
 
         private UserModel currentUser;
         public UserModel CurrentUser

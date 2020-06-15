@@ -1,59 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AcademicPerformance.ClassFolder
 {
 
     public class UserController
     {
-        CDataAccess dataAccess = new CDataAccess();
+        public CDataAccess DataAccess { get; }
 
         public UserController()
         {
-            
+            DataAccess = new CDataAccess();
         }
 
         public List<UserModel> GetAll()
         {
-            List<UserModel> userList = new List<UserModel>();
-            userList = dataAccess.GetUserList();
-            return userList;
+            var userList = DataAccess.GetUserList();
+            return userList ?? new List<UserModel>();
         }
 
         public bool IsLoginFree(string login)
         {
-            return dataAccess.IsLoginFree(login);
+            return DataAccess != null && DataAccess.IsLoginFree(login);
         }
         public bool IsAuthValid(string login,string password)
         {
-            return dataAccess.IsAuthValid(login,password);
+            return DataAccess != null && DataAccess.IsAuthValid(login,password);
         }
 
         public bool Add(UserModel newUser)
         {
-            return dataAccess.InsertUser(newUser);
+            return DataAccess != null && DataAccess.InsertUser(newUser);
         }
 
         public bool Update(UserModel userToUpdate)
         {
-            return dataAccess.UpdateUser(userToUpdate);
+            return DataAccess != null && DataAccess.UpdateUser(userToUpdate);
         }
 
         public bool Delete(int idUser)
         {
-            return dataAccess.DeleteUser(idUser);
+            return DataAccess != null && DataAccess.DeleteUser(idUser);
         }
 
         public UserModel SelectId(int idUser)
         {
-            return dataAccess.SelectUserId(idUser);
+            return DataAccess != null ? DataAccess.SelectUserId(idUser) : new UserModel();
         }
         public UserModel SelectName(string loginUser)
         {
-            return dataAccess.SelectUserLogin(loginUser);
+            return DataAccess != null ? DataAccess.SelectUserLogin(loginUser) : new UserModel();
         }
     }
 }

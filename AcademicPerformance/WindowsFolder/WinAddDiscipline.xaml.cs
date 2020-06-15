@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Configuration;
 using System.Data.SqlClient;
+using AcademicPerformance.ClassFolder;
 
 namespace AcademicPerformance.WindowsFolder
 {

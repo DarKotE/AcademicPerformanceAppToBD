@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
 
@@ -18,12 +11,13 @@ namespace AcademicPerformance.ViewModelsFolder
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, 
+                new PropertyChangedEventArgs(propertyName));
         }
 
 
-        private JournalController journalController;
-        private TeacherController teacherController;
+        private readonly JournalController journalController;
+        private readonly TeacherController teacherController;
         public VMAddJournal()
         {
 
@@ -76,7 +70,8 @@ namespace AcademicPerformance.ViewModelsFolder
         public void Add(object param)
         {
             CurrentJournal.IdTeacher = CurrentTeacher.IdTeacher;
-            message = journalController.Add(CurrentJournal) ? "Добавлено" : "При добавлении произошла ошибка";
+            message = journalController.Add(CurrentJournal) ? "Добавлено" 
+                : "При добавлении произошла ошибка";
             MessageBox.Show(Message);
         }
 
