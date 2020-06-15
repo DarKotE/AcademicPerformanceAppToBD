@@ -24,11 +24,20 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinStudent : Window
     {
+        public delegate void Refresh();
+        public event Refresh RefreshEvent;
+
+        private void RefreshView()
+        {
+            var studentJournal = new VMTeacherJournal();
+            this.DataContext = null;
+            this.DataContext = studentJournal;
+        }
+
         public WinStudent()
         {            
             InitializeComponent();
-            var studentJournal = new VMStudentJournal();
-            this.DataContext = studentJournal;
+            RefreshView();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -49,8 +58,11 @@ namespace AcademicPerformance.WindowsFolder
 
         private void MiPersonalProfile_Click(object sender, RoutedEventArgs e)
         {
+           
+            RefreshEvent += new Refresh(RefreshView);
             WinProfileStudent winProfileStudent = new WinProfileStudent();
-            winProfileStudent.ShowDialog();
+            winProfileStudent.UpdateActor = RefreshEvent;
+            winProfileStudent.Show();
         }
 
         private void MiExit_Click(object sender, RoutedEventArgs e)

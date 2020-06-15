@@ -93,8 +93,7 @@ namespace AcademicPerformance.ViewModelFolder
                 {
                     currentUser = userController.SelectName(CurrentUser.LoginUser);
                     App.LoginUser = currentUser.LoginUser;
-                    //App.PasswordUser = currentUser.PasswordUser;
-                    App.PasswordUser = "******";
+                    App.PasswordUser = currentUser.PasswordUser;
                     App.IdUser = currentUser.IdUser;
                     App.RoleUser = currentUser.RoleUser;
                 }

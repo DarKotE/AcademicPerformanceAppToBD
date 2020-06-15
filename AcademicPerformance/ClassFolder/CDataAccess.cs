@@ -139,7 +139,7 @@ namespace AcademicPerformance
                     sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
                     sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
                     SqlDataReader reader = sqlCommand.ExecuteReader();
-                    List<UserModel> users = new List<UserModel>();
+                    List<UserModel> items = new List<UserModel>();
                     while (reader.Read())
                     {
                         UserModel u = new UserModel();
@@ -147,9 +147,9 @@ namespace AcademicPerformance
                         u.LoginUser = (string)reader["LoginUser"];
                         u.PasswordUser = (string)reader["PasswordUser"];
                         u.RoleUser = (int)reader["RoleUser"];
-                        users.Add(u);
+                        items.Add(u);
                     }
-                    tempUserModel = users[0];
+                    if (items.Count>0)tempUserModel = items[0];
 
                 }
                 catch (Exception ex)
@@ -406,7 +406,7 @@ namespace AcademicPerformance
 
                         items.Add(u);
                     }
-                    tempJournal = items[0];
+                    if (items.Count>0) tempJournal = items[0];
 
                 }
                 catch (Exception ex)
@@ -584,7 +584,7 @@ namespace AcademicPerformance
                         u.NameDiscipline = (string)reader["NameDiscipline"];
                         items.Add(u);
                     }
-                    tempDiscipline = items[0];
+                    if (items.Count > 0) tempDiscipline = items[0];
 
                 }
                 catch (Exception ex)
@@ -757,7 +757,7 @@ namespace AcademicPerformance
 
                         items.Add(u);
                     }
-                    tempEvaluation = items[0];
+                    if (items.Count > 0) tempEvaluation = items[0];
 
                 }
                 catch (Exception ex)
@@ -939,7 +939,7 @@ namespace AcademicPerformance
                         u.NumberPhoneTeacher = (string)reader["NumberPhoneTeacher"];
                         items.Add(u);
                     }
-                    tempTeacherModel = items[0];
+                    if (items.Count > 0) tempTeacherModel = items[0];
 
                 }
                 catch (Exception ex)
@@ -1106,7 +1106,7 @@ namespace AcademicPerformance
             {
                 try
                 {
-                    string sqlQuery = "IdUser, IdStudent, LastNameStudent, FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent";
+                    string sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent";
                     sqlQuery += " FROM [dbo].[Student]";
                     sqlQuery += " WHERE [Student].IdUser = @IdUser";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
@@ -1126,7 +1126,7 @@ namespace AcademicPerformance
                         u.NumberPhoneStudent = (string)reader["NumberPhoneStudent"];
                         items.Add(u);
                     }
-                    tempStudentModel = items[0];
+                    if (items.Count>0) tempStudentModel = items[0];
 
                 }
                 catch (Exception ex)
@@ -1141,21 +1141,21 @@ namespace AcademicPerformance
             }
             return tempStudentModel;
         }
-        public bool InsertStudent(StudentModel StudentModel)
+        public bool InsertStudent(StudentModel studentModel)
         {
             bool isInserted = false;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, FirstNameStudent, MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent) VALUES (@IdUser, @LastNameStudent, @FirstNameStudent,@MiddleNameStudent,@DateOfBirthStudent,@NumberPhoneStudent)";
+                    string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent) VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent, @DateOfBirthStudent, @NumberPhoneStudent)";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", StudentModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameStudent", StudentModel.LastNameStudent);
-                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", StudentModel.FirstNameStudent);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", StudentModel.MiddleNameStudent);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", StudentModel.DateOfBirthStudent);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", StudentModel.NumberPhoneStudent);
+                    sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
+                    sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
+                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
+                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
+                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
+                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
                     sqlConnection.Open();
                     int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                     isInserted = NoOfRowsAffected > 0;
@@ -1175,22 +1175,22 @@ namespace AcademicPerformance
         }
 
 
-        public bool UpdateStudent(StudentModel StudentModel)
+        public bool UpdateStudent(StudentModel studentModel)
         {
             bool isUpdated = false;
             using (SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
                 try
                 {
-                    string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, LastNameStudent=@PasswordUser, FirstNameStudent=@FirstNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
+                    string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, LastNameStudent=@LastNameStudent, FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", StudentModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameStudent", StudentModel.LastNameStudent);
-                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", StudentModel.FirstNameStudent);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", StudentModel.MiddleNameStudent);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", StudentModel.DateOfBirthStudent);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", StudentModel.NumberPhoneStudent);
-                    sqlCommand.Parameters.AddWithValue("IdStudent", StudentModel.IdStudent);
+                    sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
+                    sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
+                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
+                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
+                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
+                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
+                    sqlCommand.Parameters.AddWithValue("IdStudent", studentModel.IdStudent);
                     sqlConnection.Open();
                     int NoOfRowsAffected = sqlCommand.ExecuteNonQuery();
                     isUpdated = NoOfRowsAffected > 0;

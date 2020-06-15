@@ -93,6 +93,7 @@
     <Compile Include="ClassFolder\TeacherModel.cs" />
     <Compile Include="CommandsFolder\RelayCommand.cs" />
     <Compile Include="ViewModelsFolder\VMAddJournal.cs" />
+    <Compile Include="ViewModelsFolder\VMProfileStudent.cs" />
     <Compile Include="ViewModelsFolder\VMTeacherJournal.cs" />
     <Compile Include="ViewModelsFolder\VMStudentJournal.cs" />
     <Compile Include="ViewModelsFolder\VMRegistration.cs" />
