@@ -79,7 +79,7 @@ namespace AcademicPerformance.ViewModelFolder
         {
             var password = ((PasswordBox)param).Password;
             currentUser.PasswordUser = password;
-            currentUser.RoleUser = 5;
+            currentUser.RoleUser = 4;
 
             if (string.IsNullOrEmpty(currentUser.LoginUser))
             {

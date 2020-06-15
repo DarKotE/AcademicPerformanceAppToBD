@@ -37,25 +37,25 @@
                Style="{DynamicResource LabelLogo}" Foreground="White"/>
         <Label Content="ID Студента" Grid.Row="3" 
                Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdStudent" Grid.Column="1"
+        <TextBox x:Name="tbIdStudent" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdStudent}"
                  Grid.Row="3" Margin="10"  Background="#ffd800"/>
         <Label Content="ID Оценки" Grid.Row="5" 
-               Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdEvaluation" Grid.Column="1"
+                                                                                                                                                                                    Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
+        <TextBox x:Name="tbIdEvaluation" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdEvaluation}"
                  Grid.Row="5" Margin="10"  Background="#ffd800"/>
         <Label Content="ID Преподователя" Grid.Row="7" 
                Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdTeacher" Grid.Column="1"
+        <TextBox x:Name="tbIdTeacher" Grid.Column="1" Text="{Binding Path=CurrentTeacher.IdTeacher}"
                  Grid.Row="7" Margin="10" IsReadOnly="True"  Background="#ffd800"/>
         <Label Content="ID Дисциплины" Grid.Row="9" 
                Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdDiscipline" Grid.Column="1"
+        <TextBox x:Name="tbIdDiscipline" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdDiscipline}"
                  Grid.Row="9" Margin="10" Background="#ffd800"/>
-        <Button x:Name="btnSave" Content="Сохранить" 
+        <Button x:Name="btnSave" Content="Сохранить"  Command="{Binding Path=AddCommand}"
                 Style="{DynamicResource BtnStyle}" Grid.Row="11"
                Background="#ffd800" Click="btnSave_Click" />
         <Button x:Name="btnBack" Content="Назад"
                 Style="{DynamicResource BtnStyle}" Grid.Row="11"
-                Grid.Column="1" Background="#ffd800"   />
+                Grid.Column="1" Background="#ffd800" Click="btnBack_Click"   />
     </Grid>
 </Window>

@@ -23,24 +23,37 @@ namespace AcademicPerformance.ViewModelsFolder
 
 
         private JournalController journalController;
+        private TeacherController teacherController;
         public VMAddJournal()
         {
 
             journalController = new JournalController();
-            // LoadData();
-            //CurrentUser = new UserModel();
+            teacherController = new TeacherController();
+            CurrentTeacher = new TeacherModel();
+            CurrentTeacher = teacherController.Select(App.IdUser);
+            CurrentJournal = new JournalModel();
             addCommand = new RelayCommand(Add);
         }
-        
 
-        private UserModel currentUser;
-        public UserModel CurrentUser
+
+        private JournalModel currentJournal;
+        public JournalModel CurrentJournal
         {
-            get { return currentUser; }
+            get { return currentJournal; }
             set
             {
-                currentUser = value;
-                OnPropertyChanged("CurrentUser");
+                currentJournal = value;
+                OnPropertyChanged("CurrentJournal");
+            }
+        }
+        private TeacherModel currentTeacher;
+        public TeacherModel CurrentTeacher
+        {
+            get { return currentTeacher; }
+            set
+            {
+                currentTeacher = value;
+                OnPropertyChanged("CurrentTeacher");
             }
         }
 
@@ -56,14 +69,16 @@ namespace AcademicPerformance.ViewModelsFolder
         public string Message
         {
             get { return message; }
-            set { message = value; OnPropertyChanged(Message); }
+            set { message = value; OnPropertyChanged("Message"); }
         }
 
 
         public void Add(object param)
         {
-
-
+            CurrentJournal.IdTeacher = CurrentTeacher.IdTeacher;
+            message = journalController.Add(CurrentJournal) ? "Добавлено" : "При добавлении произошла ошибка";
+            MessageBox.Show(Message);
         }
+
     }
 }

@@ -919,7 +919,7 @@ namespace AcademicPerformance
             {
                 try
                 {
-                    string sqlQuery = "IdUser, IdTeacher, LastNameTeacher, FirstNameTeacher,MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher";
+                    string sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher";
                     sqlQuery += " FROM [dbo].[Teacher]";
                     sqlQuery += " WHERE [Teacher].IdUser = @IdUser";
                     SqlCommand sqlCommand = new SqlCommand(sqlQuery, sqlConnection);

@@ -22,12 +22,21 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinTeacher : Window
     {
+
+        public delegate void Refresh();
+        public event Refresh RefreshEvent;
+
+        private void RefreshView()
+        {
+            var teacherJournal = new VMTeacherJournal();
+            this.DataContext = null;
+            this.DataContext = teacherJournal;
+        }
+
         public WinTeacher()
         {
             InitializeComponent();
-            var teacherJournal = new VMTeacherJournal();
-            this.DataContext = teacherJournal;
-            
+            RefreshView();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -50,7 +59,9 @@ namespace AcademicPerformance.WindowsFolder
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {
             WinAdd winAdd = new WinAdd();
-            winAdd.ShowDialog();
+            RefreshEvent += new Refresh(RefreshView);
+            winAdd.UpdateActor = RefreshEvent;
+            winAdd.Show();
         }
 
         private void miProfile_Click(object sender, RoutedEventArgs e)
