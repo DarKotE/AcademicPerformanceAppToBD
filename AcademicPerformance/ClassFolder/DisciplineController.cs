@@ -16,7 +16,7 @@ namespace AcademicPerformance.ClassFolder
             var disciplineList = DataAccess.GetDisciplineList();
             return disciplineList ?? new List<DisciplineModel>();
         }
-        
+
         public bool Add(DisciplineModel newDiscipline)
         {
             return DataAccess != null && DataAccess.InsertDiscipline(newDiscipline);
@@ -36,12 +36,5 @@ namespace AcademicPerformance.ClassFolder
         {
             return DataAccess != null ? DataAccess.GetDiscipline(idDiscipline) : new DisciplineModel();
         }
-
     }
-
-
-
-
 }
-
-

@@ -2,14 +2,23 @@
 
 namespace AcademicPerformance.ClassFolder
 {
-
     public class EvaluationController
     {
-        public CDataAccess DataAccess { get; }
-
         public EvaluationController()
         {
             DataAccess = new CDataAccess();
+        }
+
+        public CDataAccess DataAccess { get; }
+
+        public bool Add(EvaluationModel newEvaluation)
+        {
+            return DataAccess != null && DataAccess.InsertEvaluation(newEvaluation);
+        }
+
+        public bool Delete(int idEvaluation)
+        {
+            return DataAccess != null && DataAccess.DeleteEvaluation(idEvaluation);
         }
 
         public List<EvaluationModel> GetAll()
@@ -18,25 +27,14 @@ namespace AcademicPerformance.ClassFolder
             return evaluationList ?? new List<EvaluationModel>();
         }
 
-        public bool Add(EvaluationModel newEvaluation)
+        public EvaluationModel SelectId(int idEvaluation)
         {
-            return DataAccess != null && DataAccess.InsertEvaluation(newEvaluation);
+            return DataAccess != null ? DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
         }
 
         public bool Update(EvaluationModel evaluationToUpdate)
         {
             return DataAccess != null && DataAccess.UpdateEvaluation(evaluationToUpdate);
         }
-
-        public bool Delete(int idEvaluation)
-        {
-            return DataAccess != null && DataAccess.DeleteEvaluation(idEvaluation);
-        }
-
-        public EvaluationModel SelectId(int idEvaluation)
-        {
-            return DataAccess != null ? DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
-        }
-
     }
 }

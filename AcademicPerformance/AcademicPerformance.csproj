@@ -92,11 +92,12 @@
     <Compile Include="ClassFolder\StudentModel.cs" />
     <Compile Include="ClassFolder\TeacherModel.cs" />
     <Compile Include="CommandsFolder\RelayCommand.cs" />
+    <Compile Include="ViewModelsFolder\VMAdminJournal.cs" />
     <Compile Include="ViewModelsFolder\VMProfileTeacher.cs" />
     <Compile Include="ViewModelsFolder\VMAddJournal.cs" />
     <Compile Include="ViewModelsFolder\VMProfileStudent.cs" />
     <Compile Include="ViewModelsFolder\VMTeacherJournal.cs" />
-    <Compile Include="ViewModelsFolder\VMStudentJournal.cs" />
+    <Compile Include="ViewModelsFolder\VMJournal.cs" />
     <Compile Include="ViewModelsFolder\VMRegistration.cs" />
     <Compile Include="ViewModelsFolder\VMAuthorization.cs" />
     <Compile Include="WindowsFolder\WinAdd.xaml.cs">
@@ -116,6 +117,9 @@
     </Compile>
     <Compile Include="WindowsFolder\WinDirector.xaml.cs">
       <DependentUpon>WinDirector.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsFolder\WinAdminJournal.xaml.cs">
+      <DependentUpon>WinAdminJournal.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsFolder\WinEditIn.xaml.cs">
       <DependentUpon>WinEditIn.xaml</DependentUpon>
@@ -178,6 +182,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsFolder\WinDirector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsFolder\WinAdminJournal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

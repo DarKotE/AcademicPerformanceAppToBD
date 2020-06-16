@@ -342,7 +342,7 @@ namespace AcademicPerformance.ClassFolder
         
         #region JournalAccess
         
-        public List<JournalModel> GetJournalList()
+        public List<JournalModel> GetJournalListForUser()
         {
             var dataTable = new DataTable();
             using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
@@ -389,7 +389,51 @@ namespace AcademicPerformance.ClassFolder
                 return output;
             }
         }
+        public List<JournalModel> GetJournalList()
+        {
+            var dataTable = new DataTable();
+            using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
+            {
+                var sqlQuery = "select [IdJournal],";
+                sqlQuery +=
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', '')," +
+                    " COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
+                sqlQuery += " [NameEvaluation],[NumberEvaluation],";
+                sqlQuery +=
+                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), " +
+                    "COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher]," +
+                    " '')))) AS FIOTeacher,";
+                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher],"
+                            + " [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
+                sqlQuery += " FROM [dbo].[Journal]";
+                sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
+                sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
+                sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
+                sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
 
+                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
+                var dataAdapter = new SqlDataAdapter(sqlCommand);
+                dataAdapter.Fill(dataTable);
+
+                var journalList = (from DataRow dataRow in dataTable.Rows
+                                   select new JournalModel()
+                                   {
+                                       IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
+                                       FIOStudent = dataRow["FIOStudent"].ToString(),
+                                       FIOTeacher = dataRow["FIOTeacher"].ToString(),
+                                       NameDiscipline = dataRow["NameDiscipline"].ToString(),
+                                       NameEvaluation = dataRow["NameEvaluation"].ToString(),
+                                       NumberEvaluation = Convert.ToInt32(dataRow["NumberEvaluation"]),
+                                       IdStudent = Convert.ToInt32(dataRow["IdStudent"]),
+                                       IdTeacher = Convert.ToInt32(dataRow["IdTeacher"]),
+                                       IdDiscipline = Convert.ToInt32(dataRow["IdDiscipline"]),
+                                       IdEvaluation = Convert.ToInt32(dataRow["IdEvaluation"]),
+                                   }).ToList();
+
+                var output = journalList;
+                return output;
+            }
+        }
 
         public JournalModel GetJournal(int idJournal)
         {

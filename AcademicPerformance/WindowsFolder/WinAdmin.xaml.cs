@@ -29,5 +29,50 @@ namespace AcademicPerformance.WindowsFolder
             Application.Current.Shutdown();
         }
 
+        private void btnJournal_Click(object sender, RoutedEventArgs e)
+        {
+            WindowsFolder.WinAdminJournal winAdminJournal = new WindowsFolder.WinAdminJournal();
+            winAdminJournal.ShowDialog();
+        }
+
+        private void miTeacherWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miStudentWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miManagerWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miDirectorWindow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miStudentProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miTeacherProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miManagerProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miDirectorProfile_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

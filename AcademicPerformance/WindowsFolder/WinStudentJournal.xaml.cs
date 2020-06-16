@@ -29,7 +29,7 @@ namespace AcademicPerformance.WindowsFolder
 
         private void RefreshView()
         {
-            var studentJournal = new VMTeacherJournal();
+            var studentJournal = new VMJournal();
             this.DataContext = null;
             this.DataContext = studentJournal;
         }

@@ -8,19 +8,9 @@ using AcademicPerformance.CommandsFolder;
 namespace AcademicPerformance.ViewModelsFolder
 
 {
-    public class VMTeacherJournal : INotifyPropertyChanged
+    public class VMAdminJournal : INotifyPropertyChanged
     {
-        public DisciplineController disciplineController { get; }
-        public EvaluationController evaluationController { get; }
-        private ObservableCollection<JournalModel> journalList;
-        private string searchText;
-        private DisciplineModel selectedDiscipline;
-        private EvaluationModel selectedNumber;
-
-
-        private JournalModel selectedRow;
-
-        public VMTeacherJournal()
+        public VMAdminJournal()
         {
             SaveCommand = new RelayCommand(Save);
             DeleteCommand = new RelayCommand(Delete);
@@ -30,8 +20,31 @@ namespace AcademicPerformance.ViewModelsFolder
             LoadData();
             Filter();
         }
-        private ObservableCollection<JournalModel> filteredJournalList;
+
+        private void LoadData()
+        {
+            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
+            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
+            JournalList = new ObservableCollection<JournalModel>(teacherJournalController.GetAllFull());
+            SelectedRow = new JournalModel();
+            SearchText = "";
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private readonly JournalController teacherJournalController;
+        private readonly DisciplineController disciplineController;
+        private readonly EvaluationController evaluationController;
+
+
+        private ObservableCollection<JournalModel> filteredJournalList;
+
         public ObservableCollection<JournalModel> FilteredJournalList
         {
             get => filteredJournalList;
@@ -41,6 +54,9 @@ namespace AcademicPerformance.ViewModelsFolder
                 OnPropertyChanged("FilteredJournalList");
             }
         }
+
+
+        private ObservableCollection<JournalModel> journalList;
 
         public ObservableCollection<JournalModel> JournalList
         {
@@ -52,9 +68,12 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+
         public ObservableCollection<EvaluationModel> EvaluationList { get; set; }
 
         public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
+
+        private string searchText;
 
         public string SearchText
         {
@@ -66,6 +85,8 @@ namespace AcademicPerformance.ViewModelsFolder
                 OnPropertyChanged("SearchText");
             }
         }
+
+        private EvaluationModel selectedNumber;
 
         public EvaluationModel SelectedNumber
         {
@@ -81,6 +102,8 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private DisciplineModel selectedDiscipline;
+
         public DisciplineModel SelectedDiscipline
         {
             set
@@ -95,6 +118,9 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+
+        private JournalModel selectedRow;
+
         public JournalModel SelectedRow
         {
             get => selectedRow;
@@ -103,29 +129,6 @@ namespace AcademicPerformance.ViewModelsFolder
                 selectedRow = value;
                 OnPropertyChanged("SelectedRow");
             }
-        }
-
-        public RelayCommand SaveCommand { get; }
-
-        public RelayCommand DeleteCommand { get; }
-
-        public string Message { get; set; }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void LoadData()
-        {
-            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
-            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
-            JournalList = new ObservableCollection<JournalModel>(teacherJournalController.GetAll());
-            SelectedRow = new JournalModel();
-            SearchText = "";
-        }
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 
@@ -144,6 +147,14 @@ namespace AcademicPerformance.ViewModelsFolder
                     select item);
             if (FilteredJournalList.Any()) SelectedRow = FilteredJournalList[0];
         }
+
+
+        public RelayCommand SaveCommand { get; }
+
+
+        public RelayCommand DeleteCommand { get; }
+
+        public string Message { get; set; }
 
 
         public void Save(object param)

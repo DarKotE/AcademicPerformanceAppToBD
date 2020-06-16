@@ -2,14 +2,24 @@
 
 namespace AcademicPerformance.ClassFolder
 {
- 
     public class StudentController
     {
-        public CDataAccess DataAccess { get; }
-
         public StudentController()
         {
             DataAccess = new CDataAccess();
+        }
+
+        public CDataAccess DataAccess { get; }
+
+
+        public bool Add(StudentModel newStudent)
+        {
+            return DataAccess != null && DataAccess.InsertStudent(newStudent);
+        }
+
+        public bool Delete(int idUser)
+        {
+            return DataAccess != null && DataAccess.DeleteStudent(idUser);
         }
 
         public List<StudentModel> GetAll()
@@ -18,26 +28,14 @@ namespace AcademicPerformance.ClassFolder
             return studentList ?? new List<StudentModel>();
         }
 
-        public bool Add(StudentModel newStudent)
+        public StudentModel Select(int idUser)
         {
-            return DataAccess != null && DataAccess.InsertStudent(newStudent);
+            return DataAccess != null ? DataAccess.GetStudent(idUser) : new StudentModel();
         }
 
         public bool Update(StudentModel studentToUpdate)
         {
             return DataAccess != null && DataAccess.UpdateStudent(studentToUpdate);
         }
-
-        public bool Delete(int idUser)
-        {
-            return DataAccess != null && DataAccess.DeleteStudent(idUser);
-        }
-
-        public StudentModel Select(int idUser)
-        {
-            return DataAccess != null ? DataAccess.GetStudent(idUser) : new StudentModel();
-        }
-
     }
-
 }

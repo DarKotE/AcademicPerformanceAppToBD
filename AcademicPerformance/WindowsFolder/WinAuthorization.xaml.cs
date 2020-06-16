@@ -43,16 +43,16 @@ namespace AcademicPerformance
             switch (i)
             {
                 case 1:
-                    WindowsFolder.WinAdmin winAdmin = new WindowsFolder.WinAdmin();
-                    winAdmin.ShowDialog();
+                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
+                    winManager.ShowDialog();
                     break;
                 case 2:
                     WindowsFolder.WinDirector winDirector = new WindowsFolder.WinDirector();
                     winDirector.ShowDialog();
                     break;
                 case 3:
-                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
-                    winManager.ShowDialog();
+                    WindowsFolder.WinAdmin winAdmin = new WindowsFolder.WinAdmin();
+                    winAdmin.ShowDialog();
                     break;
                 case 4:
                     WindowsFolder.WinStudent winStudent = new WindowsFolder.WinStudent();

@@ -6,7 +6,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinTeacher.xaml
     /// </summary>
-    public partial class WinTeacher : Window
+    public partial class WinAdminJournal: Window
     {
 
         public delegate void Refresh();
@@ -14,12 +14,12 @@ namespace AcademicPerformance.WindowsFolder
 
         private void RefreshView()
         {
-            var teacherJournal = new VMJournal();
+            var adminJournal = new VMAdminJournal();
             this.DataContext = null;
-            this.DataContext = teacherJournal;
+            this.DataContext = adminJournal;
         }
 
-        public WinTeacher()
+        public WinAdminJournal()
         {
             InitializeComponent();
             RefreshView();
@@ -30,7 +30,7 @@ namespace AcademicPerformance.WindowsFolder
             tbSearch.Focus();
         }
 
-        
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -40,7 +40,7 @@ namespace AcademicPerformance.WindowsFolder
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             }
         }
-        
+
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {

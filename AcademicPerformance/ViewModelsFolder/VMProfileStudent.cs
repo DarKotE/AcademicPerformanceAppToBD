@@ -1,15 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
-using AcademicPerformance.ClassFolder;
-using AcademicPerformance.CommandsFolder;
 using System.Windows;
 using System.Windows.Controls;
+using AcademicPerformance.ClassFolder;
+using AcademicPerformance.CommandsFolder;
 
 namespace AcademicPerformance.ViewModelsFolder
 {
-    public class VMProfileStudent: INotifyPropertyChanged
+    public class VMProfileStudent : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -19,38 +20,37 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public VMProfileStudent()
         {
-
             studentController = new StudentController();
-            CurrentUser= new UserModel();
+            CurrentUser = new UserModel();
             CurrentStudent = studentController.Select(App.IdUser);
-            if (CurrentStudent.DateOfBirthStudent == default(DateTime))
-            {
-                CurrentStudent.DateOfBirthStudent = DateTime.Now;
-            }
+            if (CurrentStudent.DateOfBirthStudent == default) CurrentStudent.DateOfBirthStudent = DateTime.Now;
             CurrentUser.LoginUser = App.LoginUser;
             CurrentUser.PasswordUser = "0";
             CurrentUser.IdUser = App.IdUser;
             CurrentUser.RoleUser = App.RoleUser;
 
 
-            addCommand = new RelayCommand(Add);
+            AddCommand = new RelayCommand(Add);
         }
 
-        
+
         private StudentModel currentStudent;
+
         public StudentModel CurrentStudent
         {
-            get { return currentStudent; }
+            get => currentStudent;
             set
             {
                 currentStudent = value;
                 OnPropertyChanged("CurrentStudent");
             }
         }
+
         private UserModel currentUser;
+
         public UserModel CurrentUser
         {
-            get { return currentUser; }
+            get => currentUser;
             set
             {
                 currentUser = value;
@@ -59,32 +59,35 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
 
-        private RelayCommand addCommand;
-        public RelayCommand AddCommand
-        {
-            get { return addCommand; }
-        }
+        public RelayCommand AddCommand { get; }
 
 
         private string message;
+
         public string Message
         {
-            get { return message; }
-            set { message = value; OnPropertyChanged("Message"); }
+            get => message;
+            set
+            {
+                message = value;
+                OnPropertyChanged("Message");
+            }
         }
 
 
         public void Add(object param)
         {
-            var password = ((PasswordBox)param).Password;
-            if (password != App.PasswordUser) 
+            var password = ((PasswordBox) param).Password;
+            if (password != App.PasswordUser)
             {
                 Message = "Подтвердите изменения вводом текущего пароля";
             }
-            else if (studentController.Select(CurrentStudent.IdUser).IdStudent==0)
+            else if (studentController.Select(CurrentStudent.IdUser).IdStudent == 0)
             {
                 CurrentStudent.IdUser = CurrentUser.IdUser;
-                Message = studentController.Add(CurrentStudent) ? "Добавлен новый ученик" : "При добавлении произошла ошибка";
+                Message = studentController.Add(CurrentStudent)
+                    ? "Добавлен новый ученик"
+                    : "При добавлении произошла ошибка";
             }
             else if (studentController.Update(CurrentStudent))
             {
@@ -94,8 +97,8 @@ namespace AcademicPerformance.ViewModelsFolder
             {
                 Message = "При обновлении произошла ошибка";
             }
+
             MessageBox.Show(Message);
         }
-
     }
 }
