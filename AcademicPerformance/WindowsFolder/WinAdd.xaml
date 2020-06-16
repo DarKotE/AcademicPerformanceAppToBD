@@ -35,22 +35,29 @@
         </Grid.RowDefinitions>
         <Label Content="Добавить" Grid.Row="1"  Grid.ColumnSpan="2" 
                Style="{DynamicResource LabelLogo}" Foreground="White"/>
-        <Label Content="ID Студента" Grid.Row="3" 
-               Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdStudent" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdStudent}"
-                 Grid.Row="3" Margin="10"  Background="#ffd800"/>
-        <Label Content="ID Оценки" Grid.Row="5" 
-                                                                                                                                                                                    Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdEvaluation" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdEvaluation}"
-                 Grid.Row="5" Margin="10"  Background="#ffd800"/>
-        <Label Content="ID Преподователя" Grid.Row="7" 
-               Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdTeacher" Grid.Column="1" Text="{Binding Path=CurrentTeacher.IdTeacher}"
-                 Grid.Row="7" Margin="10" IsReadOnly="True"  Background="#ffd800"/>
-        <Label Content="ID Дисциплины" Grid.Row="9" 
-               Style="{DynamicResource LabelStyle}"  Background="#ffd800"/>
-        <TextBox x:Name="tbIdDiscipline" Grid.Column="1" Text="{Binding Path=CurrentJournal.IdDiscipline}"
-                 Grid.Row="9" Margin="10" Background="#ffd800"/>
+        <ComboBox x:Name="cbStudent" Text="Ученик" Grid.Row="3" Margin="10,9.8,9.8,10.4" 
+                  ItemsSource="{Binding StudentList}" DisplayMemberPath="FullName"
+                  SelectedItem="{Binding SelectedStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox x:Name="tbStudent" Grid.Column="1" Text="{Binding Path=SelectedStudent.FullName}"
+                                                                                                                                Grid.Row="3" Margin="10"  Background="#ffd800" FontSize="24" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="cbEvaluation" Text="Оценка" Grid.Row="5" Margin="10,9.6,9.8,9.6" 
+                  ItemsSource="{Binding EvaluationList}" DisplayMemberPath="NameEvaluation"
+                  SelectedItem="{Binding SelectedEvaluation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox x:Name="tbEvaluation" Grid.Column="1" Text="{Binding Path=SelectedEvaluation.NameEvaluation}"
+                 Grid.Row="5" Margin="10"  Background="#ffd800" FontSize="24" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="cbTeacher" Text="Преподаватель" Grid.Row="7" 
+                  Background="#ffd800" Margin="10,10.4,9.8,9.8"
+                  ItemsSource="{Binding TeacherList}" DisplayMemberPath="FullName"
+                  SelectedItem="{Binding SelectedTeacher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox x:Name="tbTeacher" Grid.Column="1" Text="{Binding Path=SelectedTeacher.FullName}"
+
+                 Grid.Row="7" Margin="10" IsReadOnly="True"  Background="#ffd800" FontSize="24" VerticalContentAlignment="Center"/>
+        <ComboBox x:Name="cbDiscipline" Text="Дисциплина" Grid.Row="9" 
+                  ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
+                  SelectedItem="{Binding SelectedDiscipline, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Background="#ffd800" Margin="10,10.2,9.8,10"/>
+        <TextBox x:Name="tbDiscipline" Grid.Column="1" Text="{Binding Path=SelectedDiscipline.NameDiscipline}"
+                 Grid.Row="9" Margin="10" Background="#ffd800" FontSize="24" VerticalContentAlignment="Center"/>
         <Button x:Name="btnSave" Content="Сохранить"  Command="{Binding Path=AddCommand}"
                 Style="{DynamicResource BtnStyle}" Grid.Row="11"
                Background="#ffd800" Click="btnSave_Click" />

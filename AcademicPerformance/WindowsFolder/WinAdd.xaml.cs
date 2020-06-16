@@ -37,7 +37,13 @@ namespace AcademicPerformance.WindowsFolder
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+            if (App.RoleUser == 5)
+            {
+                cbTeacher.IsEditable = false;
+                cbTeacher.IsReadOnly = true;
+                cbTeacher.IsHitTestVisible = false;
+                cbTeacher.Focusable = false;
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

@@ -58,5 +58,25 @@ namespace AcademicPerformance.ClassFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         }
+        //Поле отсутствует в бд
+        private string fullName;
+        public string FullName
+        {
+            
+            get
+            {
+                fullName = LastNameTeacher;
+                fullName += " " + FirstNameTeacher;
+                if (MiddleNameTeacher != default) fullName += " " + MiddleNameTeacher;
+                return fullName;
+            }
+            set
+            {
+                fullName = value;
+
+            }
+        }
+
+
     }
 }

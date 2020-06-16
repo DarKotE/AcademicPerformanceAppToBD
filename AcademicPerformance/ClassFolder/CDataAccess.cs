@@ -913,8 +913,8 @@ namespace AcademicPerformance.ClassFolder
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, " 
-                                   + "FirstNameTeacher,MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher";
+                    var sqlQuery = "SELECT IdTeacher, LastNameTeacher,FirstNameTeacher, "
+                                   + "MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher, IdUser";
                     sqlQuery += " FROM [dbo].[Teacher]";
                     var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();
@@ -934,6 +934,7 @@ namespace AcademicPerformance.ClassFolder
                                 NumberPhoneTeacher = reader.GetString(5),
                                 IdUser = reader.GetInt32(6)
                             };
+
                             items.Add(u);
                         }
                         tempTeacherList = items;
@@ -962,8 +963,8 @@ namespace AcademicPerformance.ClassFolder
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, IdTeacher, LastNameTeacher, " 
-                                   + "FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher";
+                    var sqlQuery = "SELECT IdTeacher, LastNameTeacher, " 
+                                   + "FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher,IdUser ";
                     sqlQuery += " FROM [dbo].[Teacher]";
                     sqlQuery += " WHERE [Teacher].IdUser = @IdUser";
                     var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
@@ -976,12 +977,12 @@ namespace AcademicPerformance.ClassFolder
                         var u = new TeacherModel
                         {
                             IdTeacher = (int) reader["IdTeacher"],
-                            IdUser = (int) reader["IdUser"],
                             LastNameTeacher = (string) reader["LastNameTeacher"],
                             FirstNameTeacher = (string) reader["FirstNameTeacher"],
                             MiddleNameTeacher = (string) reader["MiddleNameTeacher"],
                             DateOfBirthTeacher = (DateTime) reader["DateOfBirthTeacher"],
-                            NumberPhoneTeacher = (string) reader["NumberPhoneTeacher"]
+                            NumberPhoneTeacher = (string) reader["NumberPhoneTeacher"],
+                            IdUser = (int)reader["IdUser"]
                         };
                         items.Add(u);
                     }
@@ -1112,8 +1113,8 @@ namespace AcademicPerformance.ClassFolder
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, "
-                                   + "FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent";
+                    var sqlQuery = "SELECT IdStudent, LastNameStudent, "
+                                   + "FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent,IdUser";
                     sqlQuery += " FROM [dbo].[Student]";
                     var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
                     sqlConnection.Open();

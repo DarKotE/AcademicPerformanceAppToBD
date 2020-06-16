@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
@@ -20,14 +21,105 @@ namespace AcademicPerformance.ViewModelsFolder
         private readonly TeacherController teacherController;
         public VMAddJournal()
         {
-
+            SelectedTeacher = new TeacherModel();
+            disciplineController = new DisciplineController();
+            evaluationController = new EvaluationController();
             journalController = new JournalController();
             teacherController = new TeacherController();
-            CurrentTeacher = new TeacherModel();
-            CurrentTeacher = teacherController.Select(App.IdUser);
+            studentController = new StudentController();
+            StudentList = new ObservableCollection<StudentModel>(studentController.GetAll());
+            TeacherList = new ObservableCollection<TeacherModel>(teacherController.GetAll());
+            DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
+            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
             CurrentJournal = new JournalModel();
+            if (App.RoleUser == 5)
+            {
+                SelectedTeacher = teacherController.Select(App.IdUser);
+            }
+            
             addCommand = new RelayCommand(Add);
         }
+
+        public ObservableCollection<StudentModel> StudentList { get; set; }
+
+        public ObservableCollection<TeacherModel> TeacherList { get; set; }
+
+        public ObservableCollection<EvaluationModel> EvaluationList { get; set; }
+
+        public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
+
+        private DisciplineModel selectedDiscipline;
+        public DisciplineModel SelectedDiscipline
+        {
+            get { return selectedDiscipline;}
+            set
+            {
+                selectedDiscipline = value;
+                if (DisciplineList != null && selectedDiscipline != null && CurrentJournal != null
+                    && CurrentJournal.NameDiscipline != selectedDiscipline.NameDiscipline)
+                {
+                    CurrentJournal.NameDiscipline = selectedDiscipline.NameDiscipline;
+                    CurrentJournal.IdDiscipline = selectedDiscipline.IdDiscipline;
+                }
+                OnPropertyChanged("SelectedDiscipline");
+            }
+
+        }
+        private EvaluationModel selectedEvaluation;
+        public EvaluationModel SelectedEvaluation
+        {
+            get { return selectedEvaluation; }
+            set
+            {
+                selectedEvaluation = value;
+                if (EvaluationList != null && selectedEvaluation != null && CurrentJournal != null
+                    && CurrentJournal.NameEvaluation != selectedEvaluation.NameEvaluation)
+                {
+                    CurrentJournal.NameEvaluation = selectedEvaluation.NameEvaluation;
+                    CurrentJournal.IdEvaluation = selectedEvaluation.IdEvaluation;
+                }
+                OnPropertyChanged("SelectedEvaluation");
+            }
+
+        }
+
+        private TeacherModel selectedTeacher;
+        public TeacherModel SelectedTeacher
+        {
+            get { return selectedTeacher; }
+            set
+            {
+                selectedTeacher = value;
+                if (TeacherList != null && selectedTeacher != null && CurrentJournal != null
+                    && CurrentJournal.FIOTeacher != selectedTeacher.FullName)
+                {
+                    CurrentJournal.FIOTeacher = selectedTeacher.FullName;
+                    CurrentJournal.IdTeacher = selectedTeacher.IdTeacher;
+                }
+                OnPropertyChanged("SelectedTeacher");
+            }
+
+        }
+
+        private StudentModel selectedStudent;
+        public StudentModel SelectedStudent
+        {
+            get { return selectedStudent; }
+            set
+            {
+                selectedStudent = value;
+                if (StudentList != null && selectedStudent != null && CurrentJournal != null
+                    && CurrentJournal.FIOStudent != selectedStudent.FullName)
+                {
+                    CurrentJournal.FIOStudent = selectedStudent.FullName;
+                    CurrentJournal.IdStudent = selectedStudent.IdStudent;
+                }
+                OnPropertyChanged("SelectedStudent");
+            }
+
+        }
+
+
 
 
         private JournalModel currentJournal;
@@ -60,6 +152,10 @@ namespace AcademicPerformance.ViewModelsFolder
 
 
         private string message;
+        private DisciplineController disciplineController;
+        private EvaluationController evaluationController;
+        private StudentController studentController;
+
         public string Message
         {
             get { return message; }
@@ -69,7 +165,8 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public void Add(object param)
         {
-            CurrentJournal.IdTeacher = CurrentTeacher.IdTeacher;
+
+            if (App.RoleUser == 5) CurrentJournal.IdTeacher = teacherController.Select(App.IdUser).IdTeacher;
             message = journalController.Add(CurrentJournal) ? "Добавлено" 
                 : "При добавлении произошла ошибка";
             MessageBox.Show(Message);

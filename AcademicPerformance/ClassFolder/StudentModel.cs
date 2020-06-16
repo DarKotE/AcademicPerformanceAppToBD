@@ -50,6 +50,27 @@ namespace AcademicPerformance.ClassFolder
             set { numberPhoneStudent = value; OnPropertyChanged("NumberPhoneStudent"); }
         }
 
+        //Поле отсутствует в бд
+        private string fullName;
+        public string FullName
+        {
+
+            get
+            {
+                fullName = LastNameStudent;
+                fullName += " " + FirstNameStudent;
+                if (MiddleNameStudent != default) fullName += " " + MiddleNameStudent;
+                return fullName;
+            }
+            set
+            {
+                fullName = value;
+
+            }
+        }
+
+
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;
