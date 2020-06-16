@@ -22,11 +22,11 @@ namespace AcademicPerformance.ViewModelsFolder
         public VMAddJournal()
         {
             SelectedTeacher = new TeacherModel();
-            disciplineController = new DisciplineController();
-            evaluationController = new EvaluationController();
+            var disciplineController = new DisciplineController();
+            var evaluationController = new EvaluationController();
             journalController = new JournalController();
             teacherController = new TeacherController();
-            studentController = new StudentController();
+            var studentController = new StudentController();
             StudentList = new ObservableCollection<StudentModel>(studentController.GetAll());
             TeacherList = new ObservableCollection<TeacherModel>(teacherController.GetAll());
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
@@ -152,10 +152,6 @@ namespace AcademicPerformance.ViewModelsFolder
 
 
         private string message;
-        private DisciplineController disciplineController;
-        private EvaluationController evaluationController;
-        private StudentController studentController;
-
         public string Message
         {
             get { return message; }
@@ -166,9 +162,21 @@ namespace AcademicPerformance.ViewModelsFolder
         public void Add(object param)
         {
 
-            if (App.RoleUser == 5) CurrentJournal.IdTeacher = teacherController.Select(App.IdUser).IdTeacher;
-            message = journalController.Add(CurrentJournal) ? "Добавлено" 
+            if (App.RoleUser == 5)
+            {
+                CurrentJournal.IdTeacher = teacherController.Select(App.IdUser).IdTeacher;
+            }
+            if ((CurrentJournal.IdEvaluation!=default)&&(CurrentJournal.IdTeacher != default) 
+                                                      && (CurrentJournal.IdDiscipline != default)&& (CurrentJournal.IdStudent != default))
+            {
+                message = journalController.Add(CurrentJournal) ? "Добавлено" 
                 : "При добавлении произошла ошибка";
+
+            }
+            else
+            {
+                message="Заполните все поля";
+            }
             MessageBox.Show(Message);
         }
 

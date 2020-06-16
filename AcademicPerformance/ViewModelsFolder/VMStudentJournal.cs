@@ -17,11 +17,11 @@ namespace AcademicPerformance.ViewModelsFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private JournalController studentJournalController;
+        public JournalController StudentJournalController { get; }
 
         public VMStudentJournal()
         {
-            studentJournalController = new JournalController();
+            StudentJournalController = new JournalController();
             LoadData();
         }
         
@@ -57,7 +57,7 @@ namespace AcademicPerformance.ViewModelsFolder
 
         private void Filter()
         {
-                JournalList = new ObservableCollection<JournalModel>(studentJournalController.GetAll());
+                JournalList = new ObservableCollection<JournalModel>(StudentJournalController.GetAll());
                 FilteredJournalList = 
                     new ObservableCollection<JournalModel>(
                         from item

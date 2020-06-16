@@ -15,7 +15,7 @@ namespace AcademicPerformance.ViewModelsFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private StudentController studentController;
+        private readonly StudentController studentController;
 
         public VMProfileStudent()
         {

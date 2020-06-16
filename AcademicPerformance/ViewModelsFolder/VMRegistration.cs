@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,7 +17,7 @@ namespace AcademicPerformance.ViewModelsFolder
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private UserController userController;
+        private readonly UserController userController;
 
         public VMRegistration()
         {
