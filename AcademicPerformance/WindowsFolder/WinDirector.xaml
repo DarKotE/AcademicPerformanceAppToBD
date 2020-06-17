@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademicPerformance.WindowsFolder"
         mc:Ignorable="d"
-        Title="Администратор" Height="700" Width="700"
+        Title="Директор" Height="700" Width="700"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource WindowsStyle}">
     <Grid>
@@ -30,7 +30,7 @@
 
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label Content="Администратор" Grid.Row="1" Grid.Column="1"
+        <Label Content="Директор" Grid.Row="1" Grid.Column="1"
                Style="{DynamicResource LabelLogo}" Foreground="White"/>
         <Menu Height="30" VerticalAlignment="Top" Grid.ColumnSpan="3">
             <MenuItem x:Name="miUsers" Header="Проифили пользователей">
@@ -49,12 +49,17 @@
                 <Separator/>
                 <MenuItem x:Name="miManagerWindow" Header="Окно Менеджера" Click="miManagerWindow_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miDirectorWindow" Header="Окно Директора" Click="miDirectorWindow_Click"/>
             </MenuItem>
-            <MenuItem x:Name="miProfile" Header="Личный профиль"/>
+            <MenuItem x:Name="miProfile" Header="Создать профиль">
+                <MenuItem x:Name="miAddStudentProfile" Header="Добавить студента" Click="miAddStudentProfile_Click"/>
+                <Separator/>
+                <MenuItem x:Name="miAddTeacherProfile" Header="Добавить преподавателя" Click="miAddTeacherProfile_Click"/>
+                <Separator/>
+                <MenuItem x:Name="miAddDiscipline" Header="Добавить дисциплину" Click="miAddDiscipline_Click"/>
+                <Separator/>
+            </MenuItem>
         </Menu>
-        <Button x:Name="btnUsersRoles" Content="Роли пользователей"
-                Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="2" Background="#ffd800"/>
+        
         <Button x:Name="btnJournal" Content="Журнал"
                 Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="3" Background="#ffd800" Click="btnJournal_Click"/>
         <Button x:Name="bntExit" Content="Выход" 

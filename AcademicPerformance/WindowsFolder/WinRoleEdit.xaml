@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AcademicPerformance.WindowsFolder"
         mc:Ignorable="d"
-        Title="Окно преподователя" Height="717.5" Width="1600"
+        Title="Редактор ролей" Height="717.5" Width="1600"
         WindowStartupLocation="CenterScreen"
         Style="{DynamicResource WindowsStyle}" Loaded="Window_Loaded">
     <Grid>

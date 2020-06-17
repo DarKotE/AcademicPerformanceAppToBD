@@ -72,6 +72,24 @@ namespace AcademicPerformance.WindowsFolder
         {
             this.Close();
         }
+
+
+        private void miAddStudentProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var winDirector = new WinAddStudent();
+            winDirector.ShowDialog();
+        }
+        private void miAddTeacherProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var winDirector = new WinAddTeacher();
+            winDirector.ShowDialog();
+        }
+
+        private void miAddDiscipline_Click(object sender, RoutedEventArgs e)
+        {
+            var winAddDiscipline = new WinAddDiscipline();
+            winAddDiscipline.ShowDialog();
+        }
     }
 
 
