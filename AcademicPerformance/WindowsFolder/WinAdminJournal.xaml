@@ -43,7 +43,6 @@
                 <MenuItem x:Name="miExit" Header="Выход" Click="miExit_Click"/>
                 <Separator/>
             </MenuItem>
-            <MenuItem x:Name="miProfile" Header="Личный профиль" Click="miProfile_Click"/>
         </Menu>
         <Label x:Name="lblSearch" Content="Поиск" Style="{DynamicResource LabelStyle}"
                Grid.Row="1"/>
@@ -81,10 +80,12 @@
 
         <Label x:Name="lblFIOStudent" Content="ФИО студента" Style="{DynamicResource LabelStyle}"
                Grid.Column="2" Grid.Row="3" FontSize="20" Margin="10,10,76,10"/>
-        <TextBox x:Name="tbFIOStudent" Grid.Column="2" Grid.Row="3" 
-                 Text="{Binding Path=SelectedRow.FIOStudent}"
-                   Grid.ColumnSpan="2" Margin="246,0,36,28" Grid.RowSpan="2" IsReadOnly="True" TextWrapping="Wrap">
-        </TextBox>
+        <ComboBox x:Name="tbFIOStudent" Grid.Column="2" Grid.Row="3" 
+                  ItemsSource="{Binding StudentList}" DisplayMemberPath="FullName" 
+                  Text="{Binding SelectedRow.FIOStudent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  SelectedItem="{Binding SelectedStudent, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                  Grid.ColumnSpan="2" Margin="246,0,36,28" Grid.RowSpan="2" IsReadOnly="True" >
+        </ComboBox>
         <Label x:Name="lblNameEvaluation" Content="Название оценки" Style="{DynamicResource LabelStyle}"
                Grid.Column="2" Grid.Row="5" FontSize="20" Margin="10,10,76,10"/>
         <TextBox x:Name="cbNameEvaluation" Grid.Column="2" Grid.Row="5" 
@@ -99,12 +100,15 @@
                  Grid.ColumnSpan="2" Margin="246,0,36,29" Grid.RowSpan="2"/>
         <Label x:Name="lblFIOTeacher" Content="ФИО преподователя"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="9" FontSize="20" Margin="10,10,76,10"/>
-        <TextBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246,0,36,0" TextWrapping="Wrap"
-                 Text="{Binding Path=SelectedRow.FIOTeacher, Mode=TwoWay}"
+        <ComboBox x:Name="tbFIOTeacher" Grid.Column="2" Grid.Row="9" Grid.ColumnSpan="2" Margin="246,0,36,0" 
+                  ItemsSource="{Binding TeacherList}" DisplayMemberPath="FullName"
+                  Text="{Binding Path=SelectedRow.FIOTeacher, Mode=TwoWay}" 
+                  SelectedItem="{Binding SelectedTeacher, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                  />
         <Label x:Name="lblNAmeDiscipline" Content="Дисциплина"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11" FontSize="20" Margin="10,10,76,10"/>
-        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
+        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11"  
+                  ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
                   Text="{Binding Path=SelectedRow.NameDiscipline, Mode=TwoWay}" 
                   SelectedItem="{Binding SelectedDiscipline, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                   Grid.ColumnSpan="2" Margin="246,1,36,29" Grid.RowSpan="2"/>

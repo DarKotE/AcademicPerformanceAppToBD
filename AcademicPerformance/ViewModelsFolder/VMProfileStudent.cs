@@ -88,6 +88,16 @@ namespace AcademicPerformance.ViewModelsFolder
                 Message = studentController.Add(CurrentStudent)
                     ? "Добавлен новый ученик"
                     : "При добавлении произошла ошибка";
+                if (App.RoleUser==1)
+                {
+                    var userController = new UserController();
+                    var newStudent = new UserModel();
+                    newStudent.RoleUser = 4;
+                    newStudent.LoginUser = App.LoginUser;
+                    newStudent.PasswordUser = App.PasswordUser;
+                    newStudent.IdUser = App.IdUser;
+                    userController.DataAccess.UpdateUser(newStudent);
+                }
             }
             else if (studentController.Update(CurrentStudent))
             {

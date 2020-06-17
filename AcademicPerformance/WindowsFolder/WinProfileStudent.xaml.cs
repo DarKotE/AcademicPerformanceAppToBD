@@ -37,12 +37,12 @@ namespace AcademicPerformance.WindowsFolder
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            UpdateActor.DynamicInvoke();
+            UpdateActor?.DynamicInvoke();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            UpdateActor.DynamicInvoke();
+            UpdateActor?.DynamicInvoke();
             this.Close();
         }
 

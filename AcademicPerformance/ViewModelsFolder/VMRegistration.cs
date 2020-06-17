@@ -58,7 +58,7 @@ namespace AcademicPerformance.ViewModelsFolder
         {
             var password = ((PasswordBox) param).Password;
             currentUser.PasswordUser = password;
-            currentUser.RoleUser = 4;
+            currentUser.RoleUser = 1;
 
             if (string.IsNullOrEmpty(currentUser.LoginUser))
                 Message = "Введите логин";
@@ -71,10 +71,11 @@ namespace AcademicPerformance.ViewModelsFolder
                 {
                     var isSaved = userController.Add(CurrentUser);
                     if (isSaved)
-                        Message = "Регистрация прошла успешна, вы можете использовать свой логин и пароль для входа";
+                        Message = "Регистрация прошла успешна, вы можете использовать" + 
+                                  " свой логин и пароль для входа. После заполнения профиля вам будет открыт доступ к журналу";
                     else
                         Message =
-                            "Регистрация закончилась ошибкой, обратитесь к школьному администатору для её" 
+                            "Регистрация закончилась ошибкой, обратитесь к администатору для её" 
                             + " устранения или попробуйте снова";
                 }
                 catch (Exception ex)

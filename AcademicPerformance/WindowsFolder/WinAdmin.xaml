@@ -61,7 +61,7 @@
                 Style="{DynamicResource BtnStyle}"
                 Grid.Column="1" Grid.Row="6" Click="bntExit_Click"  Background="#ffd800" AutomationProperties.IsColumnHeader="True" BorderBrush="White" Foreground="Black" Margin="9.6,9.6,10,10.4"/>
         <Button x:Name="btnBack" Content="Назад" Grid.Column="1" Grid.Row="5"
-                Style="{DynamicResource BtnStyle}" Background="#ffd800"/>
+                Style="{DynamicResource BtnStyle}" Background="#ffd800" Click="btnBack_Click"/>
 
     </Grid>
 </Window>

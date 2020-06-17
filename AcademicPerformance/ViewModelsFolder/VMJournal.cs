@@ -10,14 +10,15 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMJournal : INotifyPropertyChanged
     {
+
         private string message;
         private string searchText;
-        private DisciplineModel selectedDiscipline;
-        private EvaluationModel selectedNumber;
-        private JournalModel selectedRow;
+
+
 
         public VMJournal()
         {
+            
             switch (App.RoleUser)
             {
                 case 5:
@@ -27,10 +28,24 @@ namespace AcademicPerformance.ViewModelsFolder
                     DisciplineController = new DisciplineController();
                     EvaluationController = new EvaluationController();
                     LoadData();
+                    Filter();
                     break;
                 case 4:
                     JournalController = new JournalController();
                     LoadData();
+                    Filter();
+                    break;
+                case 3:
+                case 2:
+                    SaveCommand = new RelayCommand(Save);
+                    DeleteCommand = new RelayCommand(Delete);
+                    JournalController = new JournalController();
+                    DisciplineController = new DisciplineController();
+                    EvaluationController = new EvaluationController();
+                    StudentController= new StudentController();;
+                    TeacherController= new TeacherController();
+                    LoadData();
+                    Filter();
                     break;
             }
         }
@@ -38,9 +53,11 @@ namespace AcademicPerformance.ViewModelsFolder
         public DisciplineController DisciplineController { get; }
         public EvaluationController EvaluationController { get; }
         public JournalController JournalController { get; }
+        public TeacherController TeacherController { get; }
+        public StudentController StudentController { get; }
+
 
         private ObservableCollection<JournalModel> filteredJournalList;
-
         public ObservableCollection<JournalModel> FilteredJournalList
         {
             get => filteredJournalList;
@@ -53,7 +70,6 @@ namespace AcademicPerformance.ViewModelsFolder
 
 
         private ObservableCollection<JournalModel> journalList;
-
         public ObservableCollection<JournalModel> JournalList
         {
             get => journalList;
@@ -65,7 +81,6 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
         private ObservableCollection<EvaluationModel> evaluationList;
-
         public ObservableCollection<EvaluationModel> EvaluationList
         {
             get => evaluationList;
@@ -75,6 +90,41 @@ namespace AcademicPerformance.ViewModelsFolder
                 OnPropertyChanged("EvaluationList");
             }
         }
+
+        private ObservableCollection<StudentModel> studentList;
+        public ObservableCollection<StudentModel> StudentList
+        {
+            get => studentList;
+            set
+            {
+                studentList = value;
+                OnPropertyChanged("StudentList");
+            }
+        }
+
+        private ObservableCollection<TeacherModel>teacherList;
+        public ObservableCollection<TeacherModel> TeacherList
+        {
+            get => teacherList;
+            set
+            {
+                teacherList = value;
+                OnPropertyChanged("TeacherList");
+            }
+        }
+
+
+        private ObservableCollection<DisciplineModel> disciplineList;
+        public ObservableCollection<DisciplineModel> DisciplineList
+        {
+            get => disciplineList;
+            set
+            {
+                disciplineList = value;
+                OnPropertyChanged("DisciplineList");
+            }
+        }
+
 
         public string SearchText
         {
@@ -87,6 +137,7 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private JournalModel selectedRow;
         public JournalModel SelectedRow
         {
             get => selectedRow;
@@ -111,22 +162,24 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
 
-        public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
-
+        private EvaluationModel selectedNumber;
         public EvaluationModel SelectedNumber
         {
+            get => selectedNumber;
             set
             {
                 selectedNumber = value;
-                if (EvaluationList == null || selectedNumber == null || SelectedRow == null ||
+                if (EvaluationList == null || SelectedNumber == null || SelectedRow == null ||
                     SelectedRow.NumberEvaluation == selectedNumber.NumberEvaluation) return;
                 SelectedRow.NameEvaluation = selectedNumber.NameEvaluation;
                 SelectedRow.IdEvaluation = selectedNumber.IdEvaluation;
             }
         }
 
+        private DisciplineModel selectedDiscipline;
         public DisciplineModel SelectedDiscipline
         {
+            get => selectedDiscipline;
             set
             {
                 selectedDiscipline = value;
@@ -136,6 +189,33 @@ namespace AcademicPerformance.ViewModelsFolder
                 SelectedRow.IdDiscipline = selectedDiscipline.IdDiscipline;
             }
         }
+
+        private TeacherModel selectedTeacher;
+        public TeacherModel SelectedTeacher
+        {
+            set
+            {
+                selectedTeacher = value;
+                if (TeacherList == null || selectedTeacher == null || SelectedRow == null ||
+                    SelectedRow.FIOTeacher == selectedTeacher.FullName) return;
+                SelectedRow.FIOTeacher = selectedTeacher.FullName;
+                SelectedRow.IdTeacher = selectedTeacher.IdTeacher;
+            }
+        }
+
+        private StudentModel selectedStudent;
+        public StudentModel SelectedStudent
+        {
+            set
+            {
+                selectedStudent = value;
+                if (StudentList == null || selectedStudent == null || SelectedRow == null ||
+                    SelectedRow.FIOTeacher == selectedStudent.FullName) return;
+                SelectedRow.FIOStudent = selectedStudent.FullName;
+                SelectedRow.IdStudent = selectedStudent.IdStudent;
+            }
+        }
+
 
         public RelayCommand DeleteCommand { get; }
 
@@ -173,15 +253,24 @@ namespace AcademicPerformance.ViewModelsFolder
                     JournalList = new ObservableCollection<JournalModel>(JournalController.GetAll());
                     SelectedRow = new JournalModel();
                     SearchText = "";
-                    JournalList = new ObservableCollection<JournalModel>(JournalController.GetAll());
-                    SearchText = "";
-                    Filter();
                     break;
                 case 4:
                     JournalList = new ObservableCollection<JournalModel>(JournalController.GetAll());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
+                case 3:
+                case 2:
+
+                    DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineController.GetAll());
+                    EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationController.GetAll());
+                    JournalList = new ObservableCollection<JournalModel>(JournalController.GetAllFull());
+                    StudentList= new ObservableCollection<StudentModel>(StudentController.GetAll());
+                    TeacherList = new ObservableCollection<TeacherModel>(TeacherController.GetAll());
+                    SelectedRow = new JournalModel();
+                    SearchText = "";
+                    break;
+
             }
         }
 

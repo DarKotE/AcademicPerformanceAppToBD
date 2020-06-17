@@ -4,7 +4,7 @@ using AcademicPerformance.ViewModelsFolder;
 namespace AcademicPerformance.WindowsFolder
 {
     /// <summary>
-    /// Interaction logic for WinTeacher.xaml
+    /// Interaction logic for WinAdminJournal.xaml
     /// </summary>
     public partial class WinAdminJournal: Window
     {
@@ -14,7 +14,7 @@ namespace AcademicPerformance.WindowsFolder
 
         private void RefreshView()
         {
-            var adminJournal = new VMAdminJournal();
+            var adminJournal = new VMJournal();
             this.DataContext = null;
             this.DataContext = adminJournal;
         }
@@ -50,14 +50,7 @@ namespace AcademicPerformance.WindowsFolder
             winAdd.Show();
         }
 
-        private void miProfile_Click(object sender, RoutedEventArgs e)
-        {
-            RefreshEvent += new Refresh(RefreshView);
-            WinProfileTeacher winProfileTeacher = new WinProfileTeacher();
-            winProfileTeacher.UpdateActor = RefreshEvent;
-            winProfileTeacher.Show();
-        }
-
+        
         private void miExit_Click(object sender, RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);

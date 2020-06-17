@@ -8,10 +8,10 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMAddJournal : INotifyPropertyChanged
     {
-        public JournalController JournalController { get; }
-        public TeacherController TeacherController { get; }
-
-        private JournalModel currentJournal;
+        private readonly JournalController journalController;
+        private readonly TeacherController teacherController;
+        private readonly ObservableCollection<StudentModel> studentList;
+        private readonly ObservableCollection<TeacherModel> teacherList;
         private TeacherModel currentTeacher;
         private string message;
         private DisciplineModel selectedDiscipline;
@@ -24,21 +24,21 @@ namespace AcademicPerformance.ViewModelsFolder
             SelectedTeacher = new TeacherModel();
             var disciplineController = new DisciplineController();
             var evaluationController = new EvaluationController();
-            JournalController = new JournalController();
-            TeacherController = new TeacherController();
+            journalController = new JournalController();
+            teacherController = new TeacherController();
             var studentController = new StudentController();
-            StudentList = new ObservableCollection<StudentModel>(studentController.GetAll());
-            TeacherList = new ObservableCollection<TeacherModel>(TeacherController.GetAll());
+            studentList = new ObservableCollection<StudentModel>(studentController.GetAll());
+            teacherList = new ObservableCollection<TeacherModel>(teacherController.GetAll());
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
             EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
             CurrentJournal = new JournalModel();
-            if (App.RoleUser == 5) SelectedTeacher = TeacherController.Select(App.IdUser);
+            if (App.RoleUser == 5) SelectedTeacher = teacherController.Select(App.IdUser);
 
             AddCommand = new RelayCommand(Add);
         }
 
         public RelayCommand AddCommand { get; }
-
+        private JournalModel currentJournal;
         public JournalModel CurrentJournal
         {
             get => currentJournal;
@@ -113,7 +113,7 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedStudent = value;
-                if (StudentList != null && selectedStudent != null && CurrentJournal != null
+                if (studentList != null && selectedStudent != null && CurrentJournal != null
                     && CurrentJournal.FIOStudent != selectedStudent.FullName)
                 {
                     CurrentJournal.FIOStudent = selectedStudent.FullName;
@@ -130,7 +130,7 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedTeacher = value;
-                if (TeacherList != null && selectedTeacher != null && CurrentJournal != null
+                if (teacherList != null && selectedTeacher != null && CurrentJournal != null
                     && CurrentJournal.FIOTeacher != selectedTeacher.FullName)
                 {
                     CurrentJournal.FIOTeacher = selectedTeacher.FullName;
@@ -141,22 +141,24 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
-        public ObservableCollection<StudentModel> StudentList { get; set; }
 
-        public ObservableCollection<TeacherModel> TeacherList { get; set; }
+
+
+        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         public void Add(object param)
         {
             if (App.RoleUser == 5)
-                CurrentJournal.IdTeacher = TeacherController.Select(App.IdUser)
+                CurrentJournal.IdTeacher = teacherController.Select(App.IdUser)
                     .IdTeacher;
             if (CurrentJournal.IdEvaluation != default &&
                 CurrentJournal.IdTeacher != default &&
                 CurrentJournal.IdDiscipline != default &&
                 CurrentJournal.IdStudent != default)
-                message = JournalController.Add(CurrentJournal) ? "Добавлено" : "При добавлении произошла ошибка";
+                message = journalController.Add(CurrentJournal) ? "Добавлено" : "При добавлении произошла ошибка";
             else
                 message = "Заполните все поля";
             MessageBox.Show(Message);

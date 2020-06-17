@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using AcademicPerformance.ViewModelsFolder;
+using AcademicPerformance.WindowsFolder;
 
 namespace AcademicPerformance
 {
@@ -9,12 +10,19 @@ namespace AcademicPerformance
     /// </summary>
     public partial class MainWindow : Window
     {
-        //private readonly CDataAccess dataAccess = new CDataAccess();
+
+       private void RefreshView()
+        {
+            var authorization = new VMAuthorization();
+            this.DataContext = null;
+            this.DataContext = authorization;
+        }
+
+
         public MainWindow()
         {
             InitializeComponent();
-            var authorization = new VMAuthorization();
-            this.DataContext = authorization;
+            RefreshView();
         }
 
         private void BtnExit_Click(object sender, RoutedEventArgs e)
@@ -43,8 +51,8 @@ namespace AcademicPerformance
             switch (i)
             {
                 case 1:
-                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
-                    winManager.ShowDialog();
+                    WindowsFolder.WinProfileStudent winUser = new WindowsFolder.WinProfileStudent();
+                    winUser.ShowDialog();
                     break;
                 case 2:
                     WindowsFolder.WinDirector winDirector = new WindowsFolder.WinDirector();
@@ -61,6 +69,10 @@ namespace AcademicPerformance
                 case 5:
                     WindowsFolder.WinTeacher winTeacher = new WindowsFolder.WinTeacher();
                     winTeacher.ShowDialog();
+                    break;
+                case 6:
+                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
+                    winManager.ShowDialog();
                     break;
             }
         }

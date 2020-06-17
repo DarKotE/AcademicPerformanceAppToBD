@@ -42,7 +42,7 @@
                Grid.Column="1" Grid.Row="2" Foreground="White"/>
         <Label x:Name="LblPassword" Content="Пароль" Style="{DynamicResource LabelStyle}"
                Grid.Column="1" Grid.Row="4" Foreground="White"/>
-        <TextBox x:Name="TbLogin" Grid.Row="2" Grid.Column="2" Text="{Binding Path=CurrentUser.LoginUser}"
+        <TextBox x:Name="TbLogin" Grid.Row="2" Grid.Column="2" Text="{Binding Path=CurrentUser.LoginUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  Style="{DynamicResource TbStyle}"
                  Grid.ColumnSpan="2"  Background="#ffd800"/>
         <PasswordBox x:Name="PbPassword" Grid.Row="4" Grid.Column="2"
