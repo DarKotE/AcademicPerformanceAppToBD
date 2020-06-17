@@ -122,9 +122,6 @@
     <Compile Include="WindowsFolder\WinEditIn.xaml.cs">
       <DependentUpon>WinEditIn.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinManager.xaml.cs">
-      <DependentUpon>WinManager.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WindowsFolder\WinProfileTeacher.xaml.cs">
       <DependentUpon>WinProfileTeacher.xaml</DependentUpon>
     </Compile>
@@ -188,10 +185,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsFolder\WinEditIn.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WindowsFolder\WinManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

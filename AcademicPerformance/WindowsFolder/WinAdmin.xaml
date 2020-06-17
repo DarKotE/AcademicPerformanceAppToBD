@@ -51,7 +51,13 @@
                 <Separator/>
                 <MenuItem x:Name="miDirectorWindow" Header="Окно Директора" Click="miDirectorWindow_Click"/>
             </MenuItem>
-            <MenuItem x:Name="miProfile" Header="Личный профиль"/>
+            <MenuItem x:Name="miProfile" Header="Создать профиль">
+                <MenuItem x:Name="miAddStudentProfile" Header="Добавить студента" Click="miAddStudentProfile_Click"/>
+                <Separator/>
+                <MenuItem x:Name="miAddTeacherProfile" Header="Добавить преподавателя" Click="miAddTeacherProfile_Click"/>
+                <Separator/>
+            </MenuItem>
+
         </Menu>
         <Button x:Name="btnUsersRoles" Content="Роли пользователей"
                 Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="2" Background="#ffd800"/>

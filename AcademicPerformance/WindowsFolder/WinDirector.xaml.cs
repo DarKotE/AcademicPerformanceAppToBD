@@ -53,7 +53,7 @@ namespace AcademicPerformance.WindowsFolder
         private void miManagerWindow_Click(object sender, RoutedEventArgs e)
         {
             App.RoleUser = 6;
-            var winManager = new WinManager();
+            var winManager = new WinAdminJournal();
             winManager.ShowDialog();
         }
 

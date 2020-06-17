@@ -71,7 +71,7 @@ namespace AcademicPerformance
                     winTeacher.ShowDialog();
                     break;
                 case 6:
-                    WindowsFolder.WinManager winManager = new WindowsFolder.WinManager();
+                    WindowsFolder.WinAdminJournal winManager = new WindowsFolder.WinAdminJournal();
                     winManager.ShowDialog();
                     break;
             }

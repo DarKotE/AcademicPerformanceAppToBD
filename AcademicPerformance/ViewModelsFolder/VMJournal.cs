@@ -35,6 +35,7 @@ namespace AcademicPerformance.ViewModelsFolder
                     LoadData();
                     Filter();
                     break;
+                case 6:
                 case 3:
                 case 2:
                     SaveCommand = new RelayCommand(Save);
@@ -261,6 +262,7 @@ namespace AcademicPerformance.ViewModelsFolder
                     break;
                 case 3:
                 case 2:
+                case 6:
 
                     DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineController.GetAll());
                     EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationController.GetAll());

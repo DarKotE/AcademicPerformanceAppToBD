@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using AcademicPerformance.ClassFolder;
@@ -17,10 +18,12 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
         private readonly TeacherController TeacherController;
+        private readonly UserController userController;
 
         public VMProfileTeacher()
         {
             TeacherController = new TeacherController();
+            userController = new UserController();
             CurrentUser = new UserModel();
             CurrentTeacher = TeacherController.Select(App.IdUser);
             if (CurrentTeacher.DateOfBirthTeacher == default) 
@@ -78,7 +81,36 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public void Add(object param)
         {
-            var password = ((PasswordBox) param).Password;
+            
+            var password = ((PasswordBox)param).Password;
+            if ((CurrentTeacher.FirstNameTeacher == "") || (CurrentTeacher.FirstNameTeacher == default) ||
+                (CurrentTeacher.LastNameTeacher == "") || (CurrentTeacher.LastNameTeacher == default) ||
+                (CurrentTeacher.DateOfBirthTeacher == DateTime.Now) ||
+                (CurrentTeacher.NumberPhoneTeacher == "") || (CurrentTeacher.NumberPhoneTeacher == default))
+            {
+                Message = "Заполните все поля";
+            }
+            else if (App.RoleUser == 3)
+            {
+                var newTeacher = new UserModel();
+                newTeacher.RoleUser = 4;
+                newTeacher.LoginUser = CurrentUser.LoginUser;
+                newTeacher.PasswordUser = password;
+                if (userController.IsLoginFree(newTeacher.LoginUser))
+                {
+                    userController.DataAccess.InsertUser(newTeacher);
+                    var last = userController.GetAll().OrderByDescending(item => item.IdUser).First();
+                    CurrentTeacher.IdUser = last.IdUser;
+                    Message = TeacherController.Add(CurrentTeacher)
+                        ? "Добавлен новый преподаватель"
+                        : "При добавлении произошла ошибка";
+                }
+                else Message = "Логин занят";
+
+
+            }
+
+            else
             if (password != App.PasswordUser)
             {
                 Message = "Подтвердите изменения вводом текущего пароля";

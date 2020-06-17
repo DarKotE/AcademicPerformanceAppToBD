@@ -41,7 +41,7 @@ namespace AcademicPerformance.WindowsFolder
         private void miManagerWindow_Click(object sender, RoutedEventArgs e)
         {
             App.RoleUser = 6;
-            var winManager = new WinManager();
+            var winManager = new WinAdminJournal();
             winManager.ShowDialog();
         }
 
@@ -71,6 +71,17 @@ namespace AcademicPerformance.WindowsFolder
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void miAddStudentProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var winDirector = new WinAddStudent();
+            winDirector.ShowDialog();
+        }
+        private void miAddTeacherProfile_Click(object sender, RoutedEventArgs e)
+        {
+            var winDirector = new WinAddTeacher();
+            winDirector.ShowDialog();
         }
     }
 }
