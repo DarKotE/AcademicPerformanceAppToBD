@@ -1,20 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Configuration;
-using AcademicPerformance.ClassFolder;
+﻿using System.Windows;
 using AcademicPerformance.ViewModelsFolder;
 
 namespace AcademicPerformance.WindowsFolder
@@ -84,12 +68,17 @@ namespace AcademicPerformance.WindowsFolder
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            this.Close();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+                System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            }
         }
     }
 }

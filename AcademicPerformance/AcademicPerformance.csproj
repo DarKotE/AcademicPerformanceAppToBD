@@ -78,6 +78,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
+    <Compile Include="ClassFolder\RoleController.cs" />
+    <Compile Include="ClassFolder\RoleModel.cs" />
     <Compile Include="ClassFolder\StudentController.cs" />
     <Compile Include="ClassFolder\TeacherController.cs" />
     <Compile Include="ClassFolder\EvaluationController.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="ViewModelsFolder\VMJournal.cs" />
     <Compile Include="ViewModelsFolder\VMRegistration.cs" />
     <Compile Include="ViewModelsFolder\VMAuthorization.cs" />
+    <Compile Include="ViewModelsFolder\VMRoleEdit.cs" />
     <Compile Include="WindowsFolder\WinAdd.xaml.cs">
       <DependentUpon>WinAdd.xaml</DependentUpon>
     </Compile>
@@ -118,6 +121,9 @@
     </Compile>
     <Compile Include="WindowsFolder\WinAdminJournal.xaml.cs">
       <DependentUpon>WinAdminJournal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsFolder\WinRoleEdit.xaml.cs">
+      <DependentUpon>WinRoleEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowsFolder\WinEditIn.xaml.cs">
       <DependentUpon>WinEditIn.xaml</DependentUpon>
@@ -181,6 +187,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsFolder\WinAdminJournal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WindowsFolder\WinRoleEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

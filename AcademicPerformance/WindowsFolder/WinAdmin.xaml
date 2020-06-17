@@ -56,11 +56,13 @@
                 <Separator/>
                 <MenuItem x:Name="miAddTeacherProfile" Header="Добавить преподавателя" Click="miAddTeacherProfile_Click"/>
                 <Separator/>
+                <MenuItem x:Name="miAddDiscipline" Header="Добавить дисциплину" Click="miAddDiscipline_Click"/>
+                <Separator/>
             </MenuItem>
 
         </Menu>
         <Button x:Name="btnUsersRoles" Content="Роли пользователей"
-                Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="2" Background="#ffd800"/>
+                Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="2" Background="#ffd800" Click="btnUsersRoles_Click"/>
         <Button x:Name="btnJournal" Content="Журнал"
                 Style="{DynamicResource BtnStyle}" Grid.Column="1" Grid.Row="3" Background="#ffd800" Click="btnJournal_Click"/>
         <Button x:Name="bntExit" Content="Выход" 

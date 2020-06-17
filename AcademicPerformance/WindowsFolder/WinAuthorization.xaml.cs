@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
 using AcademicPerformance.ViewModelsFolder;
-using AcademicPerformance.WindowsFolder;
 
 namespace AcademicPerformance
 {

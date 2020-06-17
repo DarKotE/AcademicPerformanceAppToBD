@@ -104,7 +104,8 @@
                  />
         <Label x:Name="lblNAmeDiscipline" Content="Дисциплина"
                Style="{DynamicResource LabelStyle}" Grid.Column="2" Grid.Row="11" FontSize="20" Margin="10,10,76,10"/>
-        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
+        <ComboBox x:Name="cbNameDiscipline" Grid.Column="2" Grid.Row="11" 
+                  ItemsSource="{Binding DisciplineList}" DisplayMemberPath="NameDiscipline"
                   Text="{Binding Path=SelectedRow.NameDiscipline, Mode=TwoWay}" 
                   SelectedItem="{Binding SelectedDiscipline, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                   Grid.ColumnSpan="2" Margin="246,1,36,29" Grid.RowSpan="2"/>

@@ -42,6 +42,6 @@
                Background="#ffd800" Click="btnSaveChanges_Click" Margin="10,10.6,9.8,9.6" />
         <Button x:Name="btnBack" Content="Назад"
                 Style="{DynamicResource BtnStyle}" Grid.Row="5"
-                Grid.Column="1" Background="#ffd800" Margin="10.2,10.6,9.6,9.6"   />
+                Grid.Column="1" Background="#ffd800" Margin="10.2,10.6,9.6,9.6" Click="btnBack_Click"   />
     </Grid>
 </Window>
