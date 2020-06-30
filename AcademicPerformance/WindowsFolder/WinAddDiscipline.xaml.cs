@@ -10,41 +10,25 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinAddDiscipline : Window
     {
-        SqlConnection sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal());
-        SqlCommand sqlCommand;
-        SqlDataReader sqlDataReader;
-
+        private readonly DisciplineController disciplineController = new DisciplineController();
 
         public WinAddDiscipline()
         {
             InitializeComponent();
         }
-
-
-
+        
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                sqlConnection.Open();
-                sqlCommand = new SqlCommand("Insert Into dbo.[Discipline] (NameDiscipline)" +
-                    "Values (@NameDiscipline)", sqlConnection);
 
-                
-                sqlCommand.Parameters.AddWithValue("NameDiscipline", tbNameDiscipline.Text);
-                
-
-                sqlCommand.ExecuteNonQuery();
-                MessageBox.Show("Успешно добавлено", "Информация",
-                    MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            catch (Exception ex)
+            var newDiscipline = new  DisciplineModel();
+            newDiscipline.NameDiscipline=tbNameDiscipline.Text;
+            if (disciplineController.Add(newDiscipline))
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Добавлено");
             }
-            finally
+            else
             {
-                sqlConnection.Close();
+                MessageBox.Show("Не добавлено");
             }
 
         }

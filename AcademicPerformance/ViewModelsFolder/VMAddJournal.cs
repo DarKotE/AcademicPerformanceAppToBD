@@ -6,9 +6,8 @@ using AcademicPerformance.CommandsFolder;
 
 namespace AcademicPerformance.ViewModelsFolder
 {
-    public class VMAddJournal : INotifyPropertyChanged
+    public class VMAddJournal
     {
-        private string message; //error string
         private readonly JournalController journalController = new JournalController();
         private readonly TeacherController teacherController = new TeacherController();
         private readonly StudentController studentController = new StudentController();
@@ -24,7 +23,10 @@ namespace AcademicPerformance.ViewModelsFolder
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
             EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
             AddCommand = new RelayCommand(Add);
-            if (App.RoleUser == Const.RoleValue.Teacher) SelectedTeacher = teacherController.Select(App.IdUser);
+            if (App.RoleUser == Const.RoleValue.Teacher)
+            {
+                SelectedTeacher = teacherController.Select(App.IdUser);
+            }
         }
 
         public ObservableCollection<TeacherModel> TeacherList { get; set; }
@@ -33,41 +35,15 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public RelayCommand AddCommand { get; }
 
-        private JournalModel currentJournal;
-        public JournalModel CurrentJournal
-        {
-            get => currentJournal;
-            set
-            {
-                currentJournal = value;
-                OnPropertyChanged("CurrentJournal");
-            }
-        }
+        public JournalModel CurrentJournal { get; set; }
 
-        private TeacherModel currentTeacher;
-        public TeacherModel CurrentTeacher
-        {
-            get => currentTeacher;
-            set
-            {
-                currentTeacher = value;
-                OnPropertyChanged("CurrentTeacher");
-            }
-        }
+        public TeacherModel CurrentTeacher { get; set; }
 
         public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
 
         public ObservableCollection<EvaluationModel> EvaluationList { get; set; }
 
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged("Message");
-            }
-        }
+        public string Message { get; set; }
 
         private DisciplineModel selectedDiscipline;
         public DisciplineModel SelectedDiscipline
@@ -76,14 +52,14 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedDiscipline = value;
-                if (DisciplineList != null && selectedDiscipline != null && CurrentJournal != null
+                if (DisciplineList != null
+                    && selectedDiscipline != null
+                    && CurrentJournal != null
                     && CurrentJournal.NameDiscipline != selectedDiscipline.NameDiscipline)
                 {
                     CurrentJournal.NameDiscipline = selectedDiscipline.NameDiscipline;
                     CurrentJournal.IdDiscipline = selectedDiscipline.IdDiscipline;
                 }
-
-                OnPropertyChanged("SelectedDiscipline");
             }
         }
 
@@ -94,14 +70,14 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedEvaluation = value;
-                if (EvaluationList != null && selectedEvaluation != null && CurrentJournal != null
+                if (EvaluationList != null
+                    && selectedEvaluation != null
+                    && CurrentJournal != null
                     && CurrentJournal.NameEvaluation != selectedEvaluation.NameEvaluation)
                 {
                     CurrentJournal.NameEvaluation = selectedEvaluation.NameEvaluation;
                     CurrentJournal.IdEvaluation = selectedEvaluation.IdEvaluation;
                 }
-
-                OnPropertyChanged("SelectedEvaluation");
             }
         }
 
@@ -118,8 +94,6 @@ namespace AcademicPerformance.ViewModelsFolder
                     CurrentJournal.FIOStudent = selectedStudent.FullName;
                     CurrentJournal.IdStudent = selectedStudent.IdStudent;
                 }
-
-                OnPropertyChanged("SelectedStudent");
             }
         }
 
@@ -135,9 +109,7 @@ namespace AcademicPerformance.ViewModelsFolder
                 {
                     CurrentJournal.FIOTeacher = selectedTeacher.FullName;
                     CurrentJournal.IdTeacher = selectedTeacher.IdTeacher;
-                }
-
-                OnPropertyChanged("SelectedTeacher");
+                } 
             }
         }
 
@@ -150,21 +122,13 @@ namespace AcademicPerformance.ViewModelsFolder
                 CurrentJournal.IdTeacher != default &&
                 CurrentJournal.IdDiscipline != default &&
                 CurrentJournal.IdStudent != default)
-                message = journalController.Add(CurrentJournal) ?
+                Message = journalController.Add(CurrentJournal) ?
                     "Добавлено" : 
                     "При добавлении произошла ошибка";
             else
-                message = "Заполните все поля";
+                Message = "Заполните все поля";
             MessageBox.Show(Message);
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this,
-                new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

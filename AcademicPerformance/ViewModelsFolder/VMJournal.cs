@@ -10,18 +10,13 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMJournal : INotifyPropertyChanged
     {
-
-        private string message;
         private string searchText;
-
-
-
         public VMJournal()
         {
             
             switch (App.RoleUser)
             {
-                case 5:
+                case Const.RoleValue.Teacher:
                     SaveCommand = new RelayCommand(Save);
                     DeleteCommand = new RelayCommand(Delete);
                     JournalController = new JournalController();
@@ -30,14 +25,16 @@ namespace AcademicPerformance.ViewModelsFolder
                     LoadData();
                     Filter();
                     break;
-                case 4:
+
+                case Const.RoleValue.Student:
                     JournalController = new JournalController();
                     LoadData();
                     Filter();
                     break;
-                case 6:
-                case 3:
-                case 2:
+
+                case Const.RoleValue.Manager:
+                case Const.RoleValue.Admin:
+                case Const.RoleValue.Director:
                     SaveCommand = new RelayCommand(Save);
                     DeleteCommand = new RelayCommand(Delete);
                     JournalController = new JournalController();
@@ -56,6 +53,7 @@ namespace AcademicPerformance.ViewModelsFolder
         public JournalController JournalController { get; }
         public TeacherController TeacherController { get; }
         public StudentController StudentController { get; }
+        public string Message { get; set; }
 
 
         private ObservableCollection<JournalModel> filteredJournalList;
@@ -152,17 +150,6 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public RelayCommand SaveCommand { get; }
 
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged(Message);
-            }
-        }
-
-
         private EvaluationModel selectedNumber;
         public EvaluationModel SelectedNumber
         {
@@ -248,21 +235,23 @@ namespace AcademicPerformance.ViewModelsFolder
         {
             switch (App.RoleUser)
             {
-                case 5:
+                case Const.RoleValue.Teacher:
                     DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineController.GetAll());
                     EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationController.GetAll());
                     JournalList = new ObservableCollection<JournalModel>(JournalController.GetAll());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
-                case 4:
+
+                case Const.RoleValue.Student:
                     JournalList = new ObservableCollection<JournalModel>(JournalController.GetAll());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
-                case 3:
-                case 2:
-                case 6:
+
+                case Const.RoleValue.Admin:
+                case Const.RoleValue.Director:
+                case Const.RoleValue.Manager:
 
                     DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineController.GetAll());
                     EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationController.GetAll());

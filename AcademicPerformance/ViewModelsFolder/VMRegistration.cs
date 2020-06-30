@@ -8,15 +8,8 @@ using AcademicPerformance.CommandsFolder;
 namespace AcademicPerformance.ViewModelsFolder
 
 {
-    public class VMRegistration : INotifyPropertyChanged
+    public class VMRegistration
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private readonly UserController userController;
 
         public VMRegistration()
@@ -25,48 +18,26 @@ namespace AcademicPerformance.ViewModelsFolder
             CurrentUser = new UserModel();
             SaveCommand = new RelayCommand(Save);
         }
-
-
-        private UserModel currentUser;
-
-        public UserModel CurrentUser
-        {
-            get => currentUser;
-            set
-            {
-                currentUser = value;
-                OnPropertyChanged("CurrentUser");
-            }
-        }
+        
+        public UserModel CurrentUser { get; set; }
 
         public RelayCommand SaveCommand { get; }
 
-        private string message;
-
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged(Message);
-            }
-        }
-
-
+        public string Message { get; set; }
+        
         public void Save(object param)
         {
             var password = ((PasswordBox) param).Password;
-            currentUser.PasswordUser = password;
-            currentUser.RoleUser = 1;
+            CurrentUser.PasswordUser = password;
+            CurrentUser.RoleUser = Const.RoleValue.User;
 
-            if (string.IsNullOrEmpty(currentUser.LoginUser))
+            if (string.IsNullOrEmpty(CurrentUser.LoginUser))
                 Message = "Введите логин";
-            else if (string.IsNullOrEmpty(currentUser.PasswordUser))
+            else if (string.IsNullOrEmpty(CurrentUser.PasswordUser))
                 Message = "Введите пароль";
             else if (password != App.PasswordUser)
                 Message = "Пароли не совпадают";
-            else if (userController.IsLoginFree(currentUser.LoginUser))
+            else if (userController.IsLoginFree(CurrentUser.LoginUser))
                 try
                 {
                     var isSaved = userController.Add(CurrentUser);
@@ -86,7 +57,7 @@ namespace AcademicPerformance.ViewModelsFolder
             else
                 Message = "Данный логин занят, попробуйте другой";
 
-            if (Message.Length > 0) MessageBox.Show(Message);
+            if (!String.IsNullOrEmpty(Message)) MessageBox.Show(Message);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace AcademicPerformance.ClassFolder
     {
         public static class RoleValue
         {
-            public static readonly int User = 1;
-            public static readonly int Director = 2;
-            public static readonly int Admin = 3;
-            public static readonly int Student = 4;
-            public static readonly int Teacher = 5;
-            public static readonly int Manager = 6;
+            public const int User = 1;
+            public const int Director = 2;
+            public const int Admin = 3;
+            public const int Student = 4;
+            public const int Teacher = 5;
+            public const int Manager = 6;
         }
     }
 }

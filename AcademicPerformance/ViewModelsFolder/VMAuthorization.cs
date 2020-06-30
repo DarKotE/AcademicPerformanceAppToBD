@@ -7,7 +7,7 @@ using AcademicPerformance.CommandsFolder;
 
 namespace AcademicPerformance.ViewModelsFolder
 {
-    public class VMAuthorization : INotifyPropertyChanged
+    public class VMAuthorization 
     {
         public UserController UserController { get; }
 
@@ -19,53 +19,29 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
 
-        private UserModel currentUser;
-
-        public UserModel CurrentUser
-        {
-            get => currentUser;
-            set
-            {
-                currentUser = value;
-                OnPropertyChanged("CurrentUser");
-            }
-        }
-
-
+        public UserModel CurrentUser { get; set; }
         public RelayCommand AuthCommand { get; }
-
-
-        private string message;
-
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged(Message);
-            }
-        }
+        public string Message { get; set; }
 
 
         public void Auth(object param)
         {
             var password = ((PasswordBox) param).Password;
-            currentUser.PasswordUser = password;
+            CurrentUser.PasswordUser = password;
             Message = "";
 
-            if (string.IsNullOrEmpty(currentUser.LoginUser))
+            if (string.IsNullOrEmpty(CurrentUser.LoginUser))
                 Message = "Введите логин";
-            else if (string.IsNullOrEmpty(currentUser.PasswordUser))
+            else if (string.IsNullOrEmpty(CurrentUser.PasswordUser))
                 Message = "Введите пароль";
-            else if (UserController.IsAuthValid(currentUser.LoginUser, currentUser.PasswordUser))
+            else if (UserController.IsAuthValid(CurrentUser.LoginUser, CurrentUser.PasswordUser))
                 try
                 {
-                    currentUser = UserController.SelectName(CurrentUser.LoginUser);
-                    App.LoginUser = currentUser.LoginUser;
-                    App.PasswordUser = currentUser.PasswordUser;
-                    App.IdUser = currentUser.IdUser;
-                    App.RoleUser = currentUser.RoleUser;
+                    CurrentUser = UserController.SelectName(CurrentUser.LoginUser);
+                    App.LoginUser = CurrentUser.LoginUser;
+                    App.PasswordUser = CurrentUser.PasswordUser;
+                    App.IdUser = CurrentUser.IdUser;
+                    App.RoleUser = CurrentUser.RoleUser;
                 }
                 catch (Exception ex)
                 {
@@ -77,14 +53,6 @@ namespace AcademicPerformance.ViewModelsFolder
 
             if (!String.IsNullOrEmpty(Message)) MessageBox.Show(Message);
         }
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+        
     }
 }

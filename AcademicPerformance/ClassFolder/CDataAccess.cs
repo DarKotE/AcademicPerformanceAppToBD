@@ -57,7 +57,8 @@ namespace AcademicPerformance.ClassFolder
                 SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
                 sqlCommand = new SqlCommand("select IdUser From dbo.[User]" 
-                                            + " Where  LoginUser='" + login + "'", sqlConnection);
+                                            + " Where  LoginUser=@LoginUser", sqlConnection);
+                sqlCommand.Parameters.AddWithValue("LoginUser", login);
                 sqlConnection.Open();
                 sqlDataReader = sqlCommand.ExecuteReader();
                 if (sqlDataReader.HasRows)
@@ -674,10 +675,9 @@ namespace AcademicPerformance.ClassFolder
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Discipline] (IdDiscipline,NameDiscipline)"
-                                   + " VALUES (@IdDiscipline, @NameDiscipline)";
+                    var sqlQuery = "INSERT INTO dbo.[Discipline] (NameDiscipline)"
+                                   + " VALUES (@NameDiscipline)";
                     var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
                     sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
                     sqlConnection.Open();
                     var noOfRowsAffected = sqlCommand.ExecuteNonQuery();

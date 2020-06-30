@@ -10,11 +10,7 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMRoleEdit : INotifyPropertyChanged
     {
-
-        private string message;
         private string searchText;
-
-
 
         public VMRoleEdit()
         {
@@ -46,31 +42,10 @@ namespace AcademicPerformance.ViewModelsFolder
         }
 
 
-        private ObservableCollection<UserModel> userList;
-        public ObservableCollection<UserModel> UserList
-        {
-            get => userList;
-            set
-            {
-                userList = value;
-                OnPropertyChanged("UserList");
-            }
-        }
+        public ObservableCollection<UserModel> UserList { get; set; }
 
 
- 
-
-
-        private ObservableCollection<RoleModel> roleList;
-        public ObservableCollection<RoleModel> RoleList
-        {
-            get => roleList;
-            set
-            {
-                roleList = value;
-                OnPropertyChanged("RoleList");
-            }
-        }
+        public ObservableCollection<RoleModel> RoleList { get; set; }
 
 
         public string SearchText
@@ -99,18 +74,9 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public RelayCommand SaveCommand { get; }
 
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged("Message");
-            }
-        }
+        public string Message { get; set; }
 
 
-       
         private RoleModel selectedRole;
         public RoleModel SelectedRole
         {
@@ -161,8 +127,7 @@ namespace AcademicPerformance.ViewModelsFolder
                     
            
         }
-
-
+        
         public void Save(object param)
         {
             var isAllSaved = true;

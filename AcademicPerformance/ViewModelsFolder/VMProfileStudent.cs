@@ -8,108 +8,74 @@ using AcademicPerformance.CommandsFolder;
 
 namespace AcademicPerformance.ViewModelsFolder
 {
-    public class VMProfileStudent : INotifyPropertyChanged
+    public class VMProfileStudent 
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private readonly StudentController studentController;
-        private readonly UserController userController;
+        private readonly StudentController studentController = new StudentController();
+        private readonly UserController userController = new UserController();
 
         public VMProfileStudent()
         {
-            studentController = new StudentController();
-            userController = new UserController();
             CurrentUser = new UserModel();
+            AddCommand = new RelayCommand(Add);
             CurrentStudent = studentController.Select(App.IdUser);
-            if (CurrentStudent.DateOfBirthStudent == default) CurrentStudent.DateOfBirthStudent = DateTime.Now;
-            CurrentUser.LoginUser = App.LoginUser;
-            CurrentUser.PasswordUser = "0";
+            if (CurrentStudent.DateOfBirthStudent == default) 
+                CurrentStudent.DateOfBirthStudent = DateTime.Now;
+            if (App.RoleUser != Const.RoleValue.Admin)
+            {
+                CurrentUser.LoginUser = App.LoginUser;
+            }
+            CurrentUser.PasswordUser = "";
             CurrentUser.IdUser = App.IdUser;
             CurrentUser.RoleUser = App.RoleUser;
-
-            
-
-
-            AddCommand = new RelayCommand(Add);
         }
 
 
-        private StudentModel currentStudent;
+        public StudentModel CurrentStudent { get; set; }
 
-        public StudentModel CurrentStudent
-        {
-            get => currentStudent;
-            set
-            {
-                currentStudent = value;
-                OnPropertyChanged("CurrentStudent");
-            }
-        }
-
-        private UserModel currentUser;
-
-        public UserModel CurrentUser
-        {
-            get => currentUser;
-            set
-            {
-                currentUser = value;
-                OnPropertyChanged("CurrentUser");
-            }
-        }
+        public UserModel CurrentUser { get; set; }
 
 
         public RelayCommand AddCommand { get; }
 
 
-        private string message;
-
-        public string Message
-        {
-            get => message;
-            set
-            {
-                message = value;
-                OnPropertyChanged("Message");
-            }
-        }
+        public string Message { get; set; }
 
 
         public void Add(object param)
         {
             var password = ((PasswordBox) param).Password;
-            if ((CurrentStudent.FirstNameStudent == "") || (CurrentStudent.FirstNameStudent == default) ||
-                (CurrentStudent.LastNameStudent == "") || (CurrentStudent.LastNameStudent == default) ||
+
+            if ((String.IsNullOrWhiteSpace(CurrentStudent.FirstNameStudent)) ||
+                (String.IsNullOrWhiteSpace(CurrentStudent.LastNameStudent)) ||
                 (CurrentStudent.DateOfBirthStudent == DateTime.Now) ||
-                (CurrentStudent.NumberPhoneStudent == "") || (CurrentStudent.NumberPhoneStudent == default))
+                (String.IsNullOrWhiteSpace(CurrentStudent.NumberPhoneStudent)))
             {
                 Message = "Заполните все поля";
+            }
+            else if (App.RoleUser == Const.RoleValue.Admin)
+            {
+                var newStudent = new UserModel
+                {
+                    RoleUser = Const.RoleValue.Student,
+                    LoginUser = CurrentUser.LoginUser,
+                    PasswordUser = password
+                };
+                if (userController.IsLoginFree(newStudent.LoginUser))
+                {
+                    userController.DataAccess.InsertUser(newStudent);
+                    var last = userController.GetAll()
+                        .OrderByDescending(item => item.IdUser).First();
+                    CurrentStudent.IdUser = last.IdUser;
+                    Message = studentController.Add(CurrentStudent) ? 
+                        "Добавлен новый ученик" :
+                        "При добавлении произошла ошибка";
+                }
+                else Message = "Логин занят";
+
             }
             else if (password != App.PasswordUser)
             {
                 Message = "Подтвердите изменения вводом текущего пароля";
-            }
-            else if (App.RoleUser==3)
-            {
-                var newStudent = new UserModel();
-                newStudent.RoleUser = 4;
-                newStudent.LoginUser = CurrentUser.LoginUser;
-                newStudent.PasswordUser = password;
-                if (userController.IsLoginFree(newStudent.LoginUser))
-                {
-                    userController.DataAccess.InsertUser(newStudent);
-                    var last = userController.GetAll().OrderByDescending(item => item.IdUser).First();
-                    CurrentStudent.IdUser = last.IdUser;
-                    Message = studentController.Add(CurrentStudent) ? "Добавлен новый ученик"
-                        : "При добавлении произошла ошибка";
-                }
-                else Message = "Логин занят";
-
             }
             else if (studentController.Select(CurrentStudent.IdUser).IdStudent == 0)
             {
@@ -117,14 +83,15 @@ namespace AcademicPerformance.ViewModelsFolder
                 Message = studentController.Add(CurrentStudent)
                     ? "Добавлен новый ученик"
                     : "При добавлении произошла ошибка";
-                if (App.RoleUser==1)
+                if (App.RoleUser==Const.RoleValue.User)
                 {
-                    var userController = new UserController();
-                    var newStudent = new UserModel();
-                    newStudent.RoleUser = 4;
-                    newStudent.LoginUser = App.LoginUser;
-                    newStudent.PasswordUser = App.PasswordUser;
-                    newStudent.IdUser = App.IdUser;
+                    var newStudent = new UserModel
+                    {
+                        RoleUser = Const.RoleValue.Student,
+                        LoginUser = App.LoginUser,
+                        PasswordUser = App.PasswordUser,
+                        IdUser = App.IdUser
+                    };
                     userController.DataAccess.UpdateUser(newStudent);
                 }
             }
@@ -139,5 +106,6 @@ namespace AcademicPerformance.ViewModelsFolder
 
             MessageBox.Show(Message);
         }
+
     }
 }
