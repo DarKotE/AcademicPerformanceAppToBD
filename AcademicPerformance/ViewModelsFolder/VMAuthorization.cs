@@ -9,14 +9,6 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMAuthorization : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
         public UserController UserController { get; }
 
         public VMAuthorization()
@@ -83,7 +75,16 @@ namespace AcademicPerformance.ViewModelsFolder
             else
                 Message = "Логин или пароль не верны, проверьте введённые данные";
 
-            if (Message.Length > 0) MessageBox.Show(Message);
+            if (!String.IsNullOrEmpty(Message)) MessageBox.Show(Message);
         }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

@@ -39,17 +39,20 @@ namespace AcademicPerformance.ClassFolder
 
         public UserModel SelectId(int idUser)
         {
-            return DataAccess != null ? DataAccess.SelectUserId(idUser) : new UserModel();
+            return DataAccess != null ? 
+                DataAccess.SelectUserId(idUser) : new UserModel();
         }
 
         public UserModel SelectName(string loginUser)
         {
-            return DataAccess != null ? DataAccess.SelectUserLogin(loginUser) : new UserModel();
+            return DataAccess != null ? 
+                DataAccess.SelectUserLogin(loginUser) : new UserModel();
         }
 
         public bool Update(UserModel userToUpdate)
         {
-            return DataAccess != null && DataAccess.UpdateUser(userToUpdate);
+            return DataAccess != null && 
+                   DataAccess.UpdateUser(userToUpdate);
         }
     }
 }

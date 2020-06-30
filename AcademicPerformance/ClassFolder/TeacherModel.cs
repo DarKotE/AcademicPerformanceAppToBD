@@ -73,7 +73,6 @@ namespace AcademicPerformance.ClassFolder
             set
             {
                 fullName = value;
-
             }
         }
 

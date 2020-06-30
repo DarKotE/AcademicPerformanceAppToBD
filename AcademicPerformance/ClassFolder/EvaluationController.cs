@@ -29,12 +29,14 @@ namespace AcademicPerformance.ClassFolder
 
         public EvaluationModel SelectId(int idEvaluation)
         {
-            return DataAccess != null ? DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
+            return DataAccess != null ? 
+                DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
         }
 
         public bool Update(EvaluationModel evaluationToUpdate)
         {
-            return DataAccess != null && DataAccess.UpdateEvaluation(evaluationToUpdate);
+            return DataAccess != null && 
+                   DataAccess.UpdateEvaluation(evaluationToUpdate);
         }
     }
 }

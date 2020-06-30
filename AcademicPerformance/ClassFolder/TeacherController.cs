@@ -29,13 +29,14 @@ namespace AcademicPerformance.ClassFolder
 
         public TeacherModel Select(int idUser)
         {
-            if (DataAccess != null) return DataAccess.GetTeacher(idUser);
-            return new TeacherModel();
+            return DataAccess != null ? 
+                DataAccess.GetTeacher(idUser) : new TeacherModel();
         }
 
         public bool Update(TeacherModel teacherToUpdate)
         {
-            return DataAccess != null && DataAccess.UpdateTeacher(teacherToUpdate);
+            return DataAccess != null && 
+                   DataAccess.UpdateTeacher(teacherToUpdate);
         }
     }
 }

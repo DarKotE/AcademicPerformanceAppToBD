@@ -35,12 +35,14 @@ namespace AcademicPerformance.ClassFolder
 
         public JournalModel SelectId(int idJournal)
         {
-            return DataAccess != null ? DataAccess.GetJournal(idJournal) : new JournalModel();
+            return DataAccess != null ? 
+                DataAccess.GetJournal(idJournal) : new JournalModel();
         }
 
         public bool Update(JournalModel journalToUpdate)
         {
-            return DataAccess != null && DataAccess.UpdateJournal(journalToUpdate);
+            return DataAccess != null && 
+                   DataAccess.UpdateJournal(journalToUpdate);
         }
     }
 }

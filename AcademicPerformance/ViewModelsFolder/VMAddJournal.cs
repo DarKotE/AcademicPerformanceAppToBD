@@ -8,36 +8,31 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMAddJournal : INotifyPropertyChanged
     {
-        private readonly JournalController journalController;
-        private readonly TeacherController teacherController;
-        private readonly ObservableCollection<StudentModel> studentList;
-        private readonly ObservableCollection<TeacherModel> teacherList;
-        private TeacherModel currentTeacher;
-        private string message;
-        private DisciplineModel selectedDiscipline;
-        private EvaluationModel selectedEvaluation;
-        private StudentModel selectedStudent;
-        private TeacherModel selectedTeacher;
+        private string message; //error string
+        private readonly JournalController journalController = new JournalController();
+        private readonly TeacherController teacherController = new TeacherController();
+        private readonly StudentController studentController = new StudentController();
+        private readonly DisciplineController disciplineController = new DisciplineController();
+        private readonly EvaluationController evaluationController = new EvaluationController();
 
         public VMAddJournal()
         {
             SelectedTeacher = new TeacherModel();
-            var disciplineController = new DisciplineController();
-            var evaluationController = new EvaluationController();
-            journalController = new JournalController();
-            teacherController = new TeacherController();
-            var studentController = new StudentController();
-            studentList = new ObservableCollection<StudentModel>(studentController.GetAll());
-            teacherList = new ObservableCollection<TeacherModel>(teacherController.GetAll());
+            CurrentJournal = new JournalModel();
+            StudentList = new ObservableCollection<StudentModel>(studentController.GetAll());
+            TeacherList = new ObservableCollection<TeacherModel>(teacherController.GetAll());
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineController.GetAll());
             EvaluationList = new ObservableCollection<EvaluationModel>(evaluationController.GetAll());
-            CurrentJournal = new JournalModel();
-            if (App.RoleUser == 5) SelectedTeacher = teacherController.Select(App.IdUser);
-
             AddCommand = new RelayCommand(Add);
+            if (App.RoleUser == Const.RoleValue.Teacher) SelectedTeacher = teacherController.Select(App.IdUser);
         }
 
+        public ObservableCollection<TeacherModel> TeacherList { get; set; }
+
+        public ObservableCollection<StudentModel> StudentList { get; set; }
+
         public RelayCommand AddCommand { get; }
+
         private JournalModel currentJournal;
         public JournalModel CurrentJournal
         {
@@ -49,6 +44,7 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private TeacherModel currentTeacher;
         public TeacherModel CurrentTeacher
         {
             get => currentTeacher;
@@ -73,6 +69,7 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private DisciplineModel selectedDiscipline;
         public DisciplineModel SelectedDiscipline
         {
             get => selectedDiscipline;
@@ -90,6 +87,7 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private EvaluationModel selectedEvaluation;
         public EvaluationModel SelectedEvaluation
         {
             get => selectedEvaluation;
@@ -107,13 +105,14 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private StudentModel selectedStudent;
         public StudentModel SelectedStudent
         {
             get => selectedStudent;
             set
             {
                 selectedStudent = value;
-                if (studentList != null && selectedStudent != null && CurrentJournal != null
+                if (StudentList != null && selectedStudent != null && CurrentJournal != null
                     && CurrentJournal.FIOStudent != selectedStudent.FullName)
                 {
                     CurrentJournal.FIOStudent = selectedStudent.FullName;
@@ -124,13 +123,14 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
+        private TeacherModel selectedTeacher;
         public TeacherModel SelectedTeacher
         {
             get => selectedTeacher;
             set
             {
                 selectedTeacher = value;
-                if (teacherList != null && selectedTeacher != null && CurrentJournal != null
+                if (TeacherList != null && selectedTeacher != null && CurrentJournal != null
                     && CurrentJournal.FIOTeacher != selectedTeacher.FullName)
                 {
                     CurrentJournal.FIOTeacher = selectedTeacher.FullName;
@@ -141,28 +141,25 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
-
-
-
-        
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
         public void Add(object param)
         {
-            if (App.RoleUser == 5)
+            if (App.RoleUser == Const.RoleValue.Teacher)
                 CurrentJournal.IdTeacher = teacherController.Select(App.IdUser)
                     .IdTeacher;
             if (CurrentJournal.IdEvaluation != default &&
                 CurrentJournal.IdTeacher != default &&
                 CurrentJournal.IdDiscipline != default &&
                 CurrentJournal.IdStudent != default)
-                message = journalController.Add(CurrentJournal) ? "Добавлено" : "При добавлении произошла ошибка";
+                message = journalController.Add(CurrentJournal) ?
+                    "Добавлено" : 
+                    "При добавлении произошла ошибка";
             else
                 message = "Заполните все поля";
             MessageBox.Show(Message);
         }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {

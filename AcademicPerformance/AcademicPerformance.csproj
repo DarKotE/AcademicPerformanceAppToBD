@@ -78,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ClassFolder\CDataAccess.cs" />
+    <Compile Include="ClassFolder\Const.cs" />
     <Compile Include="ClassFolder\RoleController.cs" />
     <Compile Include="ClassFolder\RoleModel.cs" />
     <Compile Include="ClassFolder\StudentController.cs" />

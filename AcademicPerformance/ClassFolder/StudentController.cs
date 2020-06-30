@@ -30,12 +30,14 @@ namespace AcademicPerformance.ClassFolder
 
         public StudentModel Select(int idUser)
         {
-            return DataAccess != null ? DataAccess.GetStudent(idUser) : new StudentModel();
+            return DataAccess != null ?
+                DataAccess.GetStudent(idUser) : new StudentModel();
         }
 
         public bool Update(StudentModel studentToUpdate)
         {
-            return DataAccess != null && DataAccess.UpdateStudent(studentToUpdate);
+            return DataAccess != null &&
+                   DataAccess.UpdateStudent(studentToUpdate);
         }
     }
 }

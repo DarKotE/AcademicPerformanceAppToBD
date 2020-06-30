@@ -4,7 +4,6 @@ namespace AcademicPerformance.ClassFolder
 {
    public class DisciplineModel : INotifyPropertyChanged
     {
-
         private int idDiscipline;
         public int IdDiscipline
         {
@@ -22,7 +21,8 @@ namespace AcademicPerformance.ClassFolder
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this,
+                new PropertyChangedEventArgs(propertyName));
 
         }
     }

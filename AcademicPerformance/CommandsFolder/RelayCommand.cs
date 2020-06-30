@@ -13,7 +13,6 @@ namespace AcademicPerformance.CommandsFolder
         public Action<object> DoAction { get; }
         public event EventHandler CanExecuteChanged;
 
-
         public bool CanExecute(object parameter)
         {
             return true;
