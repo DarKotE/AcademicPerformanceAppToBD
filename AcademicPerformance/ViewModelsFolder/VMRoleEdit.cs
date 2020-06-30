@@ -10,8 +10,7 @@ namespace AcademicPerformance.ViewModelsFolder
 {
     public class VMRoleEdit : INotifyPropertyChanged
     {
-        private string searchText;
-
+        
         public VMRoleEdit()
         {
             UserController = new UserController();
@@ -46,7 +45,7 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public ObservableCollection<RoleModel> RoleList { get; set; }
 
-
+        private string searchText;
         public string SearchText
         {
             get => searchText;
@@ -106,7 +105,7 @@ namespace AcademicPerformance.ViewModelsFolder
             FilteredUserList =
                 new ObservableCollection<UserModel>(
                     from item
-                        in UserList
+                    in UserList
                     where item.LoginUser.ToUpper().Contains(SearchText.ToUpper())
                           || item.IdUser.ToString().ToUpper().Contains(SearchText.ToUpper())
                           || item.RoleUser.ToString().ToUpper().Contains(SearchText.ToUpper())
@@ -130,7 +129,8 @@ namespace AcademicPerformance.ViewModelsFolder
                 if (!UserController.Update(item))
                     isAllSaved = false;
 
-            Message = isAllSaved ? "Изменения сохранены" : "При сохранении произошла ошибка";
+            Message = isAllSaved ? "Изменения сохранены" 
+                : "При сохранении произошла ошибка";
             MessageBox.Show(Message);
             LoadData();
         }
@@ -140,7 +140,8 @@ namespace AcademicPerformance.ViewModelsFolder
             var isDeleted =
                 (StudentController.Delete(SelectedRow.IdUser) || TeacherController.Delete(SelectedRow.IdUser)) &&
                 (UserController.Delete(SelectedRow.IdUser));
-            Message = isDeleted ? "Удалено" : "При удалении произошла ошибка";
+            Message = isDeleted ? "Удалено" 
+                : "При удалении произошла ошибка";
             MessageBox.Show(Message);
             LoadData();
         }

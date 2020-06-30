@@ -10,7 +10,7 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinAdd
     {
-        public Delegate UpdateActor;
+        internal Delegate UpdateActor;
 
         public WinAdd()
         {

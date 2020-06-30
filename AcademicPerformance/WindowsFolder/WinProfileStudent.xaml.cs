@@ -9,7 +9,7 @@ namespace AcademicPerformance.WindowsFolder
     /// </summary>
     public partial class WinProfileStudent 
     {
-        public Delegate UpdateActor;
+        internal Delegate UpdateActor;
         public WinProfileStudent()
         {
             InitializeComponent();
