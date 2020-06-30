@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AcademicPerformance.ClassFolder
+﻿namespace AcademicPerformance.ClassFolder
 {
-    public static class Const
+    internal static class Const
     {
         public static class RoleValue
         {

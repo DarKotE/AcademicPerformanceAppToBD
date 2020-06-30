@@ -9,7 +9,7 @@ namespace AcademicPerformance.ClassFolder
         public int IdStudent
         {
             get { return idStudent; }
-            set { idStudent = value; OnPropertyChanged("IdStudent"); }
+            set { idStudent = value; OnPropertyChanged(nameof(IdStudent)); }
         }
 
 
@@ -17,7 +17,7 @@ namespace AcademicPerformance.ClassFolder
         public int IdTeacher
         {
             get { return idTeacher; }
-            set { idTeacher = value; OnPropertyChanged("IdTeacher"); }
+            set { idTeacher = value; OnPropertyChanged(nameof(IdTeacher)); }
         }
 
 
@@ -25,7 +25,7 @@ namespace AcademicPerformance.ClassFolder
         public int IdDiscipline
         {
             get { return idDiscipline; }
-            set { idDiscipline = value; OnPropertyChanged("IdDiscipline"); }
+            set { idDiscipline = value; OnPropertyChanged(nameof(IdDiscipline)); }
         }
 
 
@@ -33,14 +33,14 @@ namespace AcademicPerformance.ClassFolder
         public int IdEvaluation
         {
             get { return idEvaluation; }
-            set { idEvaluation = value; OnPropertyChanged("IdEvaluation"); }
+            set { idEvaluation = value; OnPropertyChanged(nameof(IdEvaluation)); }
         }
 
         private int idJournal;
         public int IdJournal
         {
             get { return idJournal; }
-            set { idJournal = value; OnPropertyChanged("IdJournal"); }
+            set { idJournal = value; OnPropertyChanged(nameof(IdJournal)); }
         }
 
 
@@ -49,7 +49,7 @@ namespace AcademicPerformance.ClassFolder
         public string FIOStudent
         {
             get { return fIOStudent; }
-            set { fIOStudent = value; OnPropertyChanged("FIOStudent"); }
+            set { fIOStudent = value; OnPropertyChanged(nameof(FIOStudent)); }
         }
 
 
@@ -57,7 +57,7 @@ namespace AcademicPerformance.ClassFolder
         public int NumberEvaluation
         {
             get { return numberEvaluation; }
-            set { numberEvaluation = value; OnPropertyChanged("NumberEvaluation"); }
+            set { numberEvaluation = value; OnPropertyChanged(nameof(NumberEvaluation)); }
         }
 
 
@@ -65,7 +65,7 @@ namespace AcademicPerformance.ClassFolder
         public string NameEvaluation
         {
             get { return nameEvaluation; }
-            set { nameEvaluation = value; OnPropertyChanged("NameEvaluation"); }
+            set { nameEvaluation = value; OnPropertyChanged(nameof(NameEvaluation)); }
         }
 
 
@@ -73,7 +73,7 @@ namespace AcademicPerformance.ClassFolder
         public string FIOTeacher
         {
             get { return fIOTeacher; }
-            set { fIOTeacher = value; OnPropertyChanged("FIOTeacher"); }
+            set { fIOTeacher = value; OnPropertyChanged(nameof(FIOTeacher)); }
         }
 
 
@@ -81,7 +81,7 @@ namespace AcademicPerformance.ClassFolder
         public string NameDiscipline
         {
             get { return nameDiscipline; }
-            set { nameDiscipline = value; OnPropertyChanged("NameDiscipline"); }
+            set { nameDiscipline = value; OnPropertyChanged(nameof(NameDiscipline)); }
         }
 
 

@@ -9,14 +9,14 @@ namespace AcademicPerformance.ClassFolder
         public int IdRole
         {
             get { return idRole; }
-            set { idRole = value; OnPropertyChanged("IdRole"); }
+            set { idRole = value; OnPropertyChanged(nameof(IdRole)); }
         }
 
         private string nameRole;
         public string NameRole
         {
             get { return nameRole; }
-            set { nameRole = value; OnPropertyChanged("NameRole"); }
+            set { nameRole = value; OnPropertyChanged(nameof(NameRole)); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

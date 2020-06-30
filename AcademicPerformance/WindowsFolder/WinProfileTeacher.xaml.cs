@@ -7,7 +7,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinProfileTeacher.xaml
     /// </summary>
-    public partial class WinProfileTeacher : Window
+    public partial class WinProfileTeacher 
     {
         public Delegate UpdateActor;
         public WinProfileTeacher()
@@ -26,27 +26,32 @@ namespace AcademicPerformance.WindowsFolder
         {
             if (string.IsNullOrEmpty(tbStudLastName.Text))
             {
-                MessageBox.Show("Введите фамилию", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите фамилию",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudLastName.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudName.Text))
             {
-                MessageBox.Show("Введите имя", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите имя",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudName.Focus();
             }
             else if (string.IsNullOrEmpty(dpStudDateOfBirth.Text))
             {
-                MessageBox.Show("Введите дату рождения", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите дату рождения",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 dpStudDateOfBirth.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudNumberPhone.Text))
             {
-                MessageBox.Show("Введите номер телефона", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите номер телефона",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudNumberPhone.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudLogin.Text))
             {
-                MessageBox.Show("Введите логин", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Введите логин",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudLogin.Focus();
             }
             UpdateActor?.DynamicInvoke();

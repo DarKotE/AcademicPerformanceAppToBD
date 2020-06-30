@@ -17,33 +17,36 @@ namespace AcademicPerformance.ClassFolder
             {
                 const string sqlQuery = "SELECT IdUser FROM [dbo].[User] " + 
                                         "Where  LoginUser  = @LoginUser AND PasswordUser = @PasswordUser";
-                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
-                sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
-                try
+                using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                 {
-                    sqlConnection.Open();
-                    var sqlDataReader = sqlCommand.ExecuteReader();
-                    if (sqlDataReader.Read())
+                    sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
+                    sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
+                    try
                     {
-                        sqlDataReader.Close();
-                        return true;
+                        sqlConnection.Open();
+                        var sqlDataReader = sqlCommand.ExecuteReader();
+                        if (sqlDataReader.Read())
+                        {
+                            sqlDataReader.Close();
+                            return true;
+                        }
+                        else
+                        {
+                            sqlDataReader.Close();
+                            return false;
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        sqlDataReader.Close();
-                        return false;
+                        MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        sqlConnection.Close();
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка", MessageBoxButton.OK,
-                        MessageBoxImage.Error);
-                }
-                finally
-                {
-                    sqlConnection.Close();
-                }
+
                 return false;
 
             }
@@ -54,13 +57,16 @@ namespace AcademicPerformance.ClassFolder
 
             using (var sqlConnection = new SqlConnection(CSqlConfig.DefaultCnnVal()))
             {
-                SqlCommand sqlCommand;
                 SqlDataReader sqlDataReader;
-                sqlCommand = new SqlCommand("select IdUser From dbo.[User]" 
-                                            + " Where  LoginUser=@LoginUser", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("LoginUser", login);
-                sqlConnection.Open();
-                sqlDataReader = sqlCommand.ExecuteReader();
+                string sqlString = "select IdUser From dbo.[User]"
+                                   + " Where  LoginUser=@LoginUser";
+                using (var sqlCommand = new SqlCommand(sqlString, sqlConnection))
+                { 
+                    sqlCommand.Parameters.AddWithValue("LoginUser", login);
+                    sqlConnection.Open();
+                    sqlDataReader = sqlCommand.ExecuteReader();
+                }
+
                 if (sqlDataReader.HasRows)
                 {
                     sqlDataReader.Close();
@@ -88,19 +94,25 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         var users = new List<UserModel>();
                         while (reader.Read())
                         {
-                            var u = new UserModel();
-                            u.IdUser = reader.GetInt32(0);
-                            u.LoginUser = reader.GetString(1);
-                            u.PasswordUser = reader.GetString(2);
-                            u.RoleUser = reader.GetInt32(3);
+                            var u = new UserModel
+                            {
+                                IdUser = reader.GetInt32(0),
+                                LoginUser = reader.GetString(1),
+                                PasswordUser = reader.GetString(2),
+                                RoleUser = reader.GetInt32(3)
+                            };
                             users.Add(u);
                         }
                         tempUserList = users;
@@ -133,19 +145,25 @@ namespace AcademicPerformance.ClassFolder
                     sqlQuery += " FROM [dbo].[User]";
                     sqlQuery += " WHERE [User].LoginUser = @LoginUser " + 
                                 "AND [User].PasswordUser = @PasswordUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
-                    sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
+                        sqlCommand.Parameters.AddWithValue("PasswordUser", userPassword);
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     var items = new List<UserModel>();
                     while (reader.Read())
                     {
-                        var u = new UserModel();
-                        u.IdUser = (int)reader["IdUser"];
-                        u.LoginUser = (string)reader["LoginUser"];
-                        u.PasswordUser = (string)reader["PasswordUser"];
-                        u.RoleUser = (int)reader["RoleUser"];
+                        var u = new UserModel
+                        {
+                            IdUser = (int) reader["IdUser"],
+                            LoginUser = (string) reader["LoginUser"],
+                            PasswordUser = (string) reader["PasswordUser"],
+                            RoleUser = (int) reader["RoleUser"]
+                        };
                         items.Add(u);
                     }
                     if (items.Count>0)tempUserModel = items[0];
@@ -175,12 +193,20 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser," 
                                    + "RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
-                    sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
-                    sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (userModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
+                            sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
+                            sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -209,13 +235,17 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "UPDATE dbo.[User] set LoginUser=@LoginUser, " 
                                    + "PasswordUser=@PasswordUser, RoleUser=@RoleUser WHERE IdUser=@IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
-                    sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
-                    sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
-                    sqlCommand.Parameters.AddWithValue("IdUser", userModel.IdUser);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("LoginUser", userModel.LoginUser);
+                        sqlCommand.Parameters.AddWithValue("PasswordUser", userModel.PasswordUser);
+                        sqlCommand.Parameters.AddWithValue("RoleUser", userModel.RoleUser);
+                        sqlCommand.Parameters.AddWithValue("IdUser", userModel.IdUser);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -243,10 +273,14 @@ namespace AcademicPerformance.ClassFolder
                 {
                     const string sqlQuery = "DELETE FROM  dbo.[User]" +
                                             " WHERE IdUser=@IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -273,10 +307,14 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User] WHERE IdUser=@IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows) 
                     {
                         reader.Read();
@@ -311,18 +349,24 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
                     sqlQuery += " FROM [dbo].[User] WHERE LoginUser=@LoginUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("LoginUser", loginUser);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("LoginUser", loginUser);
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         reader.Read();
-                        tempUser = new UserModel();
-                        tempUser.IdUser = reader.GetInt32(0);
-                        tempUser.LoginUser = reader.GetString(1);
-                        tempUser.PasswordUser = reader.GetString(2);
-                        tempUser.RoleUser = reader.GetInt32(3);
+                        tempUser = new UserModel
+                        {
+                            IdUser = reader.GetInt32(0),
+                            LoginUser = reader.GetString(1),
+                            PasswordUser = reader.GetString(2),
+                            RoleUser = reader.GetInt32(3)
+                        };
                     }
                 }
                 catch (Exception ex)
@@ -367,9 +411,13 @@ namespace AcademicPerformance.ClassFolder
                 sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
                 sqlQuery += " WHERE Student.IdUser = @IdUser or Teacher.IdUser=@IdUser";
 
-                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
-                var dataAdapter = new SqlDataAdapter(sqlCommand);
+                SqlDataAdapter dataAdapter;
+                using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                {
+                    sqlCommand.Parameters.AddWithValue("IdUser", App.IdUser);
+                    dataAdapter = new SqlDataAdapter(sqlCommand);
+                }
+
                 dataAdapter.Fill(dataTable);
 
                 var journalList = (from DataRow dataRow in dataTable.Rows
@@ -413,8 +461,12 @@ namespace AcademicPerformance.ClassFolder
                 sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
                 sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
 
-                var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                var dataAdapter = new SqlDataAdapter(sqlCommand);
+                SqlDataAdapter dataAdapter;
+                using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                {
+                    dataAdapter = new SqlDataAdapter(sqlCommand);
+                }
+
                 dataAdapter.Fill(dataTable);
 
                 var journalList = (from DataRow dataRow in dataTable.Rows
@@ -447,11 +499,14 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation";
                     sqlQuery += " FROM [dbo].[Journal]";
                     sqlQuery += " WHERE [Journal].IdJournal = @IdJournal";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("IdJournal", idJournal);
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("IdJournal", idJournal);
+                        reader = sqlCommand.ExecuteReader();
+                    }
 
-                    var reader = sqlCommand.ExecuteReader();
                     var items = new List<JournalModel>();
                     while (reader.Read())
                     {
@@ -492,13 +547,21 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "INSERT INTO dbo.[Journal] (IdStudent, IdTeacher, " 
                                    + "IdDiscipline, IdEvaluation) VALUES (@IdStudent, " 
                                    + "@IdTeacher, @IdDiscipline, @IdEvaluation)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
-                    sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (journalModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
+                            sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
+                            sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
+                            sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -527,14 +590,22 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "UPDATE dbo.[Journal] set IdTeacher=@IdTeacher," 
                                    + "IdStudent=@IdStudent,IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation" 
                                    + " WHERE IdJournal=@IdJournal";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdJournal", journalModel.IdJournal);
-                    sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
-                    sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (journalModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdJournal", journalModel.IdJournal);
+                            sqlCommand.Parameters.AddWithValue("IdTeacher", journalModel.IdTeacher);
+                            sqlCommand.Parameters.AddWithValue("IdStudent", journalModel.IdStudent);
+                            sqlCommand.Parameters.AddWithValue("IdDiscipline", journalModel.IdDiscipline);
+                            sqlCommand.Parameters.AddWithValue("IdEvaluation", journalModel.IdEvaluation);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -561,10 +632,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     var sqlQuery = "DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("idJournal", idJournal);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("idJournal", idJournal);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -597,17 +672,22 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
                     sqlQuery += " FROM [dbo].[Discipline]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         var disciplines = new List<DisciplineModel>();
                         while (reader.Read())
                         {
-                            var u = new DisciplineModel();
-                            u.IdDiscipline = reader.GetInt32(0);
-                            u.NameDiscipline = reader.GetString(1);
+                            var u = new DisciplineModel
+                            {
+                                IdDiscipline = reader.GetInt32(0), NameDiscipline = reader.GetString(1)
+                            };
                             disciplines.Add(u);
                         }
                         tempDisciplineList = disciplines;
@@ -639,17 +719,22 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
                     sqlQuery += " FROM [dbo].[Discipline]";
                     sqlQuery += " WHERE [Discipline].IdDiscipline = @IdDiscipline";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
-                    
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     var items = new List<DisciplineModel>();
                     while (reader.Read())
                     {
-                        var u = new DisciplineModel();
-                        u.IdDiscipline = (int)reader["IdDiscipline"];
-                        u.NameDiscipline = (string)reader["NameDiscipline"];
+                        var u = new DisciplineModel
+                        {
+                            IdDiscipline = (int) reader["IdDiscipline"],
+                            NameDiscipline = (string) reader["NameDiscipline"]
+                        };
                         items.Add(u);
                     }
                     if (items.Count > 0) tempDiscipline = items[0];
@@ -677,10 +762,14 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "INSERT INTO dbo.[Discipline] (NameDiscipline)"
                                    + " VALUES (@NameDiscipline)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -708,11 +797,19 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline "
                                    + "WHERE IdDiscipline=@IdDiscipline";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (disciplineModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("NameDiscipline", disciplineModel.NameDiscipline);
+                            sqlCommand.Parameters.AddWithValue("IdDiscipline", disciplineModel.IdDiscipline);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -739,10 +836,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     var sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdDiscipline", idDiscipline);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -773,9 +874,13 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
                     sqlQuery += " FROM [dbo].[Evaluation]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         var items = new List<EvaluationModel>();
@@ -818,11 +923,14 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
                     sqlQuery += " FROM [dbo].[Evaluation]";
                     sqlQuery += " WHERE [Evaluation].IdEvaluation = @IdEvaluation";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
+                        reader = sqlCommand.ExecuteReader();
+                    }
 
-                    var reader = sqlCommand.ExecuteReader();
                     var items = new List<EvaluationModel>();
                     while (reader.Read())
                     {
@@ -861,12 +969,20 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "INSERT INTO dbo.[Evaluation] " 
                                    + "(IdEvaluation, NameEvaluation, NumberEvaluation) "
                                    + "VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdDiscipline", evaluationModel.IdEvaluation);
-                    sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
-                    sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (evaluationModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdDiscipline", evaluationModel.IdEvaluation);
+                            sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
+                            sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -894,12 +1010,16 @@ namespace AcademicPerformance.ClassFolder
                 {
                     const string sqlQuery = "UPDATE dbo.[Evaluation] set NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation" +
                                             " WHERE IdEvaluation=@IdEvaluation";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
-                    sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", evaluationModel.IdEvaluation);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("NameEvaluation", evaluationModel.NameEvaluation);
+                        sqlCommand.Parameters.AddWithValue("NumberEvaluation", evaluationModel.NumberEvaluation);
+                        sqlCommand.Parameters.AddWithValue("IdEvaluation", evaluationModel.IdEvaluation);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -926,10 +1046,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     var sqlQuery = "DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdEvaluation", idEvaluation);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -961,9 +1085,13 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdTeacher, LastNameTeacher,FirstNameTeacher, "
                                    + "MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher, IdUser";
                     sqlQuery += " FROM [dbo].[Teacher]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         var items = new List<TeacherModel>();
@@ -1012,10 +1140,14 @@ namespace AcademicPerformance.ClassFolder
                                    + "FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher,IdUser ";
                     sqlQuery += " FROM [dbo].[Teacher]";
                     sqlQuery += " WHERE [Teacher].IdUser = @IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     var items = new List<TeacherModel>();
                     while (reader.Read())
                     {
@@ -1056,15 +1188,23 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "INSERT INTO dbo.[Teacher] (IdUser,LastNameTeacher,"
                                    + " FirstNameTeacher, MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher) VALUES (@IdUser, @LastNameTeacher, @FirstNameTeacher,@MiddleNameTeacher,@DateOfBirthTeacher,@NumberPhoneTeacher)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameTeacher", teacherModel.MiddleNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthTeacher", teacherModel.DateOfBirthTeacher);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (teacherModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
+                            sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("MiddleNameTeacher", teacherModel.MiddleNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("DateOfBirthTeacher", teacherModel.DateOfBirthTeacher);
+                            sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -1091,16 +1231,24 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     const string sqlQuery = "UPDATE dbo.[Teacher] set IdUser=@IdUser, LastNameTeacher=@PasswordUser, FirstNameTeacher=@FirstNameTeacher, DateOfBirthTeacher=@DateOfBirthTeacher, NumberPhoneTeacher=@NumberPhoneTeacher WHERE IdTeacher=@IdTeacher";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameTeacher", teacherModel.MiddleNameTeacher);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthTeacher", teacherModel.DateOfBirthTeacher);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
-                    sqlCommand.Parameters.AddWithValue("IdTeacher", teacherModel.IdTeacher);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (teacherModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdUser", teacherModel.IdUser);
+                            sqlCommand.Parameters.AddWithValue("LastNameTeacher", teacherModel.LastNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("FirstNameTeacher", teacherModel.FirstNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("MiddleNameTeacher", teacherModel.MiddleNameTeacher);
+                            sqlCommand.Parameters.AddWithValue("DateOfBirthTeacher", teacherModel.DateOfBirthTeacher);
+                            sqlCommand.Parameters.AddWithValue("NumberPhoneTeacher", teacherModel.NumberPhoneTeacher);
+                            sqlCommand.Parameters.AddWithValue("IdTeacher", teacherModel.IdTeacher);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -1126,10 +1274,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     const string sqlQuery = "DELETE FROM  dbo.[Teacher] WHERE IdUser=@IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -1161,9 +1313,13 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdStudent, LastNameStudent, "
                                    + "FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent,IdUser";
                     sqlQuery += " FROM [dbo].[Student]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
                         var items = new List<StudentModel>();
@@ -1256,15 +1412,23 @@ namespace AcademicPerformance.ClassFolder
                     const string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, " 
                                             + "FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent)"
                                             + " VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent, @DateOfBirthStudent, @NumberPhoneStudent)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
-                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (studentModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
+                            sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
+                            sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
+                            sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
+                            sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
+                            sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -1292,16 +1456,24 @@ namespace AcademicPerformance.ClassFolder
                 {
                     const string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, "
                                             + "LastNameStudent=@LastNameStudent, FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
-                    sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
-                    sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
-                    sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
-                    sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
-                    sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
-                    sqlCommand.Parameters.AddWithValue("IdStudent", studentModel.IdStudent);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (studentModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdUser", studentModel.IdUser);
+                            sqlCommand.Parameters.AddWithValue("LastNameStudent", studentModel.LastNameStudent);
+                            sqlCommand.Parameters.AddWithValue("FirstNameStudent", studentModel.FirstNameStudent);
+                            sqlCommand.Parameters.AddWithValue("MiddleNameStudent", studentModel.MiddleNameStudent);
+                            sqlCommand.Parameters.AddWithValue("DateOfBirthStudent", studentModel.DateOfBirthStudent);
+                            sqlCommand.Parameters.AddWithValue("NumberPhoneStudent", studentModel.NumberPhoneStudent);
+                            sqlCommand.Parameters.AddWithValue("IdStudent", studentModel.IdStudent);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -1326,10 +1498,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     const string sqlQuery = "DELETE FROM  dbo.[Student] WHERE IdUser=@IdUser";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdUser", idUser);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdUser", idUser);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }
@@ -1359,20 +1535,26 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "SELECT IdRole, NameRole";
                     sqlQuery += " FROM [dbo].[Role]";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    var reader = sqlCommand.ExecuteReader();
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     if (reader.HasRows)
                     {
-                        var Roles = new List<RoleModel>();
+                        var roles = new List<RoleModel>();
                         while (reader.Read())
                         {
-                            var u = new RoleModel();
-                            u.IdRole = reader.GetInt32(0);
-                            u.NameRole = reader.GetString(1);
-                            Roles.Add(u);
+                            var u = new RoleModel
+                            {
+                                IdRole = reader.GetInt32(0), 
+                                NameRole = reader.GetString(1)
+                            };
+                            roles.Add(u);
                         }
-                        tempRoleList = Roles;
+                        tempRoleList = roles;
                     }
 
 
@@ -1401,17 +1583,23 @@ namespace AcademicPerformance.ClassFolder
                     var sqlQuery = "SELECT IdRole, NameRole";
                     sqlQuery += " FROM [dbo].[Role]";
                     sqlQuery += " WHERE [Role].IdRole = @IdRole";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.Parameters.AddWithValue("IdRole", idRole);
+                    SqlDataReader reader;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.Parameters.AddWithValue("IdRole", idRole);
 
-                    var reader = sqlCommand.ExecuteReader();
+                        reader = sqlCommand.ExecuteReader();
+                    }
+
                     var items = new List<RoleModel>();
                     while (reader.Read())
                     {
-                        var u = new RoleModel();
-                        u.IdRole = (int)reader["IdRole"];
-                        u.NameRole = (string)reader["NameRole"];
+                        var u = new RoleModel
+                        {
+                            IdRole = (int) reader["IdRole"],
+                            NameRole = (string) reader["NameRole"]
+                        };
                         items.Add(u);
                     }
                     if (items.Count > 0) tempRole = items[0];
@@ -1439,11 +1627,19 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "INSERT INTO dbo.[Role] (IdRole,NameRole)"
                                    + " VALUES (@IdRole, @NameRole)";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdRole", roleModel.IdRole);
-                    sqlCommand.Parameters.AddWithValue("NameRole", roleModel.NameRole);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (roleModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("IdRole", roleModel.IdRole);
+                            sqlCommand.Parameters.AddWithValue("NameRole", roleModel.NameRole);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isInserted = noOfRowsAffected > 0;
 
                 }
@@ -1471,11 +1667,19 @@ namespace AcademicPerformance.ClassFolder
                 {
                     var sqlQuery = "UPDATE dbo.[Role] set NameRole=@NameRole "
                                    + "WHERE IdRole=@IdRole";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("NameRole", roleModel.NameRole);
-                    sqlCommand.Parameters.AddWithValue("IdRole", roleModel.IdRole);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        if (roleModel != null)
+                        {
+                            sqlCommand.Parameters.AddWithValue("NameRole", roleModel.NameRole);
+                            sqlCommand.Parameters.AddWithValue("IdRole", roleModel.IdRole);
+                        }
+
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isUpdated = noOfRowsAffected > 0;
 
                 }
@@ -1502,10 +1706,14 @@ namespace AcademicPerformance.ClassFolder
                 try
                 {
                     var sqlQuery = "DELETE FROM  dbo.[Role] WHERE IdRole=@IdRole";
-                    var sqlCommand = new SqlCommand(sqlQuery, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("IdRole", idRole);
-                    sqlConnection.Open();
-                    var noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    int noOfRowsAffected;
+                    using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
+                    {
+                        sqlCommand.Parameters.AddWithValue("IdRole", idRole);
+                        sqlConnection.Open();
+                        noOfRowsAffected = sqlCommand.ExecuteNonQuery();
+                    }
+
                     isDeleted = noOfRowsAffected > 0;
 
                 }

@@ -8,14 +8,14 @@ namespace AcademicPerformance.ClassFolder
         public int IdDiscipline
         {
             get { return idDiscipline; }
-            set { idDiscipline = value; OnPropertyChanged("IdDiscipline"); }
+            set { idDiscipline = value; OnPropertyChanged(nameof(IdDiscipline)); }
         }
 
         private string nameDiscipline;
         public string NameDiscipline
         {
             get { return nameDiscipline; }
-            set { nameDiscipline = value; OnPropertyChanged("NameDiscipline"); }
+            set { nameDiscipline = value; OnPropertyChanged(nameof(NameDiscipline)); }
         }
         
         public event PropertyChangedEventHandler PropertyChanged;

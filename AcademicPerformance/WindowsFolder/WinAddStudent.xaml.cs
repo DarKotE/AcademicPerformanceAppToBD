@@ -6,14 +6,13 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Логика взаимодействия для WinAddStudent.xaml
     /// </summary>
-    public partial class WinAddStudent : Window
+    public partial class WinAddStudent 
     {
         public WinAddStudent()
         {
             InitializeComponent();
             var profileStudent = new VMProfileStudent();
             this.DataContext = profileStudent;
-
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
@@ -58,12 +57,6 @@ namespace AcademicPerformance.WindowsFolder
                     MessageBoxImage.Error);
                 tbStudLogin.Focus();
             }
-            
-                    
-                
-
-            
-
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -73,7 +66,8 @@ namespace AcademicPerformance.WindowsFolder
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?",
+                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();

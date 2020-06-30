@@ -63,7 +63,7 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 filteredJournalList = value;
-                OnPropertyChanged("FilteredJournalList");
+                OnPropertyChanged(nameof(FilteredJournalList));
             }
         }
 
@@ -75,54 +75,18 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 journalList = value;
-                OnPropertyChanged("JournalList");
+                OnPropertyChanged(nameof(JournalList));
             }
         }
 
-        private ObservableCollection<EvaluationModel> evaluationList;
-        public ObservableCollection<EvaluationModel> EvaluationList
-        {
-            get => evaluationList;
-            set
-            {
-                evaluationList = value;
-                OnPropertyChanged("EvaluationList");
-            }
-        }
+        public ObservableCollection<EvaluationModel> EvaluationList { get; set; }
 
-        private ObservableCollection<StudentModel> studentList;
-        public ObservableCollection<StudentModel> StudentList
-        {
-            get => studentList;
-            set
-            {
-                studentList = value;
-                OnPropertyChanged("StudentList");
-            }
-        }
+        public ObservableCollection<StudentModel> StudentList { get; set; }
 
-        private ObservableCollection<TeacherModel>teacherList;
-        public ObservableCollection<TeacherModel> TeacherList
-        {
-            get => teacherList;
-            set
-            {
-                teacherList = value;
-                OnPropertyChanged("TeacherList");
-            }
-        }
+        public ObservableCollection<TeacherModel> TeacherList { get; set; }
 
 
-        private ObservableCollection<DisciplineModel> disciplineList;
-        public ObservableCollection<DisciplineModel> DisciplineList
-        {
-            get => disciplineList;
-            set
-            {
-                disciplineList = value;
-                OnPropertyChanged("DisciplineList");
-            }
-        }
+        public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
 
 
         public string SearchText
@@ -132,7 +96,7 @@ namespace AcademicPerformance.ViewModelsFolder
             {
                 searchText = value;
                 Filter();
-                OnPropertyChanged("SearchText");
+                OnPropertyChanged(nameof(SearchText));
             }
         }
 
@@ -143,7 +107,7 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedRow = value;
-                OnPropertyChanged("SelectedRow");
+                OnPropertyChanged(nameof(SelectedRow));
             }
         }
 

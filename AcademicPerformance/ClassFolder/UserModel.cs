@@ -8,25 +8,25 @@ namespace AcademicPerformance.ClassFolder
         public int IdUser
         {
             get { return idUser;}
-            set { idUser = value; OnPropertyChanged("IdUser"); }
+            set { idUser = value; OnPropertyChanged(nameof(IdUser)); }
         }
         private string loginUser;
         public string LoginUser
         {
             get { return loginUser; }
-            set { loginUser = value; OnPropertyChanged("LoginUser"); }
+            set { loginUser = value; OnPropertyChanged(nameof(LoginUser)); }
         }
         private int roleUser;
         public int RoleUser
         {
             get { return roleUser; }
-            set { roleUser = value; OnPropertyChanged("RoleUser"); }
+            set { roleUser = value; OnPropertyChanged(nameof(RoleUser)); }
         }
         private string passwordUser;
         public string PasswordUser
         {
             get { return passwordUser; }
-            set { passwordUser = value; OnPropertyChanged("PasswordUser"); }
+            set { passwordUser = value; OnPropertyChanged(nameof(PasswordUser)); }
         }
 
 

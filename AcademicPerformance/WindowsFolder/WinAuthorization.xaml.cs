@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows;
+using AcademicPerformance.ClassFolder;
 using AcademicPerformance.ViewModelsFolder;
 
 namespace AcademicPerformance
@@ -7,7 +8,7 @@ namespace AcademicPerformance
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow 
     {
 
        private void RefreshView()
@@ -49,27 +50,27 @@ namespace AcademicPerformance
         {
             switch (i)
             {
-                case 1:
+                case Const.RoleValue.User:
                     WindowsFolder.WinProfileStudent winUser = new WindowsFolder.WinProfileStudent();
                     winUser.ShowDialog();
                     break;
-                case 2:
+                case Const.RoleValue.Director:
                     WindowsFolder.WinDirector winDirector = new WindowsFolder.WinDirector();
                     winDirector.ShowDialog();
                     break;
-                case 3:
+                case Const.RoleValue.Admin:
                     WindowsFolder.WinAdmin winAdmin = new WindowsFolder.WinAdmin();
                     winAdmin.ShowDialog();
                     break;
-                case 4:
+                case Const.RoleValue.Student:
                     WindowsFolder.WinStudent winStudent = new WindowsFolder.WinStudent();
                     winStudent.ShowDialog();
                     break;
-                case 5:
+                case Const.RoleValue.Teacher:
                     WindowsFolder.WinTeacher winTeacher = new WindowsFolder.WinTeacher();
                     winTeacher.ShowDialog();
                     break;
-                case 6:
+                case Const.RoleValue.Manager:
                     WindowsFolder.WinAdminJournal winManager = new WindowsFolder.WinAdminJournal();
                     winManager.ShowDialog();
                     break;

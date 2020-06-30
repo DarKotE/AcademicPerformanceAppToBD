@@ -134,9 +134,6 @@
     <Compile Include="WindowsFolder\WinRoleEdit.xaml.cs">
       <DependentUpon>WinRoleEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowsFolder\WinEditIn.xaml.cs">
-      <DependentUpon>WinEditIn.xaml</DependentUpon>
-    </Compile>
     <Compile Include="WindowsFolder\WinProfileTeacher.xaml.cs">
       <DependentUpon>WinProfileTeacher.xaml</DependentUpon>
     </Compile>
@@ -151,9 +148,6 @@
     </Compile>
     <Compile Include="WindowsFolder\WinTeacherJournal.xaml.cs">
       <DependentUpon>WinTeacherJournal.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowsFolder\WinUser.xaml.cs">
-      <DependentUpon>WinUser.xaml</DependentUpon>
     </Compile>
     <Page Include="ResourcesFolder\ResourceDictionary.xaml">
       <SubType>Designer</SubType>
@@ -203,10 +197,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WindowsFolder\WinEditIn.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="WindowsFolder\WinProfileTeacher.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -224,10 +214,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WindowsFolder\WinTeacherJournal.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WindowsFolder\WinUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

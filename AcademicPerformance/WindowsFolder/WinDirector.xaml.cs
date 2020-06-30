@@ -1,11 +1,12 @@
 ﻿using System.Windows;
+using AcademicPerformance.ClassFolder;
 
 namespace AcademicPerformance.WindowsFolder
 {
     /// <summary>
     /// Interaction logic for WinDirector.xaml
     /// </summary>
-    public partial class WinDirector : Window
+    public partial class WinDirector 
     {
         public WinDirector()
         {
@@ -26,48 +27,25 @@ namespace AcademicPerformance.WindowsFolder
 
         private void miTeacherWindow_Click(object sender, RoutedEventArgs e)
         {
-            App.RoleUser = 5;
+            App.RoleUser = Const.RoleValue.Teacher;
             var winTeacher = new WinTeacher();
             winTeacher.ShowDialog();
         }
 
         private void miStudentWindow_Click(object sender, RoutedEventArgs e)
         {
-            App.RoleUser = 4;
+            App.RoleUser = Const.RoleValue.Student;
             var winStudent = new WinStudent();
             winStudent.ShowDialog();
         }
 
         private void miManagerWindow_Click(object sender, RoutedEventArgs e)
         {
-            App.RoleUser = 6;
+            App.RoleUser = Const.RoleValue.Manager;
             var winManager = new WinAdminJournal();
             winManager.ShowDialog();
         }
-
-        private void miDirectorWindow_Click(object sender, RoutedEventArgs e)
-        {
-            App.RoleUser = 2;
-            var winDirector = new WinDirector();
-            winDirector.ShowDialog();
-        }
-
-        private void miStudentProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miTeacherProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miManagerProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miDirectorProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
+        
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

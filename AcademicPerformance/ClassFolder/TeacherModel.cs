@@ -10,44 +10,44 @@ namespace AcademicPerformance.ClassFolder
         public int IdUser
         {
             get { return idUser; }
-            set { idUser = value; OnPropertyChanged("IdUser"); }
+            set { idUser = value; OnPropertyChanged(nameof(IdUser)); }
         }
         private int idTeacher;
         public int IdTeacher
         {
             get { return idTeacher; }
-            set { idTeacher = value; OnPropertyChanged("IdTeacher"); }
+            set { idTeacher = value; OnPropertyChanged(nameof(IdTeacher)); }
         }
         private string lastNameTeacher;
         public string LastNameTeacher
         {
             get { return lastNameTeacher; }
-            set { lastNameTeacher = value; OnPropertyChanged("LastNameTeacher"); }
+            set { lastNameTeacher = value; OnPropertyChanged(nameof(LastNameTeacher)); }
         }
         private string firstNameTeacher;
         public string FirstNameTeacher
         {
             get { return firstNameTeacher; }
-            set { firstNameTeacher = value; OnPropertyChanged("FirstNameTeacher"); }
+            set { firstNameTeacher = value; OnPropertyChanged(nameof(FirstNameTeacher)); }
         }
         private string middleNameTeacher;
         public string MiddleNameTeacher
         {
             get { return middleNameTeacher; }
-            set { middleNameTeacher = value; OnPropertyChanged("MiddleNameTeacher"); }
+            set { middleNameTeacher = value; OnPropertyChanged(nameof(MiddleNameTeacher)); }
         }
         private DateTime dateOfBirthTeacher;
         public DateTime DateOfBirthTeacher
         {
             get { return dateOfBirthTeacher; }
-            set { dateOfBirthTeacher = value; OnPropertyChanged("DateOfBirthTeacher"); }
+            set { dateOfBirthTeacher = value; OnPropertyChanged(nameof(DateOfBirthTeacher)); }
         }
 
         private string numberPhoneTeacher;
         public string NumberPhoneTeacher
         {
             get { return numberPhoneTeacher; }
-            set { numberPhoneTeacher = value; OnPropertyChanged("NumberPhoneTeacher"); }
+            set { numberPhoneTeacher = value; OnPropertyChanged(nameof(NumberPhoneTeacher)); }
         }
 
 

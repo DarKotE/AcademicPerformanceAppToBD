@@ -33,7 +33,7 @@
         <Label Content="Администратор" Grid.Row="1" Grid.Column="1"
                Style="{DynamicResource LabelLogo}" Foreground="White"/>
         <Menu Height="30" VerticalAlignment="Top" Grid.ColumnSpan="3">
-            <MenuItem x:Name="miUsers" Header="Проифили пользователей">
+            <!--<MenuItem x:Name="miUsers" Header="Проифили пользователей">
                 <MenuItem x:Name="miStudentProfile" Header="Студент" Click="miStudentProfile_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miTeacherProfile" Header="Преподователь" Click="miTeacherProfile_Click"/>
@@ -41,7 +41,7 @@
                 <MenuItem x:Name="miManagerProfile" Header="Менеджер" Click="miManagerProfile_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miDirectorProfile" Header="Директор" Click="miDirectorProfile_Click"/>
-            </MenuItem>
+            </MenuItem>-->
             <MenuItem x:Name="miGuide" Header="Окна пользователей">
                 <MenuItem x:Name="miStudentWindow" Header="Окно студента" Click="miStudentWindow_Click" />
                 <Separator/>

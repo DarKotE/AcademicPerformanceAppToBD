@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,65 +42,68 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public void Add(object param)
         {
-            var password = ((PasswordBox) param).Password;
+            if (param != null)
+            {
+                var password = ((PasswordBox) param).Password;
 
-            if ((String.IsNullOrWhiteSpace(CurrentStudent.FirstNameStudent)) ||
-                (String.IsNullOrWhiteSpace(CurrentStudent.LastNameStudent)) ||
-                (CurrentStudent.DateOfBirthStudent == DateTime.Now) ||
-                (String.IsNullOrWhiteSpace(CurrentStudent.NumberPhoneStudent)))
-            {
-                Message = "Заполните все поля";
-            }
-            else if (App.RoleUser == Const.RoleValue.Admin)
-            {
-                var newStudent = new UserModel
+                if ((String.IsNullOrWhiteSpace(CurrentStudent.FirstNameStudent)) ||
+                    (String.IsNullOrWhiteSpace(CurrentStudent.LastNameStudent)) ||
+                    (CurrentStudent.DateOfBirthStudent == DateTime.Now) ||
+                    (String.IsNullOrWhiteSpace(CurrentStudent.NumberPhoneStudent)))
                 {
-                    RoleUser = Const.RoleValue.Student,
-                    LoginUser = CurrentUser.LoginUser,
-                    PasswordUser = password
-                };
-                if (userController.IsLoginFree(newStudent.LoginUser))
-                {
-                    userController.DataAccess.InsertUser(newStudent);
-                    var last = userController.GetAll()
-                        .OrderByDescending(item => item.IdUser).First();
-                    CurrentStudent.IdUser = last.IdUser;
-                    Message = studentController.Add(CurrentStudent) ? 
-                        "Добавлен новый ученик" :
-                        "При добавлении произошла ошибка";
+                    Message = "Заполните все поля";
                 }
-                else Message = "Логин занят";
-
-            }
-            else if (password != App.PasswordUser)
-            {
-                Message = "Подтвердите изменения вводом текущего пароля";
-            }
-            else if (studentController.Select(CurrentStudent.IdUser).IdStudent == 0)
-            {
-                CurrentStudent.IdUser = CurrentUser.IdUser;
-                Message = studentController.Add(CurrentStudent)
-                    ? "Добавлен новый ученик"
-                    : "При добавлении произошла ошибка";
-                if (App.RoleUser==Const.RoleValue.User)
+                else if (App.RoleUser == Const.RoleValue.Admin)
                 {
                     var newStudent = new UserModel
                     {
                         RoleUser = Const.RoleValue.Student,
-                        LoginUser = App.LoginUser,
-                        PasswordUser = App.PasswordUser,
-                        IdUser = App.IdUser
+                        LoginUser = CurrentUser.LoginUser,
+                        PasswordUser = password
                     };
-                    userController.DataAccess.UpdateUser(newStudent);
+                    if (userController.IsLoginFree(newStudent.LoginUser))
+                    {
+                        userController.DataAccess.InsertUser(newStudent);
+                        var last = userController.GetAll()
+                            .OrderByDescending(item => item.IdUser).First();
+                        CurrentStudent.IdUser = last.IdUser;
+                        Message = studentController.Add(CurrentStudent) ? 
+                            "Добавлен новый ученик" :
+                            "При добавлении произошла ошибка";
+                    }
+                    else Message = "Логин занят";
+
                 }
-            }
-            else if (studentController.Update(CurrentStudent))
-            {
-                Message = "Данные обновлены";
-            }
-            else
-            {
-                Message = "При обновлении произошла ошибка";
+                else if (password != App.PasswordUser)
+                {
+                    Message = "Подтвердите изменения вводом текущего пароля";
+                }
+                else if (studentController.Select(CurrentStudent.IdUser).IdStudent == 0)
+                {
+                    CurrentStudent.IdUser = CurrentUser.IdUser;
+                    Message = studentController.Add(CurrentStudent)
+                        ? "Добавлен новый ученик"
+                        : "При добавлении произошла ошибка";
+                    if (App.RoleUser==Const.RoleValue.User)
+                    {
+                        var newStudent = new UserModel
+                        {
+                            RoleUser = Const.RoleValue.Student,
+                            LoginUser = App.LoginUser,
+                            PasswordUser = App.PasswordUser,
+                            IdUser = App.IdUser
+                        };
+                        userController.DataAccess.UpdateUser(newStudent);
+                    }
+                }
+                else if (studentController.Update(CurrentStudent))
+                {
+                    Message = "Данные обновлены";
+                }
+                else
+                {
+                    Message = "При обновлении произошла ошибка";
+                }
             }
 
             MessageBox.Show(Message);

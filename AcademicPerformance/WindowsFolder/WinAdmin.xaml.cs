@@ -5,7 +5,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     ///     Interaction logic for WinAdmin.xaml
     /// </summary>
-    public partial class WinAdmin : Window
+    public partial class WinAdmin 
     {
         public WinAdmin()
         {
@@ -52,21 +52,6 @@ namespace AcademicPerformance.WindowsFolder
             winDirector.ShowDialog();
         }
 
-        private void miStudentProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miTeacherProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miManagerProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void miDirectorProfile_Click(object sender, RoutedEventArgs e)
-        {
-        }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {

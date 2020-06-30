@@ -6,7 +6,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinStudent.xaml
     /// </summary>
-    public partial class WinStudent : Window
+    public partial class WinStudent
     {
         public delegate void Refresh();
         public event Refresh RefreshEvent;
@@ -32,7 +32,9 @@ namespace AcademicPerformance.WindowsFolder
         
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(
+                "Вы действительно желаете выйти?", 
+                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();

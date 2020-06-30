@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using AcademicPerformance.ClassFolder;
 using AcademicPerformance.CommandsFolder;
@@ -29,9 +28,9 @@ namespace AcademicPerformance.ViewModelsFolder
             }
         }
 
-        public ObservableCollection<TeacherModel> TeacherList { get; set; }
+        public ObservableCollection<TeacherModel> TeacherList { get; }
 
-        public ObservableCollection<StudentModel> StudentList { get; set; }
+        public ObservableCollection<StudentModel> StudentList { get; }
 
         public RelayCommand AddCommand { get; }
 
@@ -39,9 +38,9 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public TeacherModel CurrentTeacher { get; set; }
 
-        public ObservableCollection<DisciplineModel> DisciplineList { get; set; }
+        public ObservableCollection<DisciplineModel> DisciplineList { get; }
 
-        public ObservableCollection<EvaluationModel> EvaluationList { get; set; }
+        public ObservableCollection<EvaluationModel> EvaluationList { get; }
 
         public string Message { get; set; }
 

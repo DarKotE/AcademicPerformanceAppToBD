@@ -6,7 +6,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinTeacher.xaml
     /// </summary>
-    public partial class WinTeacher : Window
+    public partial class WinTeacher
     {
 
         public delegate void Refresh();
@@ -33,7 +33,9 @@ namespace AcademicPerformance.WindowsFolder
         
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(
+                "Вы действительно желаете выйти?", "Информация",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();
@@ -60,7 +62,9 @@ namespace AcademicPerformance.WindowsFolder
 
         private void miExit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show(
+                "Вы действительно желаете выйти?",
+                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();

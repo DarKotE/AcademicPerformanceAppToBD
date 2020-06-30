@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using AcademicPerformance.ClassFolder;
@@ -26,13 +25,17 @@ namespace AcademicPerformance.ViewModelsFolder
 
         public void Auth(object param)
         {
-            var password = ((PasswordBox) param).Password;
-            CurrentUser.PasswordUser = password;
+            if (param != null)
+            {
+                var password = ((PasswordBox) param).Password;
+                CurrentUser.PasswordUser = password;
+            }
+
             Message = "";
 
-            if (string.IsNullOrEmpty(CurrentUser.LoginUser))
+            if (string.IsNullOrWhiteSpace(CurrentUser.LoginUser))
                 Message = "Введите логин";
-            else if (string.IsNullOrEmpty(CurrentUser.PasswordUser))
+            else if (string.IsNullOrWhiteSpace(CurrentUser.PasswordUser))
                 Message = "Введите пароль";
             else if (UserController.IsAuthValid(CurrentUser.LoginUser, CurrentUser.PasswordUser))
                 try
@@ -51,7 +54,7 @@ namespace AcademicPerformance.ViewModelsFolder
             else
                 Message = "Логин или пароль не верны, проверьте введённые данные";
 
-            if (!String.IsNullOrEmpty(Message)) MessageBox.Show(Message);
+            if (!String.IsNullOrWhiteSpace(Message)) MessageBox.Show(Message);
         }
         
     }

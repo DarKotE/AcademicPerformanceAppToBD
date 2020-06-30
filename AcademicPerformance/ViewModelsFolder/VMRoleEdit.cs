@@ -37,13 +37,12 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 filteredUserList = value;
-                OnPropertyChanged("FilteredUserList");
+                OnPropertyChanged(nameof(FilteredUserList));
             }
         }
 
 
         public ObservableCollection<UserModel> UserList { get; set; }
-
 
         public ObservableCollection<RoleModel> RoleList { get; set; }
 
@@ -55,7 +54,7 @@ namespace AcademicPerformance.ViewModelsFolder
             {
                 searchText = value;
                 Filter();
-                OnPropertyChanged("SearchText");
+                OnPropertyChanged(nameof(SearchText));
             }
         }
 
@@ -66,8 +65,7 @@ namespace AcademicPerformance.ViewModelsFolder
             set
             {
                 selectedRow = value;
-                OnPropertyChanged("SelectedRow");
-                
+                OnPropertyChanged(nameof(SelectedRow));
             }
         }
 
@@ -88,7 +86,7 @@ namespace AcademicPerformance.ViewModelsFolder
                 if (RoleList == null || selectedRole == null || SelectedRow == null ||
                     SelectedRow.RoleUser == selectedRole.IdRole) return;
                 SelectedRow.RoleUser = selectedRole.IdRole;
-                OnPropertyChanged("SelectedRole");
+                OnPropertyChanged(nameof(SelectedRole));
             }
         }
 
@@ -120,12 +118,9 @@ namespace AcademicPerformance.ViewModelsFolder
 
         private void LoadData()
         {
-            
             UserList = new ObservableCollection<UserModel>(UserController.GetAll());
             RoleList = new ObservableCollection<RoleModel>(RoleController.GetAll());
             SearchText = "";
-                    
-           
         }
         
         public void Save(object param)

@@ -9,7 +9,7 @@ namespace AcademicPerformance.ClassFolder
         public int IdEvaluation
         {
             get { return idEvaluation; }
-            set { idEvaluation = value; OnPropertyChanged("IdEvaluation"); }
+            set { idEvaluation = value; OnPropertyChanged(nameof(IdEvaluation)); }
         }
 
 
@@ -17,7 +17,7 @@ namespace AcademicPerformance.ClassFolder
         public string NameEvaluation
         {
             get { return nameEvaluation; }
-            set { nameEvaluation = value; OnPropertyChanged("NameEvaluation"); }
+            set { nameEvaluation = value; OnPropertyChanged(nameof(NameEvaluation)); }
         }
 
 
@@ -25,7 +25,7 @@ namespace AcademicPerformance.ClassFolder
         public int NumberEvaluation
         {
             get { return numberEvaluation; }
-            set { numberEvaluation = value; OnPropertyChanged("NumberEvaluation"); }
+            set { numberEvaluation = value; OnPropertyChanged(nameof(NumberEvaluation)); }
         }
         
 

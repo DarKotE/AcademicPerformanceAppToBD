@@ -7,7 +7,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     ///     Interaction logic for WinRoleEdit.xaml
     /// </summary>
-    public partial class WinRoleEdit : Window
+    public partial class WinRoleEdit
     {
         public WinRoleEdit()
         {

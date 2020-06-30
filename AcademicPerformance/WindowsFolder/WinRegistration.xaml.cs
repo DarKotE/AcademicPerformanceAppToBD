@@ -8,7 +8,7 @@ namespace AcademicPerformance.WindowsFolder
     /// <summary>
     /// Interaction logic for WinRegistration.xaml
     /// </summary>
-    public partial class WinRegistration : Window
+    public partial class WinRegistration
     {
         public WinRegistration()
         {
