@@ -17,8 +17,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdRole, NameRole";
-                    sqlQuery += " FROM [dbo].[Role]";
+                    const string sqlQuery = 
+                        @"SELECT IdRole, NameRole
+                        FROM [dbo].[Role]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -66,9 +67,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdRole, NameRole";
-                    sqlQuery += " FROM [dbo].[Role]";
-                    sqlQuery += " WHERE [Role].IdRole = @IdRole";
+                    var sqlQuery = 
+                        @"SELECT IdRole, NameRole
+                        FROM [dbo].[Role]
+                        WHERE [Role].IdRole = @IdRole";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -117,7 +119,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Role] (IdRole,NameRole)" + " VALUES (@IdRole, @NameRole)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Role]
+                        (IdRole,NameRole)
+                        VALUES (@IdRole, @NameRole)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -159,7 +164,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "UPDATE dbo.[Role] set NameRole=@NameRole " + "WHERE IdRole=@IdRole";
+                    const string sqlQuery = 
+                        @"UPDATE dbo.[Role] 
+                        SET NameRole=@NameRole 
+                        WHERE IdRole=@IdRole";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -201,7 +209,8 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "DELETE FROM  dbo.[Role] WHERE IdRole=@IdRole";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[Role] WHERE IdRole=@IdRole";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))

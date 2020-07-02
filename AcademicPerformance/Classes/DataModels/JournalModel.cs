@@ -45,10 +45,57 @@ namespace AcademicPerformance.Classes.DataModels
 
 
         //Поля отсутствуют внутри таблицы БД и существуют только в модели
+        private string lastNameStudent;
+        public string LastNameStudent
+        {
+            get { return lastNameStudent; }
+            set { lastNameStudent = value; OnPropertyChanged(nameof(LastNameStudent)); }
+        }
+        private string firstNameStudent;
+        public string FirstNameStudent
+        {
+            get { return firstNameStudent; }
+            set { firstNameStudent = value; OnPropertyChanged(nameof(FirstNameStudent)); }
+        }
+        private string middleNameStudent;
+        public string MiddleNameStudent
+        {
+            get { return middleNameStudent; }
+            set { middleNameStudent = value; OnPropertyChanged(nameof(MiddleNameStudent)); }
+        }
+
+        private string lastNameTeacher;
+        public string LastNameTeacher
+        {
+            get { return lastNameTeacher; }
+            set { lastNameTeacher = value; OnPropertyChanged(nameof(LastNameTeacher)); }
+        }
+        private string firstNameTeacher;
+        public string FirstNameTeacher
+        {
+            get { return firstNameTeacher; }
+            set { firstNameTeacher = value; OnPropertyChanged(nameof(FirstNameTeacher)); }
+        }
+        private string middleNameTeacher;
+        public string MiddleNameTeacher
+        {
+            get { return middleNameTeacher; }
+            set { middleNameTeacher = value; OnPropertyChanged(nameof(MiddleNameTeacher)); }
+        }
+        
+
+
+
         private string fIOStudent;
         public string FIOStudent
         {
-            get { return fIOStudent; }
+            get
+            {
+                fIOStudent = LastNameStudent;
+                fIOStudent += " " + FirstNameStudent;
+                if (MiddleNameStudent != default) fIOStudent += " " + MiddleNameStudent;
+                return fIOStudent;
+            }
             set { fIOStudent = value; OnPropertyChanged(nameof(FIOStudent)); }
         }
 
@@ -72,7 +119,14 @@ namespace AcademicPerformance.Classes.DataModels
         private string fIOTeacher;
         public string FIOTeacher
         {
-            get { return fIOTeacher; }
+            get
+            {
+                fIOTeacher = LastNameTeacher;
+                fIOTeacher += " " + FirstNameTeacher;
+                if (MiddleNameTeacher != default) fIOStudent += " " + MiddleNameTeacher;
+                return fIOTeacher;
+
+            }
             set { fIOTeacher = value; OnPropertyChanged(nameof(FIOTeacher)); }
         }
 

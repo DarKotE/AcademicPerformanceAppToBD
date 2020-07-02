@@ -14,8 +14,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
         {
             using (var sqlConnection = new SqlConnection(ConstSqlConfig.DefaultCnnVal()))
             {
-                const string sqlQuery = "SELECT IdUser FROM [dbo].[User] " +
-                                        "Where  LoginUser  = @LoginUser AND PasswordUser = @PasswordUser";
+                const string sqlQuery = 
+                    @"SELECT IdUser FROM [dbo].[User] 
+                    WHERE  LoginUser  = @LoginUser 
+                    AND PasswordUser = @PasswordUser";
                 using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                 {
                     sqlCommand.Parameters.AddWithValue("LoginUser", userLogin);
@@ -55,8 +57,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             using (var sqlConnection = new SqlConnection(ConstSqlConfig.DefaultCnnVal()))
             {
                 SqlDataReader sqlDataReader;
-                string sqlString = "select IdUser From dbo.[User]"
-                                   + " Where  LoginUser=@LoginUser";
+                const string sqlString = 
+                    @"SELECT IdUser 
+                    FROM dbo.[User]
+                    WHERE  LoginUser=@LoginUser";
                 using (var sqlCommand = new SqlCommand(sqlString, sqlConnection))
                 {
                     sqlCommand.Parameters.AddWithValue("LoginUser", login);
@@ -88,8 +92,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
-                    sqlQuery += " FROM [dbo].[User]";
+                    const string sqlQuery = 
+                        @"SELECT IdUser, LoginUser, PasswordUser, RoleUser 
+                        FROM [dbo].[User]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -136,10 +141,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
-                    sqlQuery += " FROM [dbo].[User]";
-                    sqlQuery += " WHERE [User].LoginUser = @LoginUser " +
-                                "AND [User].PasswordUser = @PasswordUser";
+                    var sqlQuery = 
+                        @"SELECT IdUser, LoginUser, PasswordUser, RoleUser 
+                        FROM [dbo].[User]
+                        WHERE [User].LoginUser = @LoginUser 
+                        AND [User].PasswordUser = @PasswordUser";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -186,8 +192,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[User] (LoginUser,PasswordUser,"
-                                   + "RoleUser) VALUES (@LoginUser, @PasswordUser, @RoleUser)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[User]
+                        (LoginUser,PasswordUser,RoleUser) 
+                        VALUES (@LoginUser, @PasswordUser, @RoleUser)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -225,8 +233,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "UPDATE dbo.[User] set LoginUser=@LoginUser, "
-                                   + "PasswordUser=@PasswordUser, RoleUser=@RoleUser WHERE IdUser=@IdUser";
+                    const string sqlQuery = 
+                        @"UPDATE dbo.[User] 
+                        SET LoginUser=@LoginUser,PasswordUser=@PasswordUser,
+                        RoleUser=@RoleUser 
+                        WHERE IdUser=@IdUser";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -265,8 +276,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    const string sqlQuery = "DELETE FROM  dbo.[User]" +
-                                            " WHERE IdUser=@IdUser";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[User]
+                        WHERE IdUser=@IdUser";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -298,8 +310,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
-                    sqlQuery += " FROM [dbo].[User] WHERE IdUser=@IdUser";
+                    const string sqlQuery =
+                        @"SELECT IdUser, LoginUser, PasswordUser, RoleUser
+                        FROM [dbo].[User]
+                        WHERE IdUser=@IdUser";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -341,8 +355,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, LoginUser, PasswordUser, RoleUser";
-                    sqlQuery += " FROM [dbo].[User] WHERE LoginUser=@LoginUser";
+                    const string sqlQuery = 
+                        @"SELECT IdUser, LoginUser, PasswordUser, RoleUser
+                        FROM [dbo].[User] 
+                        WHERE LoginUser=@LoginUser";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {

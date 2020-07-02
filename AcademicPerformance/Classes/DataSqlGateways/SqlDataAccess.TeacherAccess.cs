@@ -17,9 +17,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdTeacher, LastNameTeacher,FirstNameTeacher, "
-                                   + "MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher, IdUser";
-                    sqlQuery += " FROM [dbo].[Teacher]";
+                    const string sqlQuery =
+                        @"SELECT IdTeacher, LastNameTeacher,FirstNameTeacher, 
+                        MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher, IdUser
+                        FROM [dbo].[Teacher]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -70,10 +71,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdTeacher, LastNameTeacher, "
-                                   + "FirstNameTeacher, MiddleNameTeacher, DateOfBirthTeacher, NumberPhoneTeacher,IdUser ";
-                    sqlQuery += " FROM [dbo].[Teacher]";
-                    sqlQuery += " WHERE [Teacher].IdUser = @IdUser";
+                    var sqlQuery = 
+                        @"SELECT IdTeacher, LastNameTeacher, FirstNameTeacher, MiddleNameTeacher, 
+                        DateOfBirthTeacher, NumberPhoneTeacher,IdUser
+                        FROM [dbo].[Teacher]
+                        WHERE [Teacher].IdUser = @IdUser";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -121,8 +123,12 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Teacher] (IdUser,LastNameTeacher,"
-                                   + " FirstNameTeacher, MiddleNameTeacher,DateOfBirthTeacher,NumberPhoneTeacher) VALUES (@IdUser, @LastNameTeacher, @FirstNameTeacher,@MiddleNameTeacher,@DateOfBirthTeacher,@NumberPhoneTeacher)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Teacher] 
+                        (IdUser,LastNameTeacher,FirstNameTeacher, MiddleNameTeacher,
+                        DateOfBirthTeacher,NumberPhoneTeacher)
+                        VALUES (@IdUser, @LastNameTeacher, @FirstNameTeacher,@MiddleNameTeacher,
+                        @DateOfBirthTeacher,@NumberPhoneTeacher)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {
@@ -164,7 +170,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
                 try
                 {
                     const string sqlQuery =
-                        "UPDATE dbo.[Teacher] set IdUser=@IdUser, LastNameTeacher=@PasswordUser, FirstNameTeacher=@FirstNameTeacher, DateOfBirthTeacher=@DateOfBirthTeacher, NumberPhoneTeacher=@NumberPhoneTeacher WHERE IdTeacher=@IdTeacher";
+                        @"UPDATE dbo.[Teacher] 
+                        SET IdUser=@IdUser, LastNameTeacher=@PasswordUser, 
+                        FirstNameTeacher=@FirstNameTeacher, DateOfBirthTeacher=@DateOfBirthTeacher,
+                        NumberPhoneTeacher=@NumberPhoneTeacher 
+                        WHERE IdTeacher=@IdTeacher";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery, sqlConnection))
                     {

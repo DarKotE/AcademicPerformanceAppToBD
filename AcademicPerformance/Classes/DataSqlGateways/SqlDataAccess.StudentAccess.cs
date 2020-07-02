@@ -17,9 +17,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdStudent, LastNameStudent, " +
-                                   "FirstNameStudent,MiddleNameStudent,DateOfBirthStudent,NumberPhoneStudent,IdUser";
-                    sqlQuery += " FROM [dbo].[Student]";
+                    const string sqlQuery = 
+                        @"SELECT IdStudent, LastNameStudent, 
+                        FirstNameStudent,MiddleNameStudent,
+                        DateOfBirthStudent,NumberPhoneStudent,IdUser
+                        FROM [dbo].[Student]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -72,10 +74,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdUser, IdStudent, LastNameStudent, " +
-                                   "FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent";
-                    sqlQuery += " FROM [dbo].[Student]";
-                    sqlQuery += " WHERE [Student].IdUser = @IdUser";
+                    const string sqlQuery = 
+                        @"SELECT IdUser, IdStudent, LastNameStudent, 
+                        FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent
+                        FROM [dbo].[Student]
+                        WHERE [Student].IdUser = @IdUser";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -128,9 +131,12 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    const string sqlQuery = "INSERT INTO dbo.[Student] (IdUser,LastNameStudent, " +
-                                            "FirstNameStudent, MiddleNameStudent, DateOfBirthStudent, NumberPhoneStudent)" +
-                                            " VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent, @DateOfBirthStudent, @NumberPhoneStudent)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Student] 
+                        (IdUser,LastNameStudent, FirstNameStudent, MiddleNameStudent,
+                        DateOfBirthStudent, NumberPhoneStudent)
+                        VALUES (@IdUser, @LastNameStudent, @FirstNameStudent, @MiddleNameStudent,
+                        @DateOfBirthStudent, @NumberPhoneStudent)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -180,8 +186,12 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    const string sqlQuery = "UPDATE dbo.[Student] set IdUser=@IdUser, " +
-                                            "LastNameStudent=@LastNameStudent, FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent, DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent WHERE IdStudent=@IdStudent";
+                    const string sqlQuery = 
+                        @"UPDATE dbo.[Student]
+                        SET IdUser=@IdUser, LastNameStudent=@LastNameStudent, 
+                        FirstNameStudent=@FirstNameStudent,MiddleNameStudent=@MiddleNameStudent,
+                        DateOfBirthStudent=@DateOfBirthStudent, NumberPhoneStudent=@NumberPhoneStudent 
+                        WHERE IdStudent=@IdStudent";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -233,7 +243,8 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    const string sqlQuery = "DELETE FROM  dbo.[Student] WHERE IdUser=@IdUser";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[Student] WHERE IdUser=@IdUser";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))

@@ -17,8 +17,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
-                    sqlQuery += " FROM [dbo].[Evaluation]";
+                    const string sqlQuery = 
+                        @"SELECT IdEvaluation, NameEvaluation, NumberEvaluation
+                        FROM [dbo].[Evaluation]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -67,9 +68,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdEvaluation, NameEvaluation, NumberEvaluation";
-                    sqlQuery += " FROM [dbo].[Evaluation]";
-                    sqlQuery += " WHERE [Evaluation].IdEvaluation = @IdEvaluation";
+                    const string sqlQuery =
+                        @"SELECT IdEvaluation, NameEvaluation, NumberEvaluation
+                        FROM [dbo].[Evaluation]
+                        WHERE [Evaluation].IdEvaluation = @IdEvaluation";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -119,9 +121,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Evaluation] " +
-                                   "(IdEvaluation, NameEvaluation, NumberEvaluation) " +
-                                   "VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Evaluation] 
+                        (IdEvaluation, NameEvaluation, NumberEvaluation) 
+                        VALUES (@IdEvaluation, @NameEvaluation,@NumberEvaluation)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -166,8 +169,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
                 try
                 {
                     const string sqlQuery =
-                        "UPDATE dbo.[Evaluation] set NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation" +
-                        " WHERE IdEvaluation=@IdEvaluation";
+                        @"UPDATE dbo.[Evaluation] 
+                        SET NameEvaluation=@NameEvaluation,NumberEvaluation=@NumberEvaluation
+                        WHERE IdEvaluation=@IdEvaluation";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -211,7 +215,8 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[Evaluation] WHERE IdEvaluation=@IdEvaluation";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))

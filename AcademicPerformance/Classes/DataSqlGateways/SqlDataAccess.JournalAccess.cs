@@ -17,23 +17,19 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             var dataTable = new DataTable();
             using (var sqlConnection = new SqlConnection(ConstSqlConfig.DefaultCnnVal()))
             {
-                var sqlQuery = "select [IdJournal],";
-                sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', '')," +
-                    " COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
-                sqlQuery += " [NameEvaluation],[NumberEvaluation],";
-                sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), " +
-                    "COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher]," +
-                    " '')))) AS FIOTeacher,";
-                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher]," +
-                            " [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
-                sqlQuery += " FROM [dbo].[Journal]";
-                sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
-                sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
-                sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
-                sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
-                sqlQuery += " WHERE Student.IdUser = @IdUser or Teacher.IdUser=@IdUser";
+                const string sqlQuery = @"SELECT [IdJournal], 
+                    [LastNameStudent], [FirstNameStudent], [MiddleNameStudent],
+                    [NameEvaluation], [NumberEvaluation],
+                    [LastNameTeacher], [FirstNameTeacher], [MiddleNameTeacher],
+                    [NameDiscipline],
+                    [Journal].[IdStudent], [Journal].[IdTeacher],
+                    [Journal].[IdDiscipline], [Journal].[IdEvaluation]
+                    FROM [dbo].[Journal]
+                    inner join [dbo].Student on Student.IdStudent = Journal.IdStudent
+                    inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher
+                    inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation
+                    inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline
+                    WHERE Student.IdUser = @IdUser or Teacher.IdUser=@IdUser";
 
                 SqlDataAdapter dataAdapter;
                 using (var sqlCommand = new SqlCommand(sqlQuery,
@@ -50,10 +46,12 @@ namespace AcademicPerformance.Classes.DataSqlGateways
                     select new JournalModel()
                     {
                         IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
-                        FIOStudent = dataRow["FIOStudent"]
-                            .ToString(),
-                        FIOTeacher = dataRow["FIOTeacher"]
-                            .ToString(),
+                        LastNameStudent = dataRow["LastNameStudent"].ToString(),
+                        FirstNameTeacher = dataRow["FirstNameTeacher"].ToString(),
+                        MiddleNameTeacher = dataRow["MiddleNameTeacher"].ToString(),
+                        LastNameTeacher = dataRow["LastNameTeacher"].ToString(),
+                        FirstNameStudent = dataRow["FirstNameStudent"].ToString(),
+                        MiddleNameStudent = dataRow["MiddleNameStudent"].ToString(),
                         NameDiscipline = dataRow["NameDiscipline"]
                             .ToString(),
                         NameEvaluation = dataRow["NameEvaluation"]
@@ -75,22 +73,18 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             var dataTable = new DataTable();
             using (var sqlConnection = new SqlConnection(ConstSqlConfig.DefaultCnnVal()))
             {
-                var sqlQuery = "select [IdJournal],";
-                sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameStudent] + ' ', '')," +
-                    " COALESCE([FirstNameStudent] + ' ', ''), COALESCE([MiddleNameStudent], '')))) AS FIOStudent,";
-                sqlQuery += " [NameEvaluation],[NumberEvaluation],";
-                sqlQuery +=
-                    " RTRIM(LTRIM(CONCAT(COALESCE([LastNameTeacher] + ' ', ''), " +
-                    "COALESCE([FirstNameTeacher] + ' ', ''), COALESCE([MiddleNameTeacher]," +
-                    " '')))) AS FIOTeacher,";
-                sqlQuery += " [NameDiscipline], [Journal].[IdStudent], [Journal].[IdTeacher]," +
-                            " [Journal].[IdDiscipline], [Journal].[IdEvaluation]";
-                sqlQuery += " FROM [dbo].[Journal]";
-                sqlQuery += " inner join [dbo].Student on Student.IdStudent = Journal.IdStudent";
-                sqlQuery += " inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher";
-                sqlQuery += " inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation";
-                sqlQuery += " inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
+                const string sqlQuery = @"SELECT [IdJournal], 
+                    [LastNameStudent], [FirstNameStudent], [MiddleNameStudent],
+                    [NameEvaluation], [NumberEvaluation],
+                    [LastNameTeacher], [FirstNameTeacher], [MiddleNameTeacher],
+                    [NameDiscipline],
+                    [Journal].[IdStudent], [Journal].[IdTeacher],
+                    [Journal].[IdDiscipline], [Journal].[IdEvaluation]
+                    FROM [dbo].[Journal]
+                    inner join [dbo].Student on Student.IdStudent = Journal.IdStudent
+                    inner join [dbo].Teacher on Teacher.IdTeacher = Journal.IdTeacher
+                    inner join [dbo].Evaluation on Evaluation.IdEvaluation = Journal.IdEvaluation
+                    inner join [dbo].Discipline on Discipline.IdDiscipline = Journal.IdDiscipline";
 
                 SqlDataAdapter dataAdapter;
                 using (var sqlCommand = new SqlCommand(sqlQuery,
@@ -105,14 +99,14 @@ namespace AcademicPerformance.Classes.DataSqlGateways
                     select new JournalModel()
                     {
                         IdJournal = Convert.ToInt32(dataRow["IdJournal"]),
-                        FIOStudent = dataRow["FIOStudent"]
-                            .ToString(),
-                        FIOTeacher = dataRow["FIOTeacher"]
-                            .ToString(),
-                        NameDiscipline = dataRow["NameDiscipline"]
-                            .ToString(),
-                        NameEvaluation = dataRow["NameEvaluation"]
-                            .ToString(),
+                        LastNameStudent = dataRow["LastNameStudent"].ToString(),
+                        FirstNameTeacher = dataRow["FirstNameTeacher"].ToString(),
+                        MiddleNameTeacher = dataRow["MiddleNameTeacher"].ToString(),
+                        LastNameTeacher = dataRow["LastNameTeacher"].ToString(),
+                        FirstNameStudent = dataRow["FirstNameStudent"].ToString(),
+                        MiddleNameStudent = dataRow["MiddleNameStudent"].ToString(),
+                        NameDiscipline = dataRow["NameDiscipline"].ToString(),
+                        NameEvaluation = dataRow["NameEvaluation"].ToString(),
                         NumberEvaluation = Convert.ToInt32(dataRow["NumberEvaluation"]),
                         IdStudent = Convert.ToInt32(dataRow["IdStudent"]),
                         IdTeacher = Convert.ToInt32(dataRow["IdTeacher"]),
@@ -132,9 +126,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation";
-                    sqlQuery += " FROM [dbo].[Journal]";
-                    sqlQuery += " WHERE [Journal].IdJournal = @IdJournal";
+                    const string sqlQuery =
+                        @"SELECT IdJournal, IdStudent, IdTeacher, IdDiscipline, IdEvaluation
+                        FROM [dbo].[Journal]
+                        WHERE [Journal].IdJournal = @IdJournal";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -186,9 +181,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Journal] (IdStudent, IdTeacher, " +
-                                   "IdDiscipline, IdEvaluation) VALUES (@IdStudent, " +
-                                   "@IdTeacher, @IdDiscipline, @IdEvaluation)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Journal] 
+                        (IdStudent, IdTeacher,IdDiscipline, IdEvaluation) 
+                        VALUES (@IdStudent,@IdTeacher, @IdDiscipline, @IdEvaluation)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -234,9 +230,11 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "UPDATE dbo.[Journal] set IdTeacher=@IdTeacher," +
-                                   "IdStudent=@IdStudent,IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation" +
-                                   " WHERE IdJournal=@IdJournal";
+                    const string sqlQuery = 
+                        @"UPDATE dbo.[Journal] 
+                        SET IdTeacher=@IdTeacher, IdStudent=@IdStudent, 
+                        IdDiscipline=@IdDiscipline,IdEvaluation=@IdEvaluation
+                        WHERE IdJournal=@IdJournal";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -284,7 +282,8 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[Journal] WHERE idJournal=@idJournal";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))

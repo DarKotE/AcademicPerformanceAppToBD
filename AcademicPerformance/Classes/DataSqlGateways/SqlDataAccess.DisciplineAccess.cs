@@ -17,8 +17,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
-                    sqlQuery += " FROM [dbo].[Discipline]";
+                    const string sqlQuery = 
+                        @"SELECT IdDiscipline, NameDiscipline
+                        FROM [dbo].[Discipline]";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -66,9 +67,10 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "SELECT IdDiscipline, NameDiscipline";
-                    sqlQuery += " FROM [dbo].[Discipline]";
-                    sqlQuery += " WHERE [Discipline].IdDiscipline = @IdDiscipline";
+                    const string sqlQuery = 
+                        @"SELECT IdDiscipline, NameDiscipline
+                        FROM [dbo].[Discipline]
+                        WHERE [Discipline].IdDiscipline = @IdDiscipline";
                     SqlDataReader reader;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -116,7 +118,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "INSERT INTO dbo.[Discipline] (NameDiscipline)" + " VALUES (@NameDiscipline)";
+                    const string sqlQuery = 
+                        @"INSERT INTO dbo.[Discipline] (NameDiscipline)
+                        VALUES (@NameDiscipline)";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -153,8 +157,9 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline " +
-                                   "WHERE IdDiscipline=@IdDiscipline";
+                    const string sqlQuery = 
+                        @"UPDATE dbo.[Discipline] set NameDiscipline=@NameDiscipline
+                        WHERE IdDiscipline=@IdDiscipline";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -196,7 +201,8 @@ namespace AcademicPerformance.Classes.DataSqlGateways
             {
                 try
                 {
-                    var sqlQuery = "DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
+                    const string sqlQuery = 
+                        @"DELETE FROM  dbo.[Discipline] WHERE IdDiscipline=@IdDiscipline";
                     int noOfRowsAffected;
                     using (var sqlCommand = new SqlCommand(sqlQuery,
                         sqlConnection))
@@ -226,5 +232,5 @@ namespace AcademicPerformance.Classes.DataSqlGateways
         }
 
         #endregion
-    }
+    }   
 }
