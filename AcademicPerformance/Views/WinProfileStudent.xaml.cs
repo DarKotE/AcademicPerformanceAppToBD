@@ -1,60 +1,65 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
-    /// Логика взаимодействия для WinAddTeacher.xaml
+    /// Interaction logic for WinProfileStudent.xaml
     /// </summary>
-    public partial class WinAddTeacher 
+    public partial class WinProfileStudent 
     {
-        public WinAddTeacher()
+        internal Delegate UpdateActor;
+        public WinProfileStudent()
         {
             InitializeComponent();
-            var profileTeacher = new VMProfileTeacher();
-            this.DataContext = profileTeacher;
+            var profileStudent = new VMProfileStudent();
+            this.DataContext = profileStudent;
+        }       
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           
         }
-        
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(tbStudLastName.Text))
             {
-                MessageBox.Show("Введите фамилию преподавателя", 
+                MessageBox.Show("Введите фамилию",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudLastName.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudName.Text))
             {
-                MessageBox.Show("Введите имя преподавателя",
+                MessageBox.Show("Введите имя",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudName.Focus();
             }
             else if (string.IsNullOrEmpty(dpStudDateOfBirth.Text))
             {
-                MessageBox.Show("Введите дату рождения преподавателя",
+                MessageBox.Show("Введите дату рождения",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 dpStudDateOfBirth.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudNumberPhone.Text))
             {
-                MessageBox.Show("Введите номер телефона преподавателя",
+                MessageBox.Show("Введите номер телефона",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudNumberPhone.Focus();
             }
             else if (string.IsNullOrEmpty(tbStudLogin.Text))
             {
-                MessageBox.Show("Введите логин для преподавателя",
+                MessageBox.Show("Введите логин", 
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudLogin.Focus();
             }
-            
-
-           
+            UpdateActor?.DynamicInvoke();
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
+            UpdateActor?.DynamicInvoke();
             this.Close();
         }
 

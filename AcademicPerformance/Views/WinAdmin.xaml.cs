@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     ///     Interaction logic for WinAdmin.xaml

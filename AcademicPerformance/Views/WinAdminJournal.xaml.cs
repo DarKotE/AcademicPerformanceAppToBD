@@ -1,12 +1,12 @@
 ﻿using System.Windows;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
-    /// Interaction logic for WinTeacher.xaml
+    /// Interaction logic for WinAdminJournal.xaml
     /// </summary>
-    public partial class WinTeacher
+    public partial class WinAdminJournal
     {
 
         public delegate void Refresh();
@@ -14,12 +14,12 @@ namespace AcademicPerformance.Windows
 
         private void RefreshView()
         {
-            var teacherJournal = new VMJournal();
+            var adminJournal = new VMJournal();
             this.DataContext = null;
-            this.DataContext = teacherJournal;
+            this.DataContext = adminJournal;
         }
 
-        public WinTeacher()
+        public WinAdminJournal()
         {
             InitializeComponent();
             RefreshView();
@@ -30,19 +30,18 @@ namespace AcademicPerformance.Windows
             tbSearch.Focus();
         }
 
-        
+
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Вы действительно желаете выйти?", "Информация",
-                MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?",
+                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             }
         }
-        
+
 
         private void Add_OnClick(object sender, RoutedEventArgs e)
         {
@@ -52,17 +51,10 @@ namespace AcademicPerformance.Windows
             winAdd.Show();
         }
 
-        private void miProfile_Click(object sender, RoutedEventArgs e)
-        {
-            RefreshEvent += new Refresh(RefreshView);
-            WinProfileTeacher winProfileTeacher = new WinProfileTeacher {UpdateActor = RefreshEvent};
-            winProfileTeacher.Show();
-        }
-
+        
         private void miExit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show(
-                "Вы действительно желаете выйти?",
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", 
                 "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {

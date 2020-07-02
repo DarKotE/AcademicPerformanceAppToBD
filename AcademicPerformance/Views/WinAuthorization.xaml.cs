@@ -3,7 +3,7 @@ using System.Windows;
 using AcademicPerformance.Classes;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

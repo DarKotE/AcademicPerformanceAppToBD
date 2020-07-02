@@ -3,7 +3,7 @@ using AcademicPerformance.ViewModels;
 using Application = System.Windows.Application;
 
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     /// Interaction logic for WinRegistration.xaml

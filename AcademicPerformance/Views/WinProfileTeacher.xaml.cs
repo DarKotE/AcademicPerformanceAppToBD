@@ -2,24 +2,24 @@
 using System.Windows;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
-    /// Interaction logic for WinProfileStudent.xaml
+    /// Interaction logic for WinProfileTeacher.xaml
     /// </summary>
-    public partial class WinProfileStudent 
+    public partial class WinProfileTeacher 
     {
         internal Delegate UpdateActor;
-        public WinProfileStudent()
+        public WinProfileTeacher()
         {
             InitializeComponent();
-            var profileStudent = new VMProfileStudent();
-            this.DataContext = profileStudent;
-        }       
+            var profileTeacher = new VMProfileTeacher();
+            this.DataContext = profileTeacher;
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+
         }
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace AcademicPerformance.Windows
             }
             else if (string.IsNullOrEmpty(tbStudLogin.Text))
             {
-                MessageBox.Show("Введите логин", 
+                MessageBox.Show("Введите логин",
                     "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 tbStudLogin.Focus();
             }
@@ -59,19 +59,19 @@ namespace AcademicPerformance.Windows
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            UpdateActor?.DynamicInvoke();
+            UpdateActor.DynamicInvoke();
             this.Close();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?",
-                "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Вы действительно желаете выйти?", "Информация", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 Application.Current.Shutdown();
                 System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
             }
         }
+        
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     /// Логика взаимодействия для WinAddStudent.xaml

@@ -2,7 +2,7 @@
 using AcademicPerformance.Classes.DataAdapters;
 using AcademicPerformance.Classes.DataModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     /// Логика взаимодействия для WinAddDiscipline.xaml

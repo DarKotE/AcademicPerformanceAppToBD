@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using AcademicPerformance.Classes;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     /// Interaction logic for WinDirector.xaml

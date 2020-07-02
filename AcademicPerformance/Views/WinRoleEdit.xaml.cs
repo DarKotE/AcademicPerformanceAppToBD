@@ -2,7 +2,7 @@
 using System.Windows;
 using AcademicPerformance.ViewModels;
 
-namespace AcademicPerformance.Windows
+namespace AcademicPerformance.Views
 {
     /// <summary>
     ///     Interaction logic for WinRoleEdit.xaml
