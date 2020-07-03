@@ -13,28 +13,28 @@ namespace AcademicPerformance.Classes.DataAdapters
             DataAccess = new SqlDataAccess();
         }
 
-        public List<RoleModel> GetAll()
+        public List<RoleModel> GetAllRole()
         {
             var roleList = DataAccess.GetRoleList();
             return roleList ?? new List<RoleModel>();
         }
 
-        public bool Add(RoleModel newRole)
+        public bool AddRole(RoleModel newRole)
         {
             return DataAccess != null && DataAccess.InsertRole(newRole);
         }
 
-        public bool Update(RoleModel roleToUpdate)
+        public bool SetRole(RoleModel roleToUpdate)
         {
             return DataAccess != null && DataAccess.UpdateRole(roleToUpdate);
         }
 
-        public bool Delete(int idRole)
+        public bool DeleteRoleById(int idRole)
         {
             return DataAccess != null && DataAccess.DeleteRole(idRole);
         }
 
-        public RoleModel GetById(int idRole)
+        public RoleModel GetRoleById(int idRole)
         {
             return DataAccess != null 
                 ? DataAccess.GetRole(idRole) 

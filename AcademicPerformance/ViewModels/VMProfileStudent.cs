@@ -17,7 +17,7 @@ namespace AcademicPerformance.ViewModels
         {
             CurrentUser = new UserModel();
             AddCommand = new RelayCommand(Add);
-            CurrentStudent = studentAdapter.GetById(App.IdUser);
+            CurrentStudent = studentAdapter.GetUserById(App.IdUser);
             if (CurrentStudent.DateOfBirthStudent == default) 
                 CurrentStudent.DateOfBirthStudent = DateTime.Now;
             if (App.RoleUser != Const.RoleValue.Admin)
@@ -62,13 +62,13 @@ namespace AcademicPerformance.ViewModels
                         LoginUser = CurrentUser.LoginUser,
                         PasswordUser = password
                     };
-                    if (userAdapter.IsLoginFree(newStudent.LoginUser))
+                    if (userAdapter.IsUserLoginFree(newStudent.LoginUser))
                     {
                         userAdapter.DataAccess.InsertUser(newStudent);
-                        var last = userAdapter.GetAll()
+                        var last = userAdapter.GetAllUser()
                             .OrderByDescending(item => item.IdUser).First();
                         CurrentStudent.IdUser = last.IdUser;
-                        Message = studentAdapter.Add(CurrentStudent) ? 
+                        Message = studentAdapter.AddStudent(CurrentStudent) ? 
                             "Добавлен новый ученик" :
                             "При добавлении произошла ошибка";
                     }
@@ -79,10 +79,10 @@ namespace AcademicPerformance.ViewModels
                 {
                     Message = "Подтвердите изменения вводом текущего пароля";
                 }
-                else if (studentAdapter.GetById(CurrentStudent.IdUser).IdStudent == 0)
+                else if (studentAdapter.GetUserById(CurrentStudent.IdUser).IdStudent == 0)
                 {
                     CurrentStudent.IdUser = CurrentUser.IdUser;
-                    Message = studentAdapter.Add(CurrentStudent)
+                    Message = studentAdapter.AddStudent(CurrentStudent)
                         ? "Добавлен новый ученик"
                         : "При добавлении произошла ошибка";
                     if (App.RoleUser==Const.RoleValue.User)
@@ -97,7 +97,7 @@ namespace AcademicPerformance.ViewModels
                         userAdapter.DataAccess.UpdateUser(newStudent);
                     }
                 }
-                else if (studentAdapter.Update(CurrentStudent))
+                else if (studentAdapter.SetUser(CurrentStudent))
                 {
                     Message = "Данные обновлены";
                 }

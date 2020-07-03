@@ -17,7 +17,7 @@ namespace AcademicPerformance.ViewModels
         {
             CurrentUser = new UserModel();
             AddCommand = new RelayCommand(Add);
-            CurrentTeacher = teacherAdapter.Select(App.IdUser);
+            CurrentTeacher = teacherAdapter.GetTeacherById(App.IdUser);
             if (CurrentTeacher.DateOfBirthTeacher == default)
             {
                 CurrentTeacher.DateOfBirthTeacher = DateTime.Now;
@@ -59,13 +59,13 @@ namespace AcademicPerformance.ViewModels
                     LoginUser = CurrentUser.LoginUser, 
                     PasswordUser = password
                 };
-                if (userAdapter.IsLoginFree(newTeacher.LoginUser))
+                if (userAdapter.IsUserLoginFree(newTeacher.LoginUser))
                 {
                     userAdapter.DataAccess.InsertUser(newTeacher);
-                    var last = userAdapter.GetAll().OrderByDescending(
+                    var last = userAdapter.GetAllUser().OrderByDescending(
                         item => item.IdUser).First();
                     CurrentTeacher.IdUser = last.IdUser;
-                    Message = teacherAdapter.Add(CurrentTeacher)
+                    Message = teacherAdapter.AddTeacher(CurrentTeacher)
                         ? "Добавлен новый преподаватель"
                         : "При добавлении произошла ошибка";
                 }
@@ -75,14 +75,14 @@ namespace AcademicPerformance.ViewModels
             {
                 Message = "Подтвердите изменения вводом текущего пароля";
             }
-            else if (teacherAdapter.Select(CurrentTeacher.IdUser).IdTeacher == 0)
+            else if (teacherAdapter.GetTeacherById(CurrentTeacher.IdUser).IdTeacher == 0)
             {
                 CurrentTeacher.IdUser = CurrentUser.IdUser;
-                Message = teacherAdapter.Add(CurrentTeacher)
+                Message = teacherAdapter.AddTeacher(CurrentTeacher)
                     ? "Добавлен новый ученик"
                     : "При добавлении произошла ошибка";
             }
-            else if (teacherAdapter.Update(CurrentTeacher))
+            else if (teacherAdapter.SetTeacher(CurrentTeacher))
             {
                 Message = "Данные обновлены";
             }

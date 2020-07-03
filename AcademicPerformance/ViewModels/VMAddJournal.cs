@@ -18,14 +18,14 @@ namespace AcademicPerformance.ViewModels
         {
             SelectedTeacher = new TeacherModel();
             CurrentJournal = new JournalModel();
-            StudentList = new ObservableCollection<StudentModel>(studentAdapter.GetAll());
-            TeacherList = new ObservableCollection<TeacherModel>(teacherAdapter.GetAll());
+            StudentList = new ObservableCollection<StudentModel>(studentAdapter.GetAllUser());
+            TeacherList = new ObservableCollection<TeacherModel>(teacherAdapter.GetAllTeacher());
             DisciplineList = new ObservableCollection<DisciplineModel>(disciplineAdapter.GetAll());
-            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationAdapter.GetAll());
+            EvaluationList = new ObservableCollection<EvaluationModel>(evaluationAdapter.GetAllEvaluation());
             AddCommand = new RelayCommand(Add);
             if (App.RoleUser == Const.RoleValue.Teacher)
             {
-                SelectedTeacher = teacherAdapter.Select(App.IdUser);
+                SelectedTeacher = teacherAdapter.GetTeacherById(App.IdUser);
             }
         }
 
@@ -116,13 +116,13 @@ namespace AcademicPerformance.ViewModels
         public void Add(object param)
         {
             if (App.RoleUser == Const.RoleValue.Teacher)
-                CurrentJournal.IdTeacher = teacherAdapter.Select(App.IdUser)
+                CurrentJournal.IdTeacher = teacherAdapter.GetTeacherById(App.IdUser)
                     .IdTeacher;
             if (CurrentJournal.IdEvaluation != default &&
                 CurrentJournal.IdTeacher != default &&
                 CurrentJournal.IdDiscipline != default &&
                 CurrentJournal.IdStudent != default)
-                Message = journalAdapter.Add(CurrentJournal) ?
+                Message = journalAdapter.AddJournal(CurrentJournal) ?
                     "Добавлено" : 
                     "При добавлении произошла ошибка";
             else

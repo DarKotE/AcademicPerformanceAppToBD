@@ -214,14 +214,14 @@ namespace AcademicPerformance.ViewModels
             {
                 case Const.RoleValue.Teacher:
                     DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineAdapter.GetAll());
-                    EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationAdapter.GetAll());
-                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAll());
+                    EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationAdapter.GetAllEvaluation());
+                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAllJournalToUser());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
 
                 case Const.RoleValue.Student:
-                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAll());
+                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAllJournalToUser());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
@@ -231,10 +231,10 @@ namespace AcademicPerformance.ViewModels
                 case Const.RoleValue.Manager:
 
                     DisciplineList = new ObservableCollection<DisciplineModel>(DisciplineAdapter.GetAll());
-                    EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationAdapter.GetAll());
-                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAllFull());
-                    StudentList = new ObservableCollection<StudentModel>(StudentAdapter.GetAll());
-                    TeacherList = new ObservableCollection<TeacherModel>(TeacherAdapter.GetAll());
+                    EvaluationList = new ObservableCollection<EvaluationModel>(EvaluationAdapter.GetAllEvaluation());
+                    JournalList = new ObservableCollection<JournalModel>(JournalAdapter.GetAllJournalFull());
+                    StudentList = new ObservableCollection<StudentModel>(StudentAdapter.GetAllUser());
+                    TeacherList = new ObservableCollection<TeacherModel>(TeacherAdapter.GetAllTeacher());
                     SelectedRow = new JournalModel();
                     SearchText = "";
                     break;
@@ -247,7 +247,7 @@ namespace AcademicPerformance.ViewModels
         {
             var isAllSaved = true;
             foreach (var item in filteredJournalList)
-                if (!JournalAdapter.Update(item))
+                if (!JournalAdapter.SetJournal(item))
                     isAllSaved = false;
 
             Message = isAllSaved
@@ -259,7 +259,7 @@ namespace AcademicPerformance.ViewModels
 
         public void Delete(object param)
         {
-            var isDeleted = JournalAdapter.Delete(SelectedRow.IdJournal);
+            var isDeleted = JournalAdapter.DeleteJournalById(SelectedRow.IdJournal);
             Message = isDeleted
                 ? "Удалено" 
                 : "При удалении произошла ошибка";

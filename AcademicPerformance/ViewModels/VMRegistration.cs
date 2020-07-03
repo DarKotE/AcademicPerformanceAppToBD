@@ -37,10 +37,10 @@ namespace AcademicPerformance.ViewModels
                 Message = "Введите пароль";
             else if (password != App.PasswordUser)
                 Message = "Пароли не совпадают";
-            else if (userAdapter.IsLoginFree(CurrentUser.LoginUser))
+            else if (userAdapter.IsUserLoginFree(CurrentUser.LoginUser))
                 try
                 {
-                    var isSaved = userAdapter.Add(CurrentUser);
+                    var isSaved = userAdapter.AddUser(CurrentUser);
                     if (isSaved)
                         Message = "Регистрация прошла успешна, вы можете использовать" + 
                                   " свой логин и пароль для входа. После заполнения профиля вам будет открыт доступ к журналу";

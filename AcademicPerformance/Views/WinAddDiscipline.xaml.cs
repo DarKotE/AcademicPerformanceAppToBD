@@ -20,7 +20,7 @@ namespace AcademicPerformance.Views
         {
 
             var newDiscipline = new DisciplineModel {NameDiscipline = tbNameDiscipline.Text};
-            MessageBox.Show(disciplineAdapter.Add(newDiscipline) ? "Добавлено" : "Не добавлено");
+            MessageBox.Show(disciplineAdapter.AddDiscipline(newDiscipline) ? "Добавлено" : "Не добавлено");
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)

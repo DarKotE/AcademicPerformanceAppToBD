@@ -13,45 +13,45 @@ namespace AcademicPerformance.Classes.DataAdapters
 
         public SqlDataAccess DataAccess { get; }
 
-        public bool Add(UserModel newUser)
+        public bool AddUser(UserModel newUser)
         {
             return DataAccess != null && DataAccess.InsertUser(newUser);
         }
 
-        public bool Delete(int idUser)
+        public bool DeleteUserById(int idUser)
         {
             return DataAccess != null && DataAccess.DeleteUser(idUser);
         }
 
-        public List<UserModel> GetAll()
+        public List<UserModel> GetAllUser()
         {
             var userList = DataAccess.GetUserList();
             return userList ?? new List<UserModel>();
         }
 
-        public bool IsAuthValid(string login, string password)
+        public bool IsUserAuthValid(string login, string password)
         {
             return DataAccess != null && DataAccess.IsAuthValid(login, password);
         }
 
-        public bool IsLoginFree(string login)
+        public bool IsUserLoginFree(string login)
         {
             return DataAccess != null && DataAccess.IsLoginFree(login);
         }
 
-        public UserModel GetById(int idUser)
+        public UserModel GetUserById(int idUser)
         {
             return DataAccess != null ? 
                 DataAccess.SelectUserId(idUser) : new UserModel();
         }
 
-        public UserModel GetByLogin(string loginUser)
+        public UserModel GetUserByLogin(string loginUser)
         {
             return DataAccess != null ? 
                 DataAccess.SelectUserLogin(loginUser) : new UserModel();
         }
 
-        public bool Update(UserModel userToUpdate)
+        public bool SetUser(UserModel userToUpdate)
         {
             return DataAccess != null && 
                    DataAccess.UpdateUser(userToUpdate);

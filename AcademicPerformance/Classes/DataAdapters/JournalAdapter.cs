@@ -13,35 +13,35 @@ namespace AcademicPerformance.Classes.DataAdapters
 
         public SqlDataAccess DataAccess { get; }
 
-        public bool Add(JournalModel journal)
+        public bool AddJournal(JournalModel journal)
         {
             return DataAccess != null && DataAccess.InsertJournal(journal);
         }
 
-        public bool Delete(int idJournal)
+        public bool DeleteJournalById(int idJournal)
         {
             return DataAccess != null && DataAccess.DeleteJournal(idJournal);
         }
 
-        public List<JournalModel> GetAll()
+        public List<JournalModel> GetAllJournalToUser()
         {
             var journalList = DataAccess.GetJournalListForUser();
             return journalList ?? new List<JournalModel>();
         }
 
-        public List<JournalModel> GetAllFull()
+        public List<JournalModel> GetAllJournalFull()
         {
             var journalList = DataAccess.GetJournalList();
             return journalList ?? new List<JournalModel>();
         }
 
-        public JournalModel GetById(int idJournal)
+        public JournalModel GetJournalById(int idJournal)
         {
             return DataAccess != null ? 
                 DataAccess.GetJournal(idJournal) : new JournalModel();
         }
 
-        public bool Update(JournalModel journalToUpdate)
+        public bool SetJournal(JournalModel journalToUpdate)
         {
             return DataAccess != null && 
                    DataAccess.UpdateJournal(journalToUpdate);

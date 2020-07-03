@@ -118,8 +118,8 @@ namespace AcademicPerformance.ViewModels
 
         private void LoadData()
         {
-            UserList = new ObservableCollection<UserModel>(UserAdapter.GetAll());
-            RoleList = new ObservableCollection<RoleModel>(RoleAdapter.GetAll());
+            UserList = new ObservableCollection<UserModel>(UserAdapter.GetAllUser());
+            RoleList = new ObservableCollection<RoleModel>(RoleAdapter.GetAllRole());
             SearchText = "";
         }
         
@@ -127,7 +127,7 @@ namespace AcademicPerformance.ViewModels
         {
             var isAllSaved = true;
             foreach (var item in filteredUserList)
-                if (!UserAdapter.Update(item))
+                if (!UserAdapter.SetUser(item))
                     isAllSaved = false;
 
             Message = isAllSaved ? "Изменения сохранены" 
@@ -139,8 +139,8 @@ namespace AcademicPerformance.ViewModels
         public void Delete(object param)
         {
             var isDeleted =
-                (StudentAdapter.Delete(SelectedRow.IdUser) || TeacherAdapter.Delete(SelectedRow.IdUser)) &&
-                (UserAdapter.Delete(SelectedRow.IdUser));
+                (StudentAdapter.DeleteUserById(SelectedRow.IdUser) || TeacherAdapter.DeleteTeacherById(SelectedRow.IdUser)) &&
+                (UserAdapter.DeleteUserById(SelectedRow.IdUser));
             Message = isDeleted ? "Удалено" 
                 : "При удалении произошла ошибка";
             MessageBox.Show(Message);

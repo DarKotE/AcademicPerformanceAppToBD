@@ -13,29 +13,29 @@ namespace AcademicPerformance.Classes.DataAdapters
 
         public SqlDataAccess DataAccess { get; }
 
-        public bool Add(EvaluationModel newEvaluation)
+        public bool AddEvaluation(EvaluationModel newEvaluation)
         {
             return DataAccess != null && DataAccess.InsertEvaluation(newEvaluation);
         }
 
-        public bool Delete(int idEvaluation)
+        public bool DeleteEvaluationById(int idEvaluation)
         {
             return DataAccess != null && DataAccess.DeleteEvaluation(idEvaluation);
         }
 
-        public List<EvaluationModel> GetAll()
+        public List<EvaluationModel> GetAllEvaluation()
         {
             var evaluationList = DataAccess.GetEvaluationList();
             return evaluationList ?? new List<EvaluationModel>();
         }
 
-        public EvaluationModel GetById(int idEvaluation)
+        public EvaluationModel GetEvaluationById(int idEvaluation)
         {
             return DataAccess != null ? 
                 DataAccess.GetEvaluation(idEvaluation) : new EvaluationModel();
         }
 
-        public bool Update(EvaluationModel evaluationToUpdate)
+        public bool SetEvaluation(EvaluationModel evaluationToUpdate)
         {
             return DataAccess != null && 
                    DataAccess.UpdateEvaluation(evaluationToUpdate);

@@ -19,22 +19,22 @@ namespace AcademicPerformance.Classes.DataAdapters
             return disciplineList ?? new List<DisciplineModel>();
         }
 
-        public bool Add(DisciplineModel newDiscipline)
+        public bool AddDiscipline(DisciplineModel newDiscipline)
         {
             return DataAccess != null && DataAccess.InsertDiscipline(newDiscipline);
         }
 
-        public bool Update(DisciplineModel disciplineToUpdate)
+        public bool SetDiscipline(DisciplineModel disciplineToUpdate)
         {
             return DataAccess != null && DataAccess.UpdateDiscipline(disciplineToUpdate);
         }
 
-        public bool Delete(int idDiscipline)
+        public bool DeleteDisciplineById(int idDiscipline)
         {
             return DataAccess != null && DataAccess.DeleteDiscipline(idDiscipline);
         }
 
-        public DisciplineModel GetById(int idDiscipline)
+        public DisciplineModel GetDisciplineById(int idDiscipline)
         {
             return DataAccess != null 
                 ? DataAccess.GetDiscipline(idDiscipline)

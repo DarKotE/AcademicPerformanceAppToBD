@@ -13,29 +13,29 @@ namespace AcademicPerformance.Classes.DataAdapters
 
         public SqlDataAccess DataAccess { get; }
 
-        public bool Add(TeacherModel newTeacher)
+        public bool AddTeacher(TeacherModel newTeacher)
         {
             return DataAccess != null && DataAccess.InsertTeacher(newTeacher);
         }
 
-        public bool Delete(int idUser)
+        public bool DeleteTeacherById(int idUser)
         {
             return DataAccess != null && DataAccess.DeleteTeacher(idUser);
         }
 
-        public List<TeacherModel> GetAll()
+        public List<TeacherModel> GetAllTeacher()
         {
             var teacherList = DataAccess.GetTeacherList();
             return teacherList ?? new List<TeacherModel>();
         }
 
-        public TeacherModel Select(int idUser)
+        public TeacherModel GetTeacherById(int idUser)
         {
             return DataAccess != null ? 
                 DataAccess.GetTeacher(idUser) : new TeacherModel();
         }
 
-        public bool Update(TeacherModel teacherToUpdate)
+        public bool SetTeacher(TeacherModel teacherToUpdate)
         {
             return DataAccess != null && 
                    DataAccess.UpdateTeacher(teacherToUpdate);

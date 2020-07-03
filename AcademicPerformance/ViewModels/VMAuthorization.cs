@@ -38,10 +38,10 @@ namespace AcademicPerformance.ViewModels
                 Message = "Введите логин";
             else if (string.IsNullOrWhiteSpace(CurrentUser.PasswordUser))
                 Message = "Введите пароль";
-            else if (UserAdapter.IsAuthValid(CurrentUser.LoginUser, CurrentUser.PasswordUser))
+            else if (UserAdapter.IsUserAuthValid(CurrentUser.LoginUser, CurrentUser.PasswordUser))
                 try
                 {
-                    CurrentUser = UserAdapter.GetByLogin(CurrentUser.LoginUser);
+                    CurrentUser = UserAdapter.GetUserByLogin(CurrentUser.LoginUser);
                     App.LoginUser = CurrentUser.LoginUser;
                     App.PasswordUser = CurrentUser.PasswordUser;
                     App.IdUser = CurrentUser.IdUser;
